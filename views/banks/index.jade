@@ -1,0 +1,32 @@
+extends ../head
+
+block body
+    div#page-wrapper
+        div#page-inner
+            div.row
+                div.col-md-10.col-md-offset-1
+                    h1.page-header Банки
+            div.row
+                div.col-md-10.col-md-offset-1
+                    div.panel.panel-default
+                        div.panel-heading 
+                            a.btn.btn-success(href='/banks/add') Добавить банк
+                        div.panel-body
+                            div.table-responsive
+                                table.table.table-striped(style="width:100%")
+                                    thead
+                                        tr
+                                            th Название
+                                            th Телефон
+                                            th Количество банкоматов
+                                            th
+                                    tbody
+                                        each bank in banks
+                                            tr
+                                                th #{bank.name}
+                                                th #{bank.phone}
+                                                th #{bank.atms.length}
+                                                th
+                                                    a.btn.btn-info.btn-sm(href='/banks/' + bank._id title="Подробнее")
+                                                        i.fa.fa-info
+

@@ -1,0 +1,47 @@
+/*=========================================================================================
+	File Name: horizontal-top-icon-menu.scss
+	Description: A horizontal menu with icon on top side.
+	It support light & dark version, filpped layout, right side icons, borders menu for
+	item seperation.
+	----------------------------------------------------------------------------------------
+	Item Name: Robust - Responsive Admin Theme
+	Version: 1.0
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+==========================================================================================*/
+
+/* html body.horizontal-top-icon-menu{
+	padding-top:0;
+} */
+// Horizontal Top Icon Menu
+//=========================
+.horizontal-top-icon-menu {
+	#main-menu-navigation {
+		li.nav-item {
+			.nav-link i{
+				display: block;
+			    text-align: center;
+			    font-size: 1.5rem;
+			    margin-right: 0;
+			    margin-bottom: 0.5rem;
+			}
+		}
+	}
+	// Custom top for horizontal menu only
+	.dropdown-toggle::after{
+		top: -9px !important
+	}
+	.dropdown-menu{
+		margin: 0;
+	}
+
+	&.menu-collapsed{
+		#main-menu-navigation{
+			.nav-item{
+				a span{
+					display: none;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,232 @@
+/*================================================================================================
+	File Name: components.scss
+	Description: Common components file to includ all theme specific custom components.
+	----------------------------------------------------------------------------------------------
+	Item Name: Robust - Responsive Admin Theme
+	Version: 1.0
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+================================================================================================*/
+
+// Core
+// ------------------------------
+
+// Core variables and mixins
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+@import "bootstrap-robust/mixins";
+
+// Core variables and mixins overrides
+@import "core/variables/variables";
+@import "core/variables/robust-variables";
+@import "core/mixins/transitions";
+
+// Overrides user variable
+@import "../../assets/scss/variables/variables";
+@import "../../assets/scss/variables/robust-variables";
+
+// MMenu
+@import "plugins/menu/mmenu/mmenu-custom";
+// Perfect Scrollbar
+@import "plugins/menu/perfect-scrollbar/ps-custom";
+
+//Hamburgers
+@import "plugins/ui/hamburgers/hamburgers-custom";
+
+
+// Layout
+// ------------------------------
+
+// Layout core
+@import "core/layouts/main-menu";
+@import "core/layouts/content";
+@import "core/layouts/sidebar";
+@import "core/layouts/horizontal";
+@import "core/layouts/footer";
+
+// menu
+@import "core/menu/navigation";
+
+// Helpers
+@import "components/ui/helper";
+
+// CSS Shapes
+@import "components/ui/shapes";
+
+// Animation
+@import "components/ui/animation";
+
+// Plugins demo, remove in real project
+@import "components/demo";
+
+//Animate scss
+@import "plugins/animate/animate";
+
+// Breakpoints
+@import "plugins/ui/breakpoints";
+
+
+// Full screen search
+// ------------------------------
+@import "components/ui/fullscreen-search";
+
+// Charts
+@import "components/chart";
+@import "components/plugins/charts/c3-chart";
+
+// Selects
+// ------------------------------
+
+@import "plugins/forms/selectivity/selectivity";
+@import "plugins/forms/selectize/selectize";
+@import "plugins/forms/selectBoxIt/selectBoxIt";
+@import "plugins/forms/select2/select2";
+
+// Extensions
+// ------------------------------
+
+// Typeahead
+@import "components/forms/extended/form-extended";
+
+// Validation
+// @import "plugins/forms/extensions/validation";
+@import "plugins/forms/validation/form-validation";
+
+// Form Wizard
+@import "components/forms/wizard";
+
+// Dual Listbox
+@import "components/forms/dual-listbox";
+// Toastr
+@import "plugins/extensions/toastr";
+
+
+// Editable
+// @import "plugins/forms/extensions/editable";
+
+// Form Layouts
+@import "components/forms/layout";
+
+// Tag inputs
+// ------------------------------
+
+// Bootstrap Taginputs
+@import "components/forms/bootstrap-tagsinput";
+
+// Tags input
+@import "plugins/forms/tags/basic-input";
+@import "components/mixins/forms";
+@import "components/plugins/forms/tags/checkboxes-radios";
+@import "components/plugins/forms/tags/switch";
+
+
+
+// Components
+@import "components/navs/navs";
+@import "components/navs/tabs";
+@import "components/navs/pills";
+@import "components/collapse/collapse";
+@import "components/alerts/alerts";
+@import "components/pagination/pagination";
+@import "components/pagination/pager";
+@import "components/tags-pills/tags-pills";
+@import "components/loaders/loaders";
+@import "components/media-objects/media-objects";
+@import "components/callout/callout";
+
+// Editors
+// ------------------------------
+
+@import "components/plugins/editors/editors";
+
+
+// Pickers
+// ------------------------------
+
+// Daterange picker
+@import "plugins/pickers/daterange/daterangepicker";
+@import "components/plugins/pickers/daterange/daterange";
+
+// Bootstrap datetimepicker
+@import "plugins/pickers/bootstrap-datetimepicker-build";
+
+// Date paginator
+// @import "plugins/pickers/date-paginator";
+
+// Bootstrap colorpicker
+@import "components/plugins/pickers/colorpicker/colorpicker";
+
+// Bootstrap Social Media Buttons
+@import "components/plugins/button/social/bootstrap-social";
+
+
+// Timeline
+// ------------------------------
+@import "plugins/timeline/timeline-horizontal";
+
+// Sliders
+// ------------------------------
+// NoUI slider
+@import "plugins/extensions/noui-slider";
+
+// jQuery UI components
+// ------------------------------
+@import "components/ui/jqueryui";
+
+// Full calendar
+@import "components/plugins/calendars/fullcalendar";
+
+// CLNDR
+@import "components/plugins/calendars/clndr";
+
+// Dropzone
+@import "components/file-uploaders/dropzone";
+
+
+
+// Image manipulation
+// ------------------------------
+//Avatar size & status
+@import "components/avatar";
+
+
+// Image cropper
+@import "plugins/images/cropper/cropper";
+
+
+// Datatables
+// ------------------------------
+@import "components/tables/datatables";
+
+
+// Page
+// ------------------------------
+// Invoice
+@import "components/pages/invoice";
+
+// Users Pages
+@import "components/pages/users";
+
+// Project
+@import "components/pages/project";
+
+//Gallery
+@import "components/pages/gallery";
+
+//User Login / Register
+@import "components/pages/login-register";
+
+// Timeline
+@import "components/pages/timeline";
+
+// Search
+@import "components/pages/search";
+
+// Error page
+@import "components/pages/error";
+
+// Coming Soon Page
+@import "components/pages/coming-soon";
+
+// Under Maintenance Page
+@import "components/pages/under-maintenance";

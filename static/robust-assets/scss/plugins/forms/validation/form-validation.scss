@@ -1,0 +1,73 @@
+.form-group{
+  &.issue{
+    .help-block, .help-inline{
+      color: $brand-warning;
+    }
+    input, select, textarea{
+      color: $brand-warning;
+      border-color: $brand-warning;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color: #CE2605;
+      -webkit-box-shadow: 0 0 6px #FCA08E;
+         -moz-box-shadow: 0 0 6px #FCA08E;
+              box-shadow: 0 0 6px #FCA08E;
+    }
+    .input-prepend, .input-append {
+      .add-on{
+        color: $brand-warning;
+        background-color: #FED2C9;
+        border-color: $brand-warning;
+      }
+    }
+  }
+
+  &.error{
+    .help-block, .help-inline{
+      color: $brand-danger;
+    }
+    input, select, textarea{
+      color: $brand-danger;
+      border-color: $brand-danger;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color: #B41323;
+      -webkit-box-shadow: 0 0 6px #F38C96;
+         -moz-box-shadow: 0 0 6px #F38C96;
+              box-shadow: 0 0 6px #F38C96;
+    }
+    .input-prepend, .input-append {
+      .add-on{
+        color: $brand-danger;
+        background-color: #FACACF;
+        border-color: $brand-danger;
+      }
+    }
+  }
+
+  &.validate{
+    .help-block, .help-inline{
+      color: $brand-success;
+    }
+    input, select, textarea{
+      color: $brand-success;
+      border-color: $brand-success;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color: #34C5A1;
+      -webkit-box-shadow: 0 0 6px #78DCC3;
+         -moz-box-shadow: 0 0 6px #78DCC3;
+              box-shadow: 0 0 6px #78DCC3;
+    }
+    .input-prepend, .input-append {
+      .add-on{
+        color: $brand-success;
+        background-color: #DDF6F0;
+        border-color: $brand-success;
+      }
+    }
+  }
+  .help-block ul{
+    padding-left: 1.5rem;
+  }
+}

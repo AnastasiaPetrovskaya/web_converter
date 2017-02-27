@@ -1,0 +1,53 @@
+.tag{
+	&[class*='tag-']{
+		[class*='icon-']{
+			line-height: 1;
+			~span{
+				position: relative;
+				bottom: 2px;
+				padding: 0 5px;
+			}
+		}
+		span{
+			position: relative;
+			bottom: 2px;
+			padding: 0 5px;
+		}
+		a{
+			color: #fff;
+		}
+		.dropdown-toggle::after,
+		&.dropdown-toggle::after{
+			position: relative;
+			top: -10px;
+			right: 5px;
+			font-size: 1rem;
+		}
+		.dropdown-menu{
+			a{
+				color: #555;
+			}
+		}
+	}
+	&.tag-square{
+		border-radius: 0;
+	}
+	&.tag-border{
+		background-color: transparent;
+		border-width: 3px !important;
+		font-size: 85%;
+	}
+	&.tag-striped{
+		background-color: #dadada;
+		border-width: 3px !important;
+		font-size: 0.85rem;
+		color: #555;
+		a{
+			color: #555;
+		}
+	}
+	&.tag.float-xs-right {
+		margin-left: 0.5rem;
+		margin-top: 0.15rem;
+	}
+}

@@ -1,0 +1,41 @@
+doctype html
+html
+    head
+        title Панель администрирования
+
+        meta(id="viewport" content="width=device-width, initial-scale=1.0" name="viewport")
+        meta(charset="UTF-8")
+
+        //Theme styles
+        link(href="/css/bootstrap.css" rel="stylesheet" type="text/css")
+        //Font
+        link(href="/css/font-awesome.css" rel="stylesheet" type="text/css")
+        //Moris Chart Style
+        link(href="/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" type="text/css")
+        //Custom Style
+        link(href="/css/custom-styles.css" rel="stylesheet" type="text/css")
+        //Google Fonts
+        link(href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css")
+        //x-editable
+        link(href="/plugins/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" type="text/css")
+
+
+        body.page-header-fixed.compact-menu.page-horizontal-bar
+            div#wrapper
+                block vertical-menu
+                block head
+                block body
+
+
+            //Javascripts
+            script(src="/plugins/jquery/jquery-2.2.0.min.js")
+            script(src="/plugins/bootstrap.min.js")
+            script(src="/plugins/jquery/jquery.metisMenu.js")
+            script(src="/js/common_scripts.js")
+            script(src="/plugins/bootstrap3-editable/js/bootstrap-editable.min.js")
+            //script(src="/js/morris/raphael-2.1.0.min.js")
+            //script(src="/js/morris/morris.js")
+            //script(src="/js/custom-scripts.js")
+
+            block footer
+

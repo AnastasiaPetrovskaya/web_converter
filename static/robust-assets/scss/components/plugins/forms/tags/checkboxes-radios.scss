@@ -1,0 +1,211 @@
+/* ------------------------------------------------------------------------------
+*
+*  Bootstrap checkboxes & Radios, Styles of custom  checkboxes & Radios
+*
+*  Version: 1.0
+*
+* ---------------------------------------------------------------------------- */
+
+// Styled Checkbox & Radio
+.right-checkbox, .right-radio {
+  .styledCheck span,	input[type="checkbox"], .custom-control-indicator,
+  .styledRadio span, input[type="radio"]{
+		left: auto;
+    top: auto;
+    position: absolute;
+  }
+  input[type="checkbox"], .custom-control-indicator, input[type="radio"]{
+		right: 2%;
+  }
+  .styledCheck {
+    span{
+      right: -0.5rem;
+    }
+  }
+  .styledRadio{
+    span{
+      right: 0.5rem;
+      &:after{
+        top: 6px;
+        left: 6px;
+      }
+    }
+  }
+  .custom-control-input {
+    position: inherit;
+  }
+}
+.right-radio{
+  .inline{
+    &.styledRadio{
+      span{
+        left: auto;
+        right: -0.25rem;
+      }
+    }
+  }
+}
+
+// Custom checkbox
+.custom-control{
+  display: block;
+  &.inline{
+    display: inline;
+  }
+}
+.custom-checkbox input:disabled:checked ~ .custom-control-indicator{
+  opacity: 0.5;
+}
+.custom-checkbox input:disabled ~ .custom-control-indicator{
+  cursor: not-allowed;
+}
+
+/* .squaredCheck */ 
+.styledCheck {
+  padding: 0 1rem !important;
+  position: relative;
+  span {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+    position: absolute;
+    left: 0.25rem;
+    top: 3px;
+    @include linear-gradients( top, #222, #45484d);
+    border-radius: 4px;
+    box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,.4);
+    &:after {
+      content: '';
+      width: 9px;
+      height: 5px;
+      position: absolute;
+      top: 5px;
+      left: 4px;
+      border: 3px solid #fcfff4;
+      border-top: none;
+      border-right: none;
+      background: transparent;
+      opacity: 0;
+      transform: rotate(-45deg);
+    }
+    &:hover::after {
+      opacity: 0.3;
+    }
+    span{
+    	width: 100%;
+    	margin-left: 2%;
+    }
+  }
+  input[type=checkbox] {
+    visibility: hidden;
+    &:checked + span:after {
+      opacity: 1;
+    }
+    &:disabled + span{
+      cursor: not-allowed;
+    }
+    &:checked:disabled + span:after {
+      opacity: 0.5;
+    }
+  }
+}
+
+.inline.styledRadio {
+  position: relative;
+  top: 4px;
+  span{
+    left:0.25rem;
+    &:after{
+      top: 5px;
+      left: 5px;
+    }
+  }
+}
+.radio.right-radio label{padding-left: 0;}
+.styledRadio {
+  padding: 0 1.5rem 0 1rem !important;
+  span {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    position: absolute;
+    left: 1rem;
+    @include linear-gradients( top, #222, #45484d);
+    border-radius: 20px;
+    box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,.4);
+    &:after {
+      content: '';
+      width: 4px;
+      height: 4px;
+      position: absolute;
+      top: 6px;
+      left: 5px;
+      border: 4px solid #fcfff4;
+      border-radius:20px;
+      background: transparent;
+      opacity: 0;
+      transform: rotate(-45deg);
+    }
+    &:hover::after {
+      opacity: 0.3;
+    }
+    span{
+      width: 100%;
+      margin-left: 2%;
+    }
+  }
+  label{
+    cursor: pointer;
+    display: inline;
+    position: relative;
+    top: -2px;
+  }
+  input[type=radio] {
+    visibility: hidden;
+    &:checked + span:after {
+      opacity: 1;
+    }
+  }
+}
+
+/* iCheck */
+.skin, .icheck_square{
+  [class*="icheckbox_"],
+  [class*="iradio_"] {
+    margin-right: 0.6rem;
+  }
+}
+.skin{
+  [class*="icheckbox_line"],
+  [class*="iradio_line"] {
+    margin-bottom: 0.6rem;
+  }
+}
+.state{
+  &[class*="icheckbox_"]:hover,
+  &[class*="iradio_"]:hover {
+    cursor: default;
+  }
+}
+
+/* Bootstrap Enhance */
+.custom-control-input > input:focus ~ .custom-control-indicator{
+  padding: 0.51rem;
+}
+.custom-control-indicator{
+  width: 1.1rem;
+  height: 1.075rem;
+  line-height: 1.05rem;
+  top: 0.085rem;
+  + .custom-control-description{
+    margin-left: 1rem;
+  }
+}
+
+
+/* Image Checkbox selected*/
+ input[type="checkbox"]:checked + img.img-thumbnail{
+  background-color: $brand-primary;
+  color:#996;
+  border-color: $brand-primary;
+}

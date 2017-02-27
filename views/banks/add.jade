@@ -1,0 +1,27 @@
+extends ../head
+
+block body
+    div#page-wrapper
+        div#page-inner
+            div.row
+                div.col-md-6.col-md-offset-3
+                    h1.page-header Добавить банк
+            div.row
+                div.col-md-6.col-md-offset-3
+                    div.panel.panel-default
+                        div.panel-body
+                            div.row
+                                div.col-md-12
+                                    div.form-group
+                                        label Название банка
+                                        input#name.form-control
+                                    div.form-group
+                                        label Телефон
+                                        input#phone.form-control
+                                    div.form-group
+                                        label Адрес
+                                        input#address.form-control
+                                    a#add-bank.btn.btn-success Создать
+block footer
+    script(src="/js/pages/banks/add.js")
+

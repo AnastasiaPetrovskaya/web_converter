@@ -1,0 +1,110 @@
+extends ../head
+
+block body
+    div#page-wrapper
+        div#page-inner
+            div.row
+                div.col-md-10.col-md-offset-1
+                    h1.page-header Банк
+            div.row
+                div.col-md-5.col-md-offset-1
+                    div.panel.panel-default
+                        div.panel-heading
+                            h4 Информация о банке
+                        div.panel-body
+                            div.table-responsive
+                                table(style="width:100%")
+                                    tbody
+                                        tr
+                                            td Название
+                                            td #{bank.name}
+                                        tr
+                                            td Телефон
+                                            td #{bank.phone}
+                                        tr
+                                            td Адрес
+                                            td #{bank.address}
+                                        tr
+                                            td Количество банкоматов
+                                            td #{bank.atms.length}
+                div.col-md-5
+                    div#div_atm_info.panel.panel-default(style="display:none")
+                        div.panel-heading
+                            h4 Информация о Tepминале
+                        div.panel-body
+                            div.table-responsive
+                                table#atm_info(style="width:100%")
+            div.row
+                div.col-md-10.col-md-offset-1
+                    div.panel.panel-default
+                        div.panel-heading
+                            h4 Банкоматы
+                            a.btn.btn-success#add-atm(data-toggle="modal", data-target="#add_atm_modal") Добавить банкомат
+                            div#add_atm_modal.modal.fade(tabindex="-1", role="dialog", aria-hidden="true")
+                                .modal-dialog
+                                    .modal-content
+                                        .modal-header
+                                            h3 Новый банкомат
+                                        .modal-body
+                                            form#add_atm_form(role="form")
+                                                div.form-group
+                                                    label Название банкомата
+                                                    input#name.form-control(name="name")
+                                                div.form-group
+                                                    label Номер
+                                                    input#phone.form-control(name="id")
+                                                div.form-group
+                                                    label Адрес
+                                                    input#address.form-control(name="address")
+                                                div.form-group
+                                                    label Лимит по снятию наличных
+                                                    input#limit.form-control(name="limit")
+                                              //  button.btn.btn-success(type="submit" form="add_atm_form)
+                                        .modal-footer
+                                            //button.btn.btn-success(type="submit" form="add_atm_form")
+                                            a#btn_add_atm.btn.btn-success(data-dismiss="modal") Добавить
+                                            a.btn.btn-danger(href='#', data-dismiss='modal') Отмена
+                        div.panel-body
+                            div.table-responsive
+                                table#atms.table.table-striped(style="width:100%")
+            div.row
+                div.col-md-10.col-md-offset-1
+                    div.panel.panel-default
+                        div.panel-heading
+                            h4 Клиенты
+                            a.btn.btn-success#add-client(data-toggle="modal", data-target="#add_client_modal") Добавить клиента
+                            div#add_client_modal.modal.fade(tabindex="-1", role="dialog", aria-hidden="true")
+                                .modal-dialog
+                                    .modal-content
+                                        .modal-header
+                                            h3 Новый клиент
+                                        .modal-body
+                                            form#add_client_form(role="form")
+                                                div.form-group
+                                                    label ФИО
+                                                    input#name.form-control(name="name")
+                                                div.form-group
+                                                    label Номер телефона
+                                                    input#phone.form-control(name="phone")
+                                                div.form-group
+                                                    label Текущий баланс
+                                                    input#current_balance.form-control(name="current_balance")
+                                                div.form-group
+                                                    label Неснимаемы остаток по счету
+                                                    input#min_balance.form-control(name="min_balance")
+                                              //  button.btn.btn-success(type="submit" form="add_atm_form)
+                                        .modal-footer
+                                            //button.btn.btn-success(type="submit" form="add_atm_form")
+                                            a#btn_add_client.btn.btn-success(data-dismiss="modal") Добавить
+                                            a.btn.btn-danger(href='#', data-dismiss='modal') Отмена
+                        div.panel-body
+                            div.table-responsive
+                                table#clients.table.table-striped(style="width:100%")
+
+
+block footer
+    script.
+        bank_id='#{bank.id}'
+    script(src="/js/pages/banks/show.js")
+    script(src="/js/pages/banks/atms_table.js")
+    script(src="/js/pages/clients/clients_table.js")

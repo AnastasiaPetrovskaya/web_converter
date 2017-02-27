@@ -1,0 +1,36 @@
+extends ../head
+
+block body
+    div#page-wrapper
+        div#page-inner
+            div.row
+                div.col-md-10.col-md-offset-1
+                    h1.page-header Банки
+            div.row
+                div.col-md-10.col-md-offset-1
+                    div.panel.panel-default
+                        div.panel-heading 
+                        div.panel-body
+                            div.table-responsive
+                                if (clients.length == 0)
+                                    p Нет клиентов
+                                else
+                                    table.table.table-striped(style="width:100%")
+                                        thead
+                                            tr
+                                                th Имя
+                                                th Телефон
+                                                th Текущий баланс
+                                                th Неснимаемый баланс
+                                                th
+                                        tbody
+                                            each client in clients
+                                                tr
+                                                    td #{client.name}
+                                                    td #{client.phone}
+                                                    td #{client.current_balance}
+                                                    td #{client.min_balance}
+                                                    td
+                                                        a.btn.btn-info.btn-sm(href='/clients/' + client._id title="Подробнее")
+                                                            i.fa.fa-info
+

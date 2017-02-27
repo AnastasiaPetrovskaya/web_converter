@@ -1,0 +1,239 @@
+/*=========================================================================================
+	File Name: vertical-mmenu.scss
+	Description: A multi level vertical style menu with show and hide support. It support 
+	light & dark version, filpped layout, right side icons, native scroll and borders menu item 
+	seperation.
+	----------------------------------------------------------------------------------------
+	Item Name: Robust - Responsive Admin Theme
+	Version: 1.0
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+==========================================================================================*/
+
+// Vertical Mmenu
+//=========================
+.vertical-mmenu{
+
+	//Navbar expanded
+    .navbar{
+    	.navbar-header{
+            @include menu-navbar-width($mm-expanded-width);
+        }
+        &.navbar-brand-center{
+        	.navbar-header{
+            	@include menu-navbar-width(auto);
+        	}
+        }
+        .navbar-container{
+          @include main-menu-width($mm-expanded-width);
+        }
+    }
+    // Main menu expanded
+	.main-menu{
+		width: $mm-expanded-width;
+		transition: 300ms ease all;
+		backface-visibility: hidden;
+		//TODO:AJ: To fix the mmenu height with js
+		/* .main-menu-content{
+			// height: 100%;
+			height: calc(100% - 4rem);
+		} */
+		.navigation{
+			> li.mm-divider {
+					padding: 8px 20px;
+				.icon-ellipsis{
+					visibility: hidden;
+					display: none;
+					opacity: 0;
+				}
+			}
+			> li{
+				> a {
+					> i {
+						font-size: 1.2rem;
+						margin-right: 12px;
+						float:left;
+					&:before{
+						transition: 200ms ease all;
+						}
+					}
+					>span{
+                        float:left;
+                    }
+				}
+			}
+			li{
+				@include vertical-menu-has-sub-arrow(1rem);
+			}
+		}
+		// menu active parent text color
+		&.menu-dark {
+			.navigation{
+				> li.open{
+					a {
+						background:none;
+						span{
+							color: $menu-dark-color;
+						}
+					}
+				}
+			}
+		}
+		// menu active bg color
+		.mm-listview
+		{
+			> li
+			{
+				&.mm-selected
+				{
+					> a:not(.mm-next),
+					> span
+					{
+						background:  darken($menu-dark-bg, 5%);
+					}
+				}
+			}
+		}
+	}
+
+    //Content expanded
+	.content,.footer{
+		@include main-menu-width($mm-expanded-width);
+	}
+	//Brand center content expanded
+	.navbar-brand-center{
+		.content,.footer{
+			@include main-menu-width(0);
+		}
+	}
+
+	//menu open
+	&.menu-open{
+		.main-menu{
+			opacity: 1;
+			transition: transform .25s, opacity .25s,top .35s,height .35s;
+		    transform: translate3d(0,0,0);
+		    backface-visibility: hidden;
+		    perspective: 1000;
+		}
+	}
+
+	//menu hide
+	&.menu-hide {
+
+		//Navbar expanded
+	    .navbar{
+	    	.navbar-header{
+	            @include menu-navbar-width($mm-expanded-width);
+	        }
+	        &.navbar-brand-center{
+            	.navbar-header{
+                	@include menu-navbar-width(auto);
+            	}
+            }
+	        .navbar-container{
+	          @include main-menu-width($mm-expanded-width);
+	        }
+	    }
+		.content,.footer{
+            @include main-menu-width(0);
+        }
+        .navbar-brand-center{
+			.content,.footer{
+				@include main-menu-width(0);
+			}
+		}
+		.main-menu{
+			opacity: 0;
+		    transition: transform .25s, opacity .25s,top .35s,height .35s;
+		    transform: translate3d(-($mm-expanded-width),0,0);
+		    backface-visibility: hidden;
+		    perspective: 1000;
+		}
+
+        &.menu-flipped{
+            //Content collapsed flipped
+            .content,.footer{
+                @include vertical-flipped-menu(0);
+            }
+            .main-menu{
+            	@include vertical-menu-transform-show($mm-expanded-width);
+            }
+        }
+	}
+
+	//flipped menu
+	&.menu-flipped{
+		.content,.footer{
+			@include vertical-flipped-menu($mm-expanded-width);
+    	}
+        // Main menu flipped
+        .main-menu{
+            right: 0;
+            left: inherit;
+            .navigation{
+				> li {
+					>ul{
+						right: $mm-expanded-width;
+						left: inherit;
+					}
+				}
+			}
+        }
+        //Navbar expanded flipped
+        .navbar{
+        	.navbar-header{
+                float: right;
+            }
+            .navbar-container{
+                @include vertical-flipped-menu($mm-expanded-width);
+            }
+        }
+	}
+}
+
+// Initially menu & content width for lg and up screen
+@include media-breakpoint-up(lg) {
+	body{
+		&.vertical-mmenu{
+			.main-menu{
+				width: $mm-expanded-width;
+			}
+			.navbar{
+				.navbar-header{
+					width: $mm-expanded-width;
+				}
+			}
+			.content,.footer{
+				@include main-menu-width($mm-expanded-width);
+			}
+		}
+	}
+}
+
+// Initially menu & content width for md and down screen
+@include media-breakpoint-down(md) {
+	body{
+		&.vertical-mmenu{
+			.main-menu{
+				// width: 0;
+			}
+			.navbar{
+				.navbar-header{
+					width: 0;
+				}
+			}
+			.content,.footer{
+            	@include main-menu-width(0);
+        	}
+        	.mm-next:after, .mm-arrow:after{
+        		right: 30px;
+        	}
+		}
+	}
+}
+@include media-breakpoint-down(lg) {
+	.mm-next:after, .mm-arrow:after{
+		right: 35px;
+	}
+}

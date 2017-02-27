@@ -1,0 +1,35 @@
+/*=========================================================================================
+	File Name: sidebar.scss
+	Description: content sidebar specific scss.
+	----------------------------------------------------------------------------------------
+	Item Name: Robust - Responsive Admin Theme
+	Version: 1.0
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+==========================================================================================*/
+
+
+
+// Sidebar base
+// ------------------------------
+
+// Base
+.sidebar {
+	position: relative;
+	width: 100%;
+
+	// For desktop only
+	@include media-breakpoint-up(lg){
+		// display: table-cell;
+		vertical-align: top;
+		width: $sidebar-width;
+	}
+}
+@include media-breakpoint-up(lg){
+	.sidebar-left{
+	    float:left;
+	}
+	.sidebar-right{
+	    float:right;
+	}
+}

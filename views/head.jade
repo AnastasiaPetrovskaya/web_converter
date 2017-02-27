@@ -1,0 +1,21 @@
+extends layout
+
+block vertical-menu
+    nav.navbar.navbar-default.top-navbar(role="navigation")
+        div.navbar-header
+            a.navbar-brand ПБДКС
+    nav.navbar-default.navbar-side(role="navigation")
+        div.sidebar-collapse
+            ul#main-menu.nav
+                li
+                    a(href="/")
+                        i.fa.fa-dashboard 
+                        | Задание
+                li
+                    a(href="/banks")
+                        i.fa.fa-dashboard 
+                        | Банки
+                li
+                    a(href="/clients")
+                        i.fa.fa-dashboard 
+                        | Клиенты

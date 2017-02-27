@@ -1,0 +1,6 @@
+// TODO:M: Move to core mixin folder
+@mixin linear-gradients($direction, $color-starts, $color-stops) {
+  background: nth(nth($color-stops, 1), 1);
+  background: -webkit-linear-gradient(to legacy-direction($direction), $color-starts, $color-stops);
+  background: linear-gradient(to $direction, $color-starts, $color-stops);
+}

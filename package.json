@@ -1,0 +1,29 @@
+{
+  "name": "pbdks",
+  "version": "1.0.0",
+  "description": "simple web interface for api, university project for disipline pbdks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnastasiaPetrovskaya/pbdks.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnastasiaPetrovskaya/pbdks/issues"
+  },
+  "homepage": "https://github.com/AnastasiaPetrovskaya/pbdks#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "jade": "~1.11.0",
+    "mongodb": "^2.2.15",
+    "mongoose": "^4.7.1",
+    "mongoose-shortid-nodeps": "^0.6.5",
+    "path": "^0.12.7",
+    "validators": "^0.3.1"
+  }
+}

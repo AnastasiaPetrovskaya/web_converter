@@ -1,0 +1,21 @@
+if (mts.length == 0)
+    p Нет банкоматов
+else
+    thead
+        tr
+            th Тип
+            th Сумма
+            th Клиент
+            th Банк
+            th Номер банкомата
+            th
+    tbody
+        each mt in mts
+            tr 
+                td #{mt.type}
+                td #{mt.sum}
+                td #{mt.client.name}
+                td #{mt.bank.name}
+                td #{mt.atm_uid}
+                td
+

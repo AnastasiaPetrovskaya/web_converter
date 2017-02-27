@@ -1,0 +1,7 @@
+extends head
+
+block body
+    .page-inner
+        .page-title
+            .container
+                h3 Главная

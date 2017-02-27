@@ -1,0 +1,48 @@
+/*================================================================================================
+	File Name: bootstrap-robust.scss
+	Description: List of modified Bootstrap files. This is an actual copy of bootstrap.scss
+				  excluding files that have not been modified.
+	----------------------------------------------------------------------------------------------
+	Item Name: Robust - Responsive Admin Theme
+	Version: 1.0
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+================================================================================================*/
+
+// Core variables and mixins
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+@import "bootstrap-robust/mixins";
+
+// Load variable overrides
+@import "core/variables/variables";
+@import "core/variables/robust-variables";
+
+// Overrides user variable
+@import "../../assets/scss/variables/variables";
+@import "../../assets/scss/variables/robust-variables";
+
+// // Core CSS
+@import "bootstrap-robust/reboot";
+@import "bootstrap-robust/type";
+@import "bootstrap-robust/code";
+@import "bootstrap-robust/grid";
+@import "bootstrap-robust/tables";
+@import "bootstrap-robust/forms";
+@import "bootstrap-robust/buttons";
+
+// // Components
+@import "bootstrap-robust/dropdown";
+@import "bootstrap-robust/navbar";
+@import "bootstrap-robust/card";
+@import "bootstrap-robust/breadcrumb";
+@import "bootstrap-robust/tags";
+@import "bootstrap-robust/progress";
+@import "bootstrap-robust/list-group";
+
+// // Components w/ JavaScript
+@import "bootstrap-robust/modal";
+@import "bootstrap-robust/popover";
+
+// // Utility classes
+@import "bootstrap-robust/utilities";

@@ -1,0 +1,87 @@
+// Remove focus/active focus outline
+.btn {
+  &:focus,
+  &.focus {
+    outline: none;
+  }
+
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+        outline: none;
+    }
+  }
+
+  // Square button variant
+  &.btn-square {
+    @include button-square-variant($btn-border-radius-square);
+  }
+
+  // Square button variant
+  &.btn-round {
+    @include button-round-variant($btn-border-radius-round);
+    &.btn-icon{
+      padding: 0.75rem 0.75rem;
+    }
+  }
+
+  &.btn-icon{
+    i{
+      font-size: 1.1rem;
+    }
+    &.btn-pure{
+      background-color: transparent;
+      border-color: transparent;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      i{
+        font-size: 1.25rem;
+      }
+    }
+  }
+  &.btn-social{
+    padding: 0.5rem 0.25rem 0.5rem 2.75rem;
+  }
+}
+.btn-min-width{
+  min-width:8.5rem;
+}
+.btn-default.active, .btn-default:hover:active, .open>.dropdown-toggle.btn-default {
+    background-color: #ccd5db;
+    border-color: #ccd5db;
+}
+.btn-default.focus, .btn-default:focus, .btn-default:hover {
+    background-color: #f3f7f9;
+    border-color: #f3f7f9;
+}
+.color-box{
+  width: 100%;
+  height: 2.75rem;
+  border-radius: 0.25rem;
+}
+.btn-float {
+  padding: 15px;
+  white-space: normal;
+  -webkit-box-shadow: 0 6px 10px rgba(0,0,0,.15);
+  box-shadow: 0 6px 10px rgba(0,0,0,.15);
+  &.btn-link {
+    padding: 10px;
+  }
+  i {
+    display: block;
+    margin: 0;
+    top: 0;
+  }
+  &.btn-float-lg i, &.btn-float-lg span{
+    font-size: 2rem;
+  }
+  &.btn-float-lg i + span{
+    font-size: 1.1rem;
+  }
+  > i + span {
+    display: block;
+    padding-top: 10px;
+    margin-bottom: -6px;
+  }
+}

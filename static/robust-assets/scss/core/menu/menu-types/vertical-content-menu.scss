@@ -1,0 +1,319 @@
+/*=========================================================================================
+	File Name: vertical-content-menu.scss
+	Description: A vertical style content menu with expand and collops support. It support
+	light & dark version, filpped layout, right side icons, native scroll and borders menu
+	item seperation.
+	----------------------------------------------------------------------------------------
+	Item Name: Robust - Responsive Admin Theme
+	Version: 1.0
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+==========================================================================================*/
+
+//  Vertical Content Menu
+//=========================
+.vertical-content-menu {
+    //Vertical menu [Expanded]
+    &.menu-expanded {
+        //Navbar expanded
+        .navbar {
+            .navbar-header {
+                @include menu-navbar-width($content-menu-expanded-width);
+            }
+            &.navbar-brand-center{
+                .navbar-header{
+                    @include menu-navbar-width(auto);
+                }
+                .navbar-container {
+                    @include main-menu-width(0);
+                }
+            }
+            .navbar-container {
+                @include main-menu-width($content-menu-expanded-width);
+            }
+        }
+        // Main menu expanded
+        .main-menu {
+            width: $content-menu-expanded-width;
+            transition: 300ms ease all;
+            backface-visibility: hidden;
+            top: inherit;
+            .navigation {
+                .navigation-header {
+                    .icon-ellipsis {
+                        display: none;
+                    }
+                }
+                > li {
+                    > a {
+                        > i {
+                            font-size: 1.2rem;
+                            margin-right: 12px;
+                            float:left;
+                            &:before {
+                                transition: 200ms ease all;
+                            }
+                        }
+                        >span{
+                            float:left;
+                        }
+                    }
+                }
+                li {
+                    @include vertical-menu-has-sub-arrow(1rem);
+                }
+            }
+            .main-menu-footer {
+                width: $content-menu-expanded-width;
+            }
+        }
+        //Content expanded
+        .content-body {
+            @include main-menu-width($content-menu-expanded-width + 28);
+            transition: 300ms ease all;
+        }
+        // Flipped menu expanded
+        &.menu-flipped {
+            //Content expanded flipped
+            .content-body {
+                @include vertical-flipped-menu($content-menu-expanded-width + 28);
+                transition: 300ms ease all;
+            }
+            @include media-breakpoint-up(sm) {
+                &:not(.boxed-layout) .main-menu {
+                    right: 20px;
+                }
+                &.boxed-layout {
+                    .main-menu {
+                        float: right;
+                        position: relative;
+                    }
+                }
+            }
+            //Navbar expanded flipped
+            .navbar {
+                .navbar-header {
+                    float: right;
+                }
+                .navbar-container {
+                    @include vertical-flipped-menu($content-menu-expanded-width);
+                }
+            }
+        }
+    }
+    //Vertical menu [Collapsed]
+    &.menu-collapsed {
+        //Navbar collapsed
+        .navbar {
+            .navbar-header {
+                @include menu-navbar-width($content-menu-expanded-width);
+            }
+            &.navbar-brand-center{
+                .navbar-header{
+                    @include menu-navbar-width(auto);
+                }
+                .navbar-container {
+                    @include main-menu-width(0);
+                }
+            }
+            .navbar-container {
+                @include main-menu-width($content-menu-expanded-width);
+            }
+        }
+        // Main menu collapsed
+        .main-menu {
+            width: $content-menu-collapsed-width;
+            transform: translateZ(-160px) translateX(-160px);
+            transform: translate3d(0, 0, 0);
+            transition: 300ms ease all;
+            top: inherit;
+            .main-menu-header .user-content {
+                padding: 20px 10px;
+            }
+            //hide header contect area & footer on collopse
+            .main-menu-footer,
+            .main-menu-header .media-body .media-heading,
+            .main-menu-header .media-body .text-muted,
+            .main-menu-header .media-right {
+                display: none;
+            }
+            .main-menu-header .media-body {
+                opacity: 0;
+            }
+            //content menu mixin
+            @include menu-content($content-menu-expanded-width, $content-menu-collapsed-width, $menu-light-color, $menu-light-bg);
+            //Navigation collapsed
+            .navigation {
+                overflow: visible;
+                > li.navigation-header {
+                    padding: 0;
+                    .icon-ellipsis {
+                        padding: 12px 24px;
+                        font-size: 1.6rem;
+                        text-align: center;
+                    }
+                    span {
+                        visibility: hidden;
+                        display: none;
+                        opacity: 0;
+                    }
+                }
+                > li {
+                    >a {
+                        padding: 12px 20px;
+                        text-align: center;
+                        > span {
+                            visibility: hidden;
+                            opacity: 0;
+                            position: absolute;
+                            top: 0;
+                            right: -($content-menu-expanded-width);
+                            width: $content-menu-expanded-width;
+                            font-weight: 600;
+                            color: #fff;
+                            text-transform: uppercase;
+                            text-align: left;
+                            background-color: $brand-primary;
+                            border-color: $brand-primary;
+                            padding: 16px 20px;
+                        }
+                        > i {
+                            margin-right: 0;
+                            font-size: 1.6rem;
+                            visibility: visible;
+                            opacity: 1;
+                            &:before {
+                                transition: 200ms ease all;
+                            }
+                        }
+                    }
+                    &> ul {
+                        display: none;
+                    }
+                    > a {
+                        > span {
+                            display: none;
+                        }
+                    }
+                }
+            }
+            .mTSWrapper {
+                overflow: visible;
+            }
+        }
+        //Content expanded
+        .content-body {
+            @include main-menu-width($content-menu-collapsed-width + 25);
+            transition: 300ms ease all;
+        }
+        // Flipped menu collapsed
+        &.menu-flipped {
+            //Content collapsed flipped
+            .content-body {
+                margin-left: 0px;
+                margin-right: $content-menu-collapsed-width + 25;
+                transition: 300ms ease all;
+            }
+            @include media-breakpoint-up(sm) {
+                &:not(.boxed-layout) .main-menu {
+                    right: 1.5rem;
+                    span.menu-title {
+                        right: $content-menu-collapsed-width;
+                    }
+                    ul.menu-content {
+                        right: $content-menu-collapsed-width;
+                        left: inherit;
+                    }
+                }
+                &.boxed-layout {
+                    .main-menu {
+                        float: right;
+                        position: relative;
+                    }
+                    span.menu-title {
+                        right: $content-menu-collapsed-width;
+                    }
+                    ul.menu-content {
+                        right: $content-menu-collapsed-width;
+                        left: inherit;
+                    }
+                }
+            }
+            //Navbar collapsed flipped
+            .navbar {
+                .navbar-header {
+                    float: right;
+                }
+                .navbar-container {
+                    // expanded width for this menu
+                    @include vertical-flipped-menu($content-menu-expanded-width);
+                }
+            }
+        }
+    }
+    .navbar-brand-center{
+        .content,.footer{
+            @include main-menu-width(0);
+        }
+    }
+    //Box layout specific
+    &.boxed-layout {
+        &.menu-flipped {
+            .main-men {
+                float: right;
+                position: relative;
+            }
+        }
+    }
+}
+
+// Initially menu & content width for lg and up screen
+@include media-breakpoint-up(lg) {
+    body{
+        &.vertical-content-menu{
+            .main-menu {
+                width: $content-menu-expanded-width;
+            }
+            .navbar{
+                .navbar-header{
+                    width: $content-menu-expanded-width;
+                }
+            }
+            .content-body {
+                @include main-menu-width($content-menu-expanded-width + 28);
+                transition: 300ms ease all;
+            }
+        }
+    }
+}
+
+// Initially menu & content width for md and down screen
+@include media-breakpoint-down(md) {
+    body{
+        &.vertical-content-menu{
+            .main-menu {
+                width: $content-menu-collapsed-width;
+            }
+            .navbar{
+                .navbar-header{
+                    width: $content-menu-collapsed-width;
+                }
+            }
+            .content-body {
+                @include main-menu-width($content-menu-collapsed-width + 25);
+                transition: 300ms ease all;
+            }
+        }
+    }
+}
+
+// Initially menu & content width for sm and down screen
+@include media-breakpoint-down(sm) {
+    body{
+        &.vertical-content-menu{
+            .content-body {
+                @include main-menu-width(0);
+            }
+        }
+    }
+}

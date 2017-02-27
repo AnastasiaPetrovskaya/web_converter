@@ -1,0 +1,117 @@
+/*=========================================================================================
+	File Name: hamburgers-custom.scss
+	Custom styles for Hamburgers menu
+	----------------------------------------------------------------------------------------
+	Item Name: Robust - Responsive Admin Theme
+	Version: 1.0
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+==========================================================================================*/
+
+// Settings
+// ==================================================
+$hamburger-padding-x                       : 15px;
+$hamburger-padding-y                       : 15px;
+$hamburger-layer-width                     : 24px;
+$hamburger-layer-width-b-f                 : 20px;
+$hamburger-layer-height                    : 2px;
+$hamburger-layer-spacing                   : 6px;
+$hamburger-layer-color                     : $gray;
+$hamburger-layer-border-radius             : 4px;
+$hamburger-hover-opacity                   : 0.7;
+$hamburger-hover-transition-duration       : 0.15s;
+$hamburger-hover-transition-timing-function: linear;
+
+// To use CSS filters as the hover effect instead of opacity,
+// set $hamburger-hover-use-filter as true and
+// change the value of $hamburger-hover-filter accordingly.
+$hamburger-hover-use-filter: false !default;
+$hamburger-hover-filter    : opacity(50%) !default;
+
+// Types (Remove or comment out what you don’t need)
+// ==================================================
+$hamburger-types: (
+  3dx,
+  3dx-r,
+  3dy,
+  3dy-r,
+  arrow,
+  arrow-r,
+  arrowalt,
+  arrowalt-r,
+  boring,
+  collapse,
+  collapse-r,
+  elastic,
+  elastic-r,
+  emphatic,
+  emphatic-r,
+  slider,
+  slider-r,
+  spring,
+  spring-r,
+  stand,
+  stand-r,
+  spin,
+  spin-r,
+  squeeze,
+  vortex,
+  vortex-r
+) !default;
+
+// Base Hamburger (We need this)
+// ==================================================
+@import "base";
+
+// Hamburger types
+// ==================================================
+@import "types/3dx";
+@import "types/3dx-r";
+@import "types/3dy";
+@import "types/3dy-r";
+@import "types/arrow";
+@import "types/arrow-r";
+@import "types/arrowalt";
+@import "types/arrowalt-r";
+@import "types/boring";
+@import "types/collapse";
+@import "types/collapse-r";
+@import "types/elastic";
+@import "types/elastic-r";
+@import "types/emphatic";
+@import "types/emphatic-r";
+@import "types/slider";
+@import "types/slider-r";
+@import "types/spring";
+@import "types/spring-r";
+@import "types/stand";
+@import "types/stand-r";
+@import "types/spin";
+@import "types/spin-r";
+@import "types/squeeze";
+@import "types/vortex";
+@import "types/vortex-r";
+
+// ==================================================
+// Custom style
+
+button:focus.hamburger {
+  outline: none;
+}
+
+.is-active{
+  /*.hamburger-inner::before,
+  .hamburger-inner::after{
+    width: 22px;
+  }*/
+  .hamburger-inner{
+  &::after{
+    bottom: -5px;
+    width: $hamburger-layer-width-b-f;
+  }
+  &::before{
+    top: -5px;
+    width: $hamburger-layer-width-b-f;
+  }
+}
+}

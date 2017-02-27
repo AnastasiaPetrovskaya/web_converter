@@ -1,0 +1,396 @@
+/*================================================================================================
+  File Name: pallette.scss
+  Description: Custom color system styles, includes background, border and text colors
+  ----------------------------------------------------------------------------------------------
+  Item Name: Robust - Responsive Admin Theme
+  Version: 1.0
+  Author: PIXINVENT
+  Author URL: http://www.themeforest.net/user/pixinvent
+================================================================================================*/
+
+//  ================================================================================================
+//  WARNING: PLEASE DO NOT CHANGE THIS VARIABLE FILE.
+//  THIS FILE WILL GET OVERWRITTEN WITH EACH ROBUST TEMPLATE RELEASE.
+//  TIP:
+//  We suggest you to use this (assets/scss/colors/palette.scss) file for overriding color variables.
+//  ================================================================================================
+
+
+// usage: color("name_of_color", "type_of_color")
+// to avoid to repeating map-get($colors, ...)
+
+@function color-function($color, $type) {
+  @if map-has-key($colors, $color) {
+    $curr_color: map-get($colors, $color);
+    @if map-has-key($curr_color, $type) {
+      @return map-get($curr_color, $type);
+    }
+  }
+  // @warn "Unknown `#{name}` in $colors.";
+  @return null;
+}
+
+// Color palettes
+@import "palette-variables";
+// Overrides user variable
+@import "../../../../assets/scss/colors/palette-variables";
+
+/* Color Classes
+   Text color: .color .lighten-* / .darken-* / .accent-*
+   Background: .bg-color .bg-lighten-* / .bg-darken-* / .bg-accent-*
+   border: .border-color .border-lighten-* / .border-darken-* / .border-accent-*
+   border-top: .border-top-color .border-top-lighten-* / .border-top-darken-* / .border-top-accent-*
+   border-bottom: .border-bottom-color .border-bottom-lighten-* / .border-bottom-darken-* / .border-bottom-accent-*
+   border-left: .border-left-color .border-left-lighten-* / .border-left-darken-* / .border-left-accent-*
+   border-right: .border-right-color .border-right-lighten-* / .border-right-darken-* / .border-right-accent-*
+*/
+
+@each $color_name, $color in $colors {
+  @each $color_type, $color_value in $color {
+    @if $color_type == "base" {
+      .#{$color_name} {
+        color: $color_value !important;
+      }
+      .bg-#{$color_name} {
+        background-color: $color_value !important;
+        .card-header, .card-footer{
+          background-color: transparent;
+        }
+      }
+      .alert-#{$color_name} {
+        border-color: $color_value !important;
+        background-color: $color_value + 50% !important;
+        color: $color_value - 100% !important;
+        // overflow: hidden;
+        .alert-link{
+          color: $color_value - 120% !important;
+        }
+      }
+      .tooltip-bg-#{$color_name}{
+        .tooltip-inner{
+          background-color: $color_value;
+          &:before{
+            border-top-color: $color_value !important;
+          }
+        }
+      }
+      .tooltip-text-#{$color_name}{
+        .tooltip-inner{
+          color: $color_value;
+        }
+      }
+      .border-#{$color_name}{
+        border-color: $color_value;
+      }
+      .bg-#{$color_name}, .border-#{$color_name}{
+        &.tag-glow{
+          box-shadow: 0px 0px 10px $color_value;
+        }
+      }
+      .bg-gradient-x-#{$color_name}{
+        @if (color-function($color_name, "darken-2") != null) {
+          @include gradient-x(map-get(($color),'darken-2'), map-get(($color), 'lighten-2'));
+        }
+      }
+      .bg-gradient-y-#{$color_name}{
+        @if (color-function($color_name, "darken-2") != null) {
+          @include gradient-y(map-get(($color),'darken-2'), map-get(($color), 'lighten-2'));
+        }
+      }
+      .bg-gradient-directional-#{$color_name}{
+        @if (color-function($color_name, "darken-2") != null) {
+          @include gradient-directional(map-get(($color),'darken-2'), map-get(($color), 'lighten-2'));
+        }
+      }
+      .bg-gradient-x2-#{$color_name}{
+        @if (color-function($color_name, "darken-2") != null) {
+          @include gradient-x-three-colors(map-get(($color),'lighten-2'), $color_value, 50%, map-get(($color), 'lighten-3'));
+        }
+      }
+      .bg-gradient-y2-#{$color_name}{
+        @if (color-function($color_name, "darken-2") != null) {
+          @include gradient-y-three-colors(map-get(($color),'lighten-2'), $color_value, 50%, map-get(($color), 'lighten-3'));
+        }
+      }
+      .bg-gradient-radial-#{$color_name}{
+        @if (color-function($color_name, "darken-2") != null) {
+          @include gradient-radial(map-get(($color),'darken-2'), map-get(($color), 'lighten-2'));
+        }
+      }
+      .bg-gradient-striped-#{$color_name}{
+        @if (color-function($color_name, "lighten-3") != null) {
+          @include gradient-striped(map-get(($color),'lighten-3'));
+        }
+      }
+      .bg-gradient-x-#{$color_name}, .bg-gradient-y-#{$color_name}, .bg-gradient-directional-#{$color_name}, .bg-gradient-radial-#{$color_name}, .bg-gradient-striped-#{$color_name}, .bg-gradient-x2-#{$color_name}, .bg-gradient-y2-#{$color_name} {
+        .card-header, .card-footer{
+          background-color: transparent;
+        }
+      }
+      .bs-callout-#{$color_name} {
+          @include bs-callout($color_value, lighten($color_value, 32%));
+          &.callout-transparent{
+            @include bs-callout($color_value, transparent);
+          }
+          .callout-arrow-left:before{
+            border-left-color: $color_value;
+          }
+          .callout-arrow-right:before{
+            border-right-color: $color_value;
+          }
+      }
+      // Colored Loader
+      .loader-#{$color_name}{
+        div{
+          background-color: $color_value !important;
+        }
+        &.ball-clip-rotate{
+          div{
+            border-color: $color_value !important;
+            border-bottom-color: transparent !important;
+            background-color: transparent !important;
+          }
+        }
+        &.ball-clip-rotate-pulse{
+          div{
+            &:first-child{
+              background: $color_value !important;
+            }
+            &:last-child{
+              background: transparent !important;
+              border-color: $color_value transparent $color_value transparent !important;
+            }
+          }
+        }
+        &.ball-clip-rotate-multiple{
+          div{
+            background-color: transparent !important;
+            border-color: transparent $color_value transparent $color_value !important;
+          }
+        }
+        &.ball-rotate{
+          div{
+            &:before, &:after{
+              background-color: $color_value !important;
+            }
+          }
+        }
+        &.ball-triangle-path{
+          div{
+            background-color: transparent !important;
+            border-color: $color_value !important;
+          }
+        }
+        &.ball-scale-ripple{
+          div{
+            background-color: transparent !important;
+            border-color: $color_value !important;
+          }
+        }
+        &.ball-scale-ripple-multiple{
+          div{
+            background-color: transparent !important;
+            border-color: $color_value !important;
+          }
+        }
+        &.triangle-skew-spin{
+          div{
+            background-color: transparent !important;
+            border-bottom-color: $color_value !important;
+          }
+        }
+        &.semi-circle-spin{
+          div{
+            background-image: linear-gradient(transparent 0%, transparent 70%, $color_value 30%, $color_value 100%);
+            background-color: transparent !important;
+          }
+        }
+        &.fading-circle{
+          div{
+            background-color: transparent !important;
+            &:before{
+              background-color: $color_value !important;
+            }            
+          }
+        }
+         &.folding-cube{
+          div{
+            background-color: transparent !important;
+            &:before{
+              background-color: $color_value !important;
+            }            
+          }
+        }
+      }
+
+      .slider-#{$color_name}{
+        .noUi-connect{
+          background: $color_value !important;
+        }
+        &.noUi-connect{
+          background: $color_value !important;
+        }
+        .noUi-handle{
+          border-color: $color_value !important;
+        }
+        &.circle-filled, &.square{
+          .noUi-handle{
+            background: $color_value !important;
+          }
+        }
+      }
+      .overlay-#{$color_name}{
+        @include bg-opacity($color_value, 0.8);
+      }
+      .card-outline-#{$color_name}{
+        border-width: 1px;
+        border-style: solid;
+        border-color: $color_value;
+        background-color: transparent;
+        .card-header, .card-footer{
+          background-color: transparent;
+        }
+      }
+      .btn-#{$color_name}{
+        border-color: $color_value;
+        background-color: $color_value;
+        color: #FFFFFF;
+        &:hover{
+          border-color: color-function($color_name, "lighten-2");
+          background-color: color-function($color_name, "lighten-2");
+          color: #FFF !important;
+        }
+      }
+      .btn-outline-#{$color_name}{
+        border-color: $color_value;
+        background-color: transparent;
+        color: $color_value;
+        &:hover{
+          background-color: $color_value;
+          color: #FFF !important;
+        }
+      }
+      .progress-#{$color_name}{
+        @include progress-variant($color_value);
+      }
+      .climacon-#{$color_name}{
+        .climacon_component-stroke{
+          fill: $color_value;
+        }
+        .climacon_component-fill{
+          fill: color-function($color_name, "lighten-4");
+        }
+      }
+      .bootstrap-switch{
+        .bootstrap-switch-container{
+          .bootstrap-switch-handle-on, .bootstrap-switch-handle-off{
+            &.bootstrap-switch-#{$color_name}{
+              @if (color-function($color_name, "darken-2") != null) {
+                @include gradient-y(map-get(($color),'darken-2'),map-get(($color),'lighten-1'));
+              }
+            }
+          }
+        }
+      }
+
+      input:focus ~ .bg-#{$color_name}{
+        box-shadow: 0 0 0 .075rem #fff, 0 0 0 .21rem $color_value !important;
+      }
+      .border-#{$color_name} {
+        border: 1px solid $color_value !important;
+      }
+      .border-top-#{$color_name} {
+        border-top: 1px solid $color_value;
+      }
+      .border-bottom-#{$color_name} {
+        border-bottom: 1px solid $color_value;
+      }
+      .border-left-#{$color_name} {
+        border-left: 1px solid $color_value;
+      }
+      .border-right-#{$color_name} {
+        border-right: 1px solid $color_value;
+      }
+    }
+    @else {
+      .#{$color_name}.#{$color_type} {
+        color: $color_value !important;
+      }
+      .bg-#{$color_name}.bg-#{$color_type} {
+        background-color: $color_value !important;
+      }
+      .btn-#{$color_name}.btn-#{$color_type}{
+        border-color: $color_value !important;
+        background-color: $color_value !important;
+        &:hover{
+          border-color: color-function($color_name, "lighten-2") !important;
+          background-color: color-function($color_name, "lighten-2") !important;
+        }
+      }
+      .btn-outline-#{$color_name}.btn-outline-#{$color_type}{
+        border-color: $color_value !important;
+        color: $color_value !important;
+        &:hover{
+          background-color: $color_value !important;
+        }
+      }
+      .progress-#{$color_name}.progress-#{$color_type}{
+        @include progress-variant($color_value);
+      }
+      .climacon-#{$color_name}.climacon-#{$color_type}{
+        .climacon_component-stroke{
+          fill: $color_value;
+        }
+      }
+      input:focus ~ .bg-#{$color_name}{
+        box-shadow: 0 0 0 .075rem #fff, 0 0 0 .21rem $color_value !important;
+      }
+      .border-#{$color_name}.border-#{$color_type} {
+        border: 1px solid $color_value !important;
+      }
+      .border-top-#{$color_name}.border-top-#{$color_type} {
+        border-top: 1px solid $color_value !important;
+      }
+      .border-bottom-#{$color_name}.border-bottom-#{$color_type} {
+        border-bottom: 1px solid $color_value !important;
+      }
+      .border-left-#{$color_name}.border-left-#{$color_type} {
+        border-left: 1px solid $color_value !important;
+      }
+      .border-right-#{$color_name}.border-right-#{$color_type} {
+        border-right: 1px solid $color_value !important;
+      }
+      .overlay-#{$color_name}.overlay-#{$color_type}{
+        @include bg-opacity($color_value, 0.8);
+      }
+    }
+  }
+}
+
+// Shade classes
+@each $color, $color_value in $shades {
+  .#{$color} {
+    color: $color_value;
+  }
+  .bg-#{$color} {
+    background-color: $color_value;
+  }
+  input:focus ~ .bg-#{$color}{  // TODO: Need to check input-type sibling border color issue(form>input-groups)
+    box-shadow: 0 0 0 .075rem #fff, 0 0 0 .21rem $color_value; 
+  }
+  .border-#{$color} {
+    border: 1px solid $color_value;
+  }
+  .border-top-#{$color} {
+    border-top: 1px solid $color_value;
+  }
+  .border-bottom-#{$color} {
+    border-bottom: 1px solid $color_value;
+  }
+  .border-left-#{$color} {
+    border-left: 1px solid $color_value;
+  }
+  .border-right-#{$color} {
+    border-right: 1px solid $color_value;
+  }
+}
