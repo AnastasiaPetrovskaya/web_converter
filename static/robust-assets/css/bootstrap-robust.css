@@ -1816,7 +1816,14 @@ a:hover {
 }
 
 .line-on-side {
-  border-bottom: 1px solid #dadada;
+  border-bottom: 1px solid #29707d;
+  /*border-bottom: 1px solid #dadada;*/
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+}
+
+.line-on-side-dark {
+  border-bottom: 1px solid #29707d;
   line-height: 0.1em;
   margin: 10px 0 20px;
 }

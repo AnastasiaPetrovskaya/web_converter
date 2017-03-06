@@ -4337,7 +4337,8 @@ tbody.collapse.in {
 }
 
 .card-link:hover {
-  text-decoration: none;
+  /*text-decoration: none;*/
+  text-decoration: underline;
 }
 
 .card-link + .card-link {
@@ -6916,6 +6917,10 @@ a.bg-inverse:hover {
 
 .text-muted {
   color: #818a91 !important;
+}
+
+.text-muted-dark {
+  color: #29707d !important;
 }
 
 a.text-muted:focus {

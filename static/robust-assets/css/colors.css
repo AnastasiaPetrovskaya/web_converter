@@ -26,6 +26,10 @@
    border-left: .border-left-color .border-left-lighten-* / .border-left-darken-* / .border-left-accent-*
    border-right: .border-right-color .border-right-lighten-* / .border-right-darken-* / .border-right-accent-*
 */
+.sea {
+    color: #29707d !important;
+}
+
 .white {
   color: #FFFFFF !important;
 }
@@ -1233,6 +1237,12 @@ input:focus ~ .bg-primary {
   border-color: #967ADC;
   background-color: transparent;
   color: #967ADC;
+}
+
+.btn-login {
+  border-color: #29707d;
+  background-color: transparent;
+  color: #29707d;
 }
 
 .btn-outline-primary:hover {

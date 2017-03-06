@@ -51,6 +51,7 @@ html
 
         link(rel="stylesheet" type="text/css" href="/assets/css/style.css")
 
+        link(rel="stylesheet" type="text/css" href="/css/custom.css")
 
 
     body(data-open="click" data-menu="vertical-menu" data-col="1-column" class="vertical-layout vertical-menu 1-column bg-full-screen-image blank-page blank-page")
@@ -74,7 +75,7 @@ html
                         div.col-md-4.offset-md-4.col-xs-10.offset-xs-1.box-shadow-3.p-0
                             div.card.border-grey.border-lighten-3.px-1.py-1.m-0
                                 div.card-header.no-border
-                                    h4.card-subtitle.line-on-side.text-muted.text-xs-center.pt-2
+                                    h4.card-subtitle.line-on-side.text-muted-dark.text-xs-center.pt-2
                                         span Вход в личный кабинет
                                 div.card-body.collapse.in
                                     div.card-block
@@ -87,8 +88,13 @@ html
                                                 input(type="password" class="form-control" id="user-password" placeholder="Enter Password" required)
                                                 div.form-control-position
                                                     i.icon-key3
-                                            button(type="submit" class="btn btn-outline-primary btn-block")
+
+                                            button(type="submit" class="btn btn-login btn-block")
                                                 i.icon-unlock2 Войти
+                                    div.card-footer.pb-0.no-border
+                                        p.text-xs-center
+
+                                            a.card-link.sea(href="recover-password.html") Восстановить пароль
 
   
  
