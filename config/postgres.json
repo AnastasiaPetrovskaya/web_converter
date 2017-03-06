@@ -4,17 +4,5 @@
         "database": "web_converter",
         "user": "converter",
         "password": "user"
-    },
-    "test": {
-        "host": "127.0.0.1",
-        "database": "web_converter",
-        "user": "test",
-        "password": "123"
-    },
-    "stage": {
-        "host": "146.185.182.65",
-        "database": "bettrade",
-        "user": "bettrade",
-        "password": "FvuKSK7HBLj3W27E"
     }
 }

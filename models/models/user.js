@@ -12,14 +12,14 @@ var User = sequelize.define(
         timestamps: true,
         createdAt: 'created',
         updatedAt: 'updated',
-        deletedAt: 'deleted',
-        indexes: [
+        deletedAt: 'deleted'
+ /*       indexes: [
             {
                 name: 'user_partnerid_index',
                 method: 'BTREE',
                 fields: ['partner_id']
             }
-        ]
+        ]*/
     }
 );
 

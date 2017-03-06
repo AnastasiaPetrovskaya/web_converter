@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/AnastasiaPetrovskaya/pbdks#readme",
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.15.2",
     "client-sessions": "^0.7.0",
     "cookie-parser": "^1.4.3",
@@ -25,7 +26,13 @@
     "mongodb": "^2.2.15",
     "mongoose": "^4.7.1",
     "mongoose-shortid-nodeps": "^0.6.5",
+    "node-uuid": "^1.4.7",
+    "node-validator": "^0.1.26",
+    "password-generator": "^2.1.0",
     "path": "^0.12.7",
+    "pg": "^6.1.2",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^3.30.2",
     "validators": "^0.3.1"
   }
 }

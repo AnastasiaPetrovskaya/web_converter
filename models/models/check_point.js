@@ -13,13 +13,13 @@ var CheckPoint = sequelize.define(
         createdAt: 'created',
         updatedAt: 'updated',
         deletedAt: 'deleted',
-        indexes: [
+       /* indexes: [
             {
-               /* name: 'user_partnerid_index',
+               name: 'user_partnerid_index',
                 method: 'BTREE',
-                fields: ['partner_id']*/
+                fields: ['partner_id']
             }
-        ]
+        ]*/
     }
 );
 

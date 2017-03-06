@@ -8,7 +8,7 @@ require('pg').defaults.parseInt8 = true;
 var node_validator = require('node-validator');
 
 module.exports = function (app) {
-    var pg_config = app.config.postgres[process.node_env],
+    var pg_config = app.config.postgres[process.env.NODE_ENV],
         json_fields = {};
 
     global.Sequelize = require('sequelize');
@@ -27,50 +27,51 @@ module.exports = function (app) {
             transactionType: Sequelize.Transaction.TYPES.DEFERRED,
             /* isolationLevel, возможно, стоит изменить на что попроще */
             isolationLevel: 'SERIALIZABLE',
-            timezone: '+03:00',
-            logging: utils.set_logging(pg_config)
+            timezone: '+03:00'
+            //logging: utils.set_logging(pg_config)
         }
     );
 
     sequelize.json_validator = node_validator;
 
     var models = {
-        Application: require('./models/application'),
+        //Application: require('./models/application'),
         Token: require('./models/user_session_token'),
-        AuthToken: require('./models/auth_token'),
-        Card: require('./models/card'),
-        CardSession: require('./models/card_session'),
-        Game: require('./models/game'),
-        Tape: require('./models/tape'),
-        GameState: require('./models/game_state'),
-        GameBet: require('./models/game_bet'),
-        Invoice: require('./models/invoice'),
-        Message: require('./models/message'),
-        MoneyTransfer: require('./models/money_transfer'),
-        Partner: require('./models/partner'),
-        Payment: require('./models/payment'),
+        //AuthToken: require('./models/auth_token'),
+        //Card: require('./models/card'),
+        //CardSession: require('./models/card_session'),
+        //Game: require('./models/game'),
+        //Tape: require('./models/tape'),
+        //GameState: require('./models/game_state'),
+        //GameBet: require('./models/game_bet'),
+        //Invoice: require('./models/invoice'),
+        //Message: require('./models/message'),
+        //MoneyTransfer: require('./models/money_transfer'),
+        //Partner: require('./models/partner'),
+        //Payment: require('./models/payment'),
         // Player: require('./models/player'),
         // PlayerSession: require('./models/player_session'),
         Role: require('./models/role'),
-        Sms: require('./models/sms'),
-        Terminal: require('./models/terminal'),
-        TerminalKey: require('./models/terminal_key'),
-        TerminalLog: require('./models/terminal_log'),
-        TerminalSession: require('./models/terminal_session'),
+        //Sms: require('./models/sms'),
+        //Terminal: require('./models/terminal'),
+        //TerminalKey: require('./models/terminal_key'),
+        //TerminalLog: require('./models/terminal_log'),
+        //TerminalSession: require('./models/terminal_session'),
         User: require('./models/user'),
-        UserLog: require('./models/user_log'),
-        MoneyTransaction: require('./models/money_transaction'),
-        CashierSession: require('./models/cashier_session'),
-        Jackpot : require('./models/jackpot'),
-        BillAcceptor : require('./models/bill_acceptor'),
-        Dispenser : require('./models/dispenser'),
-        MoneyEncashment : require('./models/money_encashment')
+        //UserLog: require('./models/user_log'),
+        //MoneyTransaction: require('./models/money_transaction'),
+        //CashierSession: require('./models/cashier_session'),
+        //Jackpot : require('./models/jackpot'),
+        //BillAcceptor : require('./models/bill_acceptor'),
+        //Dispenser : require('./models/dispenser'),
+        //MoneyEncashment : require('./models/money_encashment')
+        CheckPoint: require('./models/check_point')
     };
 
 
     utils.require_methods(models, app);
-    utils.add_json_validation(models);
-    utils.json_auto_changed(sequelize, models);
+    //utils.add_json_validation(models);
+    //utils.json_auto_changed(sequelize, models);
     require('./associations')(models);
 
     if (app) {
@@ -94,7 +95,7 @@ module.exports = function (app) {
     if (process.env.PG_FORCE_SYNC && (process.node_env == 'dev'))
         force_sync = true;
 
-    if (process.env.INIT_GAMES) {
+/*    if (process.env.INIT_GAMES) {
         require('./inits/init.js')(models).init_games()
 			.then(function() {log('Init games completed');})
 			.catch(function(error) {log('Error', error);log('Stack', error.stack);});
@@ -110,12 +111,12 @@ module.exports = function (app) {
 		require('./inits/init.js')(models).init_cash_unit()
 			.then(function() {log('Init cash unit completed');})
 			.catch(function(error) {log('Error', error);log('Stack', error.stack);});
-	}
+	}*/
 
     return sequelize.sync({force: force_sync}).then(function () {
 
         //запуск миграций это сделано для тестов
-        if((process.node_env == 'test') || process.env.MIGRATION) {
+/*        if((process.node_env == 'test') || process.env.MIGRATION) {
 
             var umzug = new Umzug({
                 migrations: {
@@ -143,19 +144,18 @@ module.exports = function (app) {
                 }).catch(function(err) {
                     console.log("error migrating DB: " + err);
                 });
+        }*/
 
-        }
-
-        if(process.node_env == 'test' && process.send) {
+    /*    if(process.node_env == 'test' && process.send) {
             process.send('finish');
         }
         if (force_sync)
             require('./inits/init.js')(models).init_all_games().then(function() {
                 return require('./init')(models);
-        });
+        });*/
     }).catch(function(error) {
-        log('Error', error);
-        log('Stack', error.stack);
+        console.log('Error', error);
+        console.log('Stack', error.stack);
     });
 };
 
