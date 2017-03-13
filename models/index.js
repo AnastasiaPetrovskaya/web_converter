@@ -27,8 +27,8 @@ module.exports = function (app) {
             transactionType: Sequelize.Transaction.TYPES.DEFERRED,
             /* isolationLevel, возможно, стоит изменить на что попроще */
             isolationLevel: 'SERIALIZABLE',
-            timezone: '+03:00'
-            //logging: utils.set_logging(pg_config)
+            timezone: '+03:00',
+            logging: false
         }
     );
 
@@ -77,6 +77,7 @@ module.exports = function (app) {
     if (app) {
         app.models_list = Object.keys(models);
         for (var model in models) {
+            console.log('models[model]', models[model]);
             app[model] = models[model];
         }
 
@@ -92,7 +93,7 @@ module.exports = function (app) {
      */
     var force_sync = false;
 
-    if (process.env.PG_FORCE_SYNC && (process.node_env == 'dev'))
+    if (process.env.PG_FORCE_SYNC && (process.env.NODE_ENV == 'test'))
         force_sync = true;
 
 /*    if (process.env.INIT_GAMES) {
@@ -148,11 +149,14 @@ module.exports = function (app) {
 
     /*    if(process.node_env == 'test' && process.send) {
             process.send('finish');
-        }
+        } */
+
+
+        //заполнение базы стартовыми данными
         if (force_sync)
-            require('./inits/init.js')(models).init_all_games().then(function() {
-                return require('./init')(models);
-        });*/
+            require('./init')(models);
+
+
     }).catch(function(error) {
         console.log('Error', error);
         console.log('Stack', error.stack);

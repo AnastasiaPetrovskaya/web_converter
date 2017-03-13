@@ -10,8 +10,9 @@ module.exports = function (models) {
         //CashierSession = models.CashierSession;
 
 
-    Token.find_token = function (token, remote_ip, callback) {
+    Token.find_token = function (token, callback) {
         var result = {};
+        console.log("TF00", token);
 
         return sequelize.transaction(function (t) {
             return Token.findOne({
@@ -24,6 +25,7 @@ module.exports = function (models) {
                 ],
                 transaction: t
             }).then(function (token) {
+                console.log(11, token);
                 if (token) {
                    /* if (!token.user.check_ip_access(remote_ip)) {
                         throw {message: 'InvalidIp'};   
@@ -41,11 +43,13 @@ module.exports = function (models) {
                     return;
                 }
             }).then(function () {
+                console.log(22);
                 /*if (cashier_session)
                     result.cashier_session_id = cashier_session.dataValues.id;*/
 
                 callback(null, result);
             }).catch(function (err) {
+                console.log(33);
                 callback(err, null);
             });
         });
@@ -53,6 +57,7 @@ module.exports = function (models) {
 
 
     Token.Instance.prototype.create_token = function () {
-        this.token = uuid.v4().replace(/-/g, '');
+        //this.token = uuid.v4().replace(/-/g, '');
+        this.token = uuid.v4();
     };
 };

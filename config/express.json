@@ -3,6 +3,10 @@
     "port": 2006
  },
  "test": {
-    "port": 2004
+    "port": 2004,
+    "check_auth": {
+        "redirect": "/login",
+        "cache": true
+    }
  }
 }
