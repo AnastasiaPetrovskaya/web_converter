@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>SchemaCrawler Example</title>
+    <link rel="stylesheet" type="text/css" href="../sc.css">
+    <link rel="stylesheet" type="text/css" href="examples/sc.css">
+  </head>
+  <body>
+<h1>SchemaCrawler - New SchemaCrawler Command Plugin</h1>
+<div class="section">
+<h2>Description<a name="Description"></a></h2>
+<p>SchemaCrawler comes with Apache Maven archetypes to create new Apache Maven projects. You can use these archetypes to very quickly create a new SchemaCrawler command plugin.</p></div>
+<div class="section">
+<h2>How to Run<a name="How_to_Run"></a></h2>
+
+<ol style="list-style-type: decimal">
+  
+<li>Install <a class="externalLink" href="http://maven.apache.org/">Apache Maven</a>, and make sure that Apache Maven is on your PATH</li>
+  
+<li>Make sure that java is on your PATH</li>
+  
+<li>Start a command shell in the <tt>new-command-plugin</tt> example directory</li>
+  
+<li>Run <tt>mvn archetype:generate -DgroupId=com.mycompany -DartifactId=my-command-plugin 
+  -DarchetypeGroupId=us.fatehi -DarchetypeArtifactId=schemacrawler-archetype-plugin-command -DarchetypeVersion=14.14.04
+  -DinteractiveMode=false</tt> to generate your new SchemaCrawler command plugin project (you can use any groupId and artifactId that you like)</li>
+  
+<li>Check the output your new Apache Maven project</li>
+  
+<li>Build your command jar file, using <tt>mvn package</tt></li>
+  
+<li>Copy the your command jar file into the SchemaCrawler lib directory</li>
+  
+<li>See a listing of commands, including your new command, using <tt>schemacrawler.cmd -help</tt> (or <tt>schemacrawler.sh -help</tt> on Unix)</li>
+</ol></div>
+<div class="section">
+<h2>How to Experiment<a name="How_to_Experiment"></a></h2>
+
+<ol style="list-style-type: decimal">
+  
+<li>Modify the example code, and get it doing what you need it to do.</li>
+</ol></div>
+    <hr/>
+    &#169 2000-2016, Sualeh Fatehi. <br />
+    <a href="http://www.schemacrawler.com/">SchemaCrawler</a>
+  </body>
+</html>

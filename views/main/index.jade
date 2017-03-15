@@ -1,14 +1,28 @@
-extends ../head
+extends ../head2
 
 block body
-    div#page-wrapper
-        div#page-inner
-            div.row
-                div.col-md-10.col-md-offset-1
-                    h1.page-header Вариант 3
-            div.row
-                div.col-md-10.col-md-offset-1
-                    div.jumbotron
-                        p Клиент имеет в банке счет и дебетовую карту, привязанную к этому счету. Дебетовая карта означает, что сначала надо полижить деньги на счет, а затем их тратить. 
-                        p По карте можно снимать деньги со счета через собственные банкоматы банка, выпустившего карту и банкоматы других банков. Если деньги снимаются через банкоматы другого банка, то с клиента берется плата за услуги этого банка в размере 0.1% от снимаемой суммы. 
-                        p Имеется ограничение на разовое снятие денег по банкомату. По счет у имеется неснимаемый остаток.
+    div.robust-content.content.container-fluid
+      div.content-wrapper
+        div.content-header.row
+          div.breadcrumb-wrapper.col-xs-12
+            ol.breadcrumb
+              li.breadcrumb-item
+                a(href="index.html") Home
+              li(class="breadcrumb-item active") Full Calendar
+          div(class="content-header-left col-md-6 col-xs-12")
+            h3(class="content-header-title mb-0") Full Calendar Advance
+            p(class="text-muted mb-0") Full calendar advance examples
+          div(class="content-header-right col-md-6 col-xs-12")
+            div(role="group" aria-label="Button group with nested dropdown" class="btn-group float-md-right mt-1")
+              div(role="group" class="btn-group")
+                button(id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-outline-primary dropdown-toggle dropdown-menu-right")
+                  i(class="icon-cog3 icon-left") Settings
+                div(aria-labelledby="btnGroupDrop1" class="dropdown-menu")
+                  a(href="card-advance.html" class="dropdown-item") Advanced Card
+                  a(href="component-buttons-extended.html" class="dropdown-item") Buttons Extended
+              a(href="calendars-clndr.html" class="btn btn-outline-primary")
+                i(class="icon-calendar5")
+              a(href="timeline-center.html" class="btn btn-outline-primary")
+                i(class="icon-bar-graph-2")
+          div(class="content-header-lead col-xs-12 mt-1")
+           p(class="lead") FullCalendar is a drag-n-drop jQuery plugin for displaying events on a full-sized calendar.

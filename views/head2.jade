@@ -1,0 +1,34 @@
+extends layout2
+
+block vertical-menu
+    nav.header-navbar.navbar.navbar-with-menu.navbar-fixed-top.navbar-semi-dark.navbar-shadow
+      .navbar-wrapper
+        .navbar-header
+          .nav.navbar-nav
+            li(class="nav-item mobile-menu hidden-md-up float-xs-left")
+              a(class="nav-link nav-menu-main menu-toggle hidden-xs")
+                i(class="icon-menu5 font-large-1")
+
+    div(id="main-menu" data-scroll-to-active="true" class="main-menu menu-dark menu-fixed menu-shadow menu-accordion")
+      div(class="main-menu-header")
+        input(type="text" placeholder="Search" class="menu-search form-control round")
+      div.main-menu-content
+        ul(id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main")
+          li(class=" nav-item")
+            a(href="/")
+              i(class="icon-home3")
+              span(data-i18n="nav.dash.main" class="menu-title") Домашняя страница
+              span(class="tag tag tag-primary tag-pill float-xs-right mr-2") 5
+            ul.menu-content
+              li
+                a(href="index.html" data-i18n="nav.dash.project" class="menu-item") Projecta
+              li
+                a(href="dashboard-ecommerce.html" data-i18n="nav.dash.ecommerce" class="menu-item") eCommercea
+              li
+                a(href="dashboard-analytics.html" data-i18n="nav.dash.analytics" class="menu-item") Analyticsa
+              li
+                a(href="dashboard-crm.html" data-i18n="nav.dash.crm" class="menu-item") CRMa
+              li
+                a(href="dashboard-fitness.html" data-i18n="nav.dash.fitness" class="menu-item") Fitnessa
+
+
