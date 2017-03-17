@@ -4,25 +4,39 @@ block body
     div.robust-content.content.container-fluid
       div.content-wrapper
         div.content-header.row
-          div.breadcrumb-wrapper.col-xs-12
-            ol.breadcrumb
-              li.breadcrumb-item
-                a(href="index.html") Home
-              li(class="breadcrumb-item active") Full Calendar
           div(class="content-header-left col-md-6 col-xs-12")
-            h3(class="content-header-title mb-0") Full Calendar Advance
-            p(class="text-muted mb-0") Full calendar advance examples
-          div(class="content-header-right col-md-6 col-xs-12")
-            div(role="group" aria-label="Button group with nested dropdown" class="btn-group float-md-right mt-1")
-              div(role="group" class="btn-group")
-                button(id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-outline-primary dropdown-toggle dropdown-menu-right")
-                  i(class="icon-cog3 icon-left") Settings
-                div(aria-labelledby="btnGroupDrop1" class="dropdown-menu")
-                  a(href="card-advance.html" class="dropdown-item") Advanced Card
-                  a(href="component-buttons-extended.html" class="dropdown-item") Buttons Extended
-              a(href="calendars-clndr.html" class="btn btn-outline-primary")
-                i(class="icon-calendar5")
-              a(href="timeline-center.html" class="btn btn-outline-primary")
-                i(class="icon-bar-graph-2")
+            h3(class="content-header-title mb-0") Календарь
           div(class="content-header-lead col-xs-12 mt-1")
-           p(class="lead") FullCalendar is a drag-n-drop jQuery plugin for displaying events on a full-sized calendar.
+           //p(class="lead") FullCalendar is a drag-n-drop jQuery plugin for displaying events on a full-sized calendar.
+        div.content-header.row
+            section#advance-examples
+                .row
+                    .col-xs-12
+                        .card
+                            .card-header
+                                h4.card-title Интерактивный календарь контрольных мероприятий
+                            .card-body.collapse.in
+                                .card-block
+                                    p.card-text 
+                                        | На данном календаре отмечены сроки сдачи всех контрольных мероприятий созданных преподавтелем.
+                                        | Также вы можете добавлять свои мероприятия, котрые будут доступны только выам.
+                                        | Для добавления нового мероприятия перетащите цветной блок из панели слева на необходимую дату в календаре,
+                                        | после чего вы можете редактировать описание и временной промежуток потянув за края блока.
+                                    .row
+                                        .col-md-2(style="padding-top:23px")
+                                            #external-events
+                                                h4(style="text-align:center") Виды мероприятий
+                                                .fc-events-container
+                                                    .fc-event(data-color='#F6BB42') Реферат
+                                                    .fc-event(data-color='#547A8B') Лабораторная работа
+                                                    .fc-event(data-color='#6C5B7B') Контрольная работа
+                                                    .fc-event(data-color='#3EACAB') Аттестация разделов
+                                                    .fc-event(data-color='#355C7D') Зачет
+                                                    .fc-event(data-color='#ED5564') Экзамен
+                                                    .fc-event(data-color='#2D95BF') Мероприятие
+                                                    //.fc-event(data-color='#F8B195') Conference Meeting
+                                                    //.fc-event(data-color='#48CFAE') Long Event
+                                                    //.fc-event(data-color='#50C1E9') Meeting
+                                                    //.fc-event(data-color='#FB6E52') Birthday party
+                                        .col-md-10
+                                            div(id='fc-external-drag')
