@@ -65,7 +65,8 @@ module.exports = function (app) {
         //BillAcceptor : require('./models/bill_acceptor'),
         //Dispenser : require('./models/dispenser'),
         //MoneyEncashment : require('./models/money_encashment')
-        CheckPoint: require('./models/check_point')
+        CheckPoint: require('./models/check_point'),
+        DataBase: require('./models/data_base.js')
     };
 
 
@@ -94,6 +95,7 @@ module.exports = function (app) {
     var force_sync = false;
 
     if (process.env.PG_FORCE_SYNC && (process.env.NODE_ENV == 'test'))
+        console.log('force sync true');
         force_sync = true;
 
 /*    if (process.env.INIT_GAMES) {

@@ -16,6 +16,8 @@ var get = {
     '/logout': function(req, res, next) {
         req.session.destroy();
         res.clearCookie('session');
+        console.log('req.session after destroy', req.session);
+        console.log('res.cookie', req.cookie);
         res.redirect('/login');
     },
 };
@@ -53,6 +55,7 @@ var post = {
                 return token.save();
             }
         }).then(function(token) {
+            console.log('set token!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
             req.session.token = token.token;
             res.success({});
         }).catch(function(err) {

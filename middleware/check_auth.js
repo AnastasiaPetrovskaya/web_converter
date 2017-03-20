@@ -42,13 +42,17 @@ module.exports = function(options) {
         var token = null;
 
         if (req.headers['x-auth-token']) {
+            console.log('token find 1');
             token = req.headers['x-auth-token'];
         } else if (req.session && req.session.token) {
+            console.log('token find 2');
             token = req.session.token;
         } else if (req.query.token) {
+            console.log('token find 3');
             token = req.query.token;
             delete req.query.token;
         } else if (req.body.token) {
+            console.log('token find 4');
             token = req.body.token;
             delete req.body.token;
         };

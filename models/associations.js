@@ -1,35 +1,10 @@
 module.exports = function (models) {
-    var //Application = models.Application,
-        Token = models.Token,
-        //AuthToken = models.AuthToken,
-        //Game = models.Game,
-        //Tape = models.Tape,
-        //GameBet = models.GameBet,
-        //GameState = models.GameState,
-        //Invoice = models.Invoice,
-        //Message = models.Message,
-        //MoneyTransfer = models.MoneyTransfer,
-        //Partner = models.Partner,
-        //Payment = models.Payment,
-        // Player = models.Player,
-        // PlayerSession = models.PlayerSession,
+    var Token = models.Token,
         Role = models.Role,
-        //Sms = models.Sms,
-        //Terminal = models.Terminal,
-        //TerminalLog = models.TerminalLog,
         TerminalKey = models.TerminalKey,
-        //TerminalSession = models.TerminalSession,
         User = models.User,
-        //UserLog = models.UserLog,
-        //MoneyTransaction = models.MoneyTransaction,
-        //CashierSession = models.CashierSession,
-        //CardSession = models.CardSession,
-        //Card = models.Card,
-		//Jackpot = models.Jackpot,
-		//BillAcceptor = models.BillAcceptor,
-		//Dispenser = models.Dispenser,
-		//MoneyEncashment = models.MoneyEncashment
-		CheckPoint = models.CheckPoint;
+        CheckPoint = models.CheckPoint,
+        DataBase = models.DataBase;
 
     //Application.hasMany(Token, {foreignKey: {name: 'application_id', allowNull: false}});
 
@@ -140,4 +115,9 @@ module.exports = function (models) {
 	//Dispenser.belongsTo(Terminal, {foreignKey: {name: 'terminal_id', allowNull: false}});
 
 	//MoneyEncashment.belongsTo(Terminal, {foreignKey: {name: 'terminal_id', allowNull: false}});
+    
+    CheckPoint.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
+    DataBase.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
+
+
 };

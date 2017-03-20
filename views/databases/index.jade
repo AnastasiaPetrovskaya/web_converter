@@ -1,0 +1,63 @@
+extends ../head2
+
+block body
+    div.robust-content.content.container-fluid
+      div.content-wrapper
+        div.content-header.row
+          div(class="content-header-left col-md-6 col-xs-12")
+            h3(class="content-header-title mb-0") Базы данных
+          div(class="content-header-lead col-xs-12 mt-1")
+        .content-body
+            section#configuration
+                .row
+                    .col-xs-12
+                        .card
+                            .card-header
+                                h4.card-title Список баз данных
+                            .card-body.collapse.in
+                                .card-block.card-dashboard
+                                      p.card-text 
+                                          | На данном календаре отмечены сроки сдачи всех контрольных мероприятий созданных преподавателем.
+                                          | Также вы можете добавлять свои мероприятия, которые будут доступны только вам.
+                                          | Для добавления нового мероприятия перетащите цветной блок из панели слева на необходимую дату в календаре,
+                                          | после чего вы можете редактировать описание и временной промежуток, потянув за края блока.
+
+                                      if (dbs.length === 0)
+                                          p.text-muted.m-t-md.text-center Нет данных
+                                      else
+                                          table.table.table-striped.table-bordered.zero-configuration
+                                              thead
+                                                  tr
+                                                      th Название
+                                                      th Примечание
+                                                      th Тип
+                                                      th Управление
+                                              tbody
+                                                  each db in dbs
+                                                      tr(data-id=db.id)
+                                                          td =db.title
+                                                          td
+                                                              if (db.note)
+                                                                  =db.note
+                                                              else
+                                                                  | -
+                                                          td
+                                                              if (db.type === "common")
+                                                                  span.label.label-primary Общий доступ
+                                                              else if (db.type === "private")
+                                                                  span.label.label-info Персональный доступ
+                                                              else if (db.type === "test")
+                                                                  span.label.label-warning Тестовая база
+                                                              else if (db.type === "control")
+                                                                  span.label.label-danger База для контрольных мероприятий
+                                                              else
+                                                                  span.label.label-danger Не задан
+                                                          td
+                                                              a.btn.btn-primary.btn-xs.right(href="/databases/" + db.id data-toggle="tooltip" title="Подробнее")
+                                                                  i.fa.fa-info
+                                          //include ./../parts/pagination
+
+
+
+
+  

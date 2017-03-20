@@ -1,14 +1,12 @@
-var CheckPoint = sequelize.define(
-    'check_point',
+var DataBase = sequelize.define(
+    'data_base',
     {
         title: {type: Sequelize.STRING, allowNull: false},
-        type: {type: Sequelize.STRING, allowNull: false},
-        date_from: {type: Sequelize.DATE, allowNull: false, unique: true},
-        date_to: {type: Sequelize.DATE, allowNull: false},
-        url: {type: Sequelize.STRING, allowNull: true}
+        description: {type: Sequelize.STRING, allowNull: false},
+        type: {type: Sequelize.STRING, allowNull: false}
     },
     {
-        tableName: 'check_point',
+        tableName: 'data_base',
         paranoid: true,
         timestamps: true,
         createdAt: 'created',
@@ -24,4 +22,5 @@ var CheckPoint = sequelize.define(
     }
 );
 
-module.exports = CheckPoint;
+module.exports = DataBase;
+
