@@ -35,7 +35,7 @@ block body
                                               tbody
                                                   each db in dbs
                                                       tr(data-id=db.id)
-                                                          td =db.title
+                                                          td #{db.title}
                                                           td
                                                               if (db.note)
                                                                   =db.note

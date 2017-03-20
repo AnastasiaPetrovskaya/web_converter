@@ -10,12 +10,14 @@ module.exports = function(options) {
         var path = options.redirect;
         console.log("rediresct", req.route.path !== path,  req.route.path, path);
         if(options.redirect && req.route.path !== path){
+            console.log('res.redirect check auth 13');
             res.redirect(path);
         } else {
             if (req.route.path === path) {
                 console.log("no redirect");
                 next();
             } else {
+                console.log('res.erorr check auth 20');
                 res.error('AccessDenied');
             }
         }
@@ -30,6 +32,7 @@ module.exports = function(options) {
     function reset_session(req) {
         if (options.client_session) {
             req.session.reset();
+            res.clearCookie('session');
         }
     }
 
@@ -41,10 +44,7 @@ module.exports = function(options) {
 
         var token = null;
 
-        if (req.headers['x-auth-token']) {
-            console.log('token find 1');
-            token = req.headers['x-auth-token'];
-        } else if (req.session && req.session.token) {
+        if (req.session && req.session.token) {
             console.log('token find 2');
             token = req.session.token;
         } else if (req.query.token) {

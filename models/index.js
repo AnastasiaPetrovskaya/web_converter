@@ -94,9 +94,10 @@ module.exports = function (app) {
      */
     var force_sync = false;
 
-    if (process.env.PG_FORCE_SYNC && (process.env.NODE_ENV == 'test'))
+    if (process.env.PG_FORCE_SYNC && (process.env.NODE_ENV == 'test')) {
         console.log('force sync true');
         force_sync = true;
+    }
 
 /*    if (process.env.INIT_GAMES) {
         require('./inits/init.js')(models).init_games()

@@ -3,7 +3,8 @@ var DataBase = sequelize.define(
     {
         title: {type: Sequelize.STRING, allowNull: false},
         description: {type: Sequelize.STRING, allowNull: false},
-        type: {type: Sequelize.STRING, allowNull: false}
+        type: {type: Sequelize.STRING, allowNull: false},
+        note: {type: Sequelize.STRING, allowNull: false}
     },
     {
         tableName: 'data_base',
