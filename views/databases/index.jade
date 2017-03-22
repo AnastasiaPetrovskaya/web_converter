@@ -16,66 +16,122 @@ block body
                                 h4.card-title Список баз данных
                             .card-body.collapse.in
                                 .card-block.card-dashboard
-                                    p.card-text 
-                                        | На данном календаре отмечены сроки сдачи всех контрольных мероприятий созданных преподавателем.
-                                        | Также вы можете добавлять свои мероприятия, которые будут доступны только вам.
-                                        | Для добавления нового мероприятия перетащите цветной блок из панели слева на необходимую дату в календаре,
-                                        | после чего вы можете редактировать описание и временной промежуток, потянув за края блока.
+                                    p.card-text.font-medium-1
+                                        | &emsp; В данном списке представлены все базы данных, к котрым у вас есть доступ.
+                                        | Каждая база данных имеет определенный тип: общий доступ - така база доступна всем пользователям,
+                                        | персональный доступ - доступ только у создателя базы, тестовая база данных - предназначена для 
+                                        | изучения формирования запросов, база данных для контрольных мероприятий - такие базы данных 
+                                        | доступны стуентам только во время выплнения контрольных мероприятий.
 
                                     if (dbs.length === 0)
                                         p.text-muted.m-t-md.text-center Нет данных
                                     else
-                                        table.table.table-striped.table-bordered.zero-configuration
-                                            thead
-                                                tr
-                                                    th Название
-                                                    th Примечание
-                                                    th Тип
-                                                    th Управление
-                                            tbody
-                                                each db in dbs
-                                                    tr(data-id=db.id)
-                                                        td #{db.title}
-                                                        td
-                                                            if (db.note)
-                                                                =db.note
-                                                            else
-                                                                | -
-                                                        td
-                                                            if (db.type === "common")
-                                                                span.label.label-primary Общий доступ
-                                                            else if (db.type === "private")
-                                                                span.label.label-info Персональный доступ
-                                                            else if (db.type === "test")
-                                                                span.label.label-warning Тестовая база
-                                                            else if (db.type === "control")
-                                                                span.label.label-danger База для контрольных мероприятий
-                                                            else
-                                                                span.label.label-danger Не задан
-                                                        td
-                                                            .btn-toolbar(role="toolbar")
-                                                                a.btn.btn-icon.btn-primary.btn-sm(style="min-width:3.5rem" href="/databases/" + db.id data-toggle="tooltip" title data-original-title="Подробная информация")
-                                                                    i.icon-info2
-                                                                a.btn.btn-icon.btn-info.btn-sm(style="min-width:3.5rem" href="/databases/" + db.id data-toggle="tooltip" title data-original-title="Схема базы данных")
-                                                                    i.icon-sitemap
-                                                                a.btn.btn-icon.btn-success.btn-sm(style="min-width:3.5rem" href="/databases/" + db.id data-toggle="tooltip" title data-original-title="Данные таблиц")
-                                                                    //i.icon-database2
-                                                                    //i.icon-file-text-o
-                                                                    i.icon-table3
-                                                                a.btn.btn-icon.btn-warning.btn-sm(style="min-width:3.5rem" href="/databases/" + db.id data-toggle="tooltip" title data-original-title="SQL запрос")
-                                                                    //i.icon-trash-o
-                                                                    i(style="font-weight:bold") SQL
-                                                                    //span.avatar.avatar-online
-                                                                        img(src="img/sql.svg")
-                                                                a.btn.btn-icon.btn-danger.btn-sm(style="min-width:3.5rem" href="/databases/" + db.id data-toggle="tooltip" title data-original-title="Удаление базы данных")
-                                                                    //i.icon-trash-o
-                                                                    i.icon-trash2
+                                        .row
+                                            .col-md-6
+                                                fieldset
+                                                    .input-group
+                                                        input(type="text" class="form-control" placeholder="Поиск по названию" aria-label="Amount")
+                                                        span.input-group-btn
+                                                            button.btn.btn-tumblr(type="button")
+                                                                i.icon-search5 
+                                                                | Поиск
+                                            .col-md-6
+                                                .form-group
+                                                    button(type="button" class="btn btn-tumblr btn-mid-width mr-1 mb-1" data-toggle="modal" data-target="#default") 
+                                                        i.icon-plus3 
+                                                        | Экспорт из .mdb
+                                                    button(type="button" class="btn btn-tumblr btn-mid-width mr-1 mb-1")
+                                                        i.icon-plus3 
+                                                        | Экспорт еще какой-нибудь
+                                        .row
+                                            .col-md-12
+                                                table.table.table-striped.table-bordered.zero-configuration
+                                                    thead
+                                                        tr
+                                                            th Название
+                                                            th Примечание
+                                                            th Тип
+                                                            th Управление
+                                                    tbody
+                                                        each db in dbs
+                                                            tr(data-id=db.id)
+                                                                td #{db.title}
+                                                                td
+                                                                    if (db.note)
+                                                                        =db.note
+                                                                    else
+                                                                        | -
+                                                                td
+                                                                    if (db.type === "common")
+                                                                        span.label.label-primary Общий доступ
+                                                                    else if (db.type === "private")
+                                                                        span.label.label-info Персональный доступ
+                                                                    else if (db.type === "test")
+                                                                        span.label.label-warning Тестовая база
+                                                                    else if (db.type === "control")
+                                                                        span.label.label-danger База для контрольных мероприятий
+                                                                    else
+                                                                        span.label.label-danger Не задан
+                                                                td
+                                                                    .btn-toolbar(role="toolbar")
+                                                                        a.btn.btn-icon.btn-outline-primary.btn-sm(style="min-width:3.5rem" href="/databases/" + db.id data-toggle="tooltip" title data-original-title="Подробная информация")
+                                                                            i.icon-info2
+                                                                        a.btn.btn-icon.btn-outline-info.btn-sm(style="min-width:3.5rem" href="/databases/" + db.id data-toggle="tooltip" title data-original-title="Схема базы данных")
+                                                                            i.icon-sitemap
+                                                                        a.btn.btn-icon.btn-outline-success.btn-sm(style="min-width:3.5rem" href="/databases/" + db.id data-toggle="tooltip" title data-original-title="Данные таблиц")
+                                                                            //i.icon-database2
+                                                                            //i.icon-file-text-o
+                                                                            i.icon-table3
+                                                                        a.btn.btn-icon.btn-outline-warning.btn-sm(style="min-width:3.5rem" href="/databases/" + db.id data-toggle="tooltip" title data-original-title="SQL запрос")
+                                                                            //i.icon-trash-o
+                                                                            i(style="font-weight:bold") SQL
+                                                                            //span.avatar.avatar-online
+                                                                                img(src="img/sql.svg")
+                                                                        a.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" href="/databases/" + db.id data-toggle="tooltip" title data-original-title="Удаление базы данных")
+                                                                            //i.icon-trash-o
+                                                                            i.icon-trash2
+                                                //include ./../parts/pagination
 
-                                        //include ./../parts/pagination
+
+    div(class="modal fade text-xs-left" id="default" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true")
+        div(class="modal-dialog" role="document")
+            div(class="modal-content")
+                .modal-header.bg-custom-blue-grey-2.white
+                    button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                        span(aria-hidden="true") &times;
+                    h4(class="modal-title" id="myModalLabel1") 
+                        i.icon-database2 
+                        | Добавление новой базы данных
+                .modal-body
+                    //h5 Check First Paragraph
+                    p 
+                        | Расширение MDB – это файл Microsoft Access, .MDB файлы были использованы в
+                        | Microsoft Access до версии 2007 как основной файл базы данных. 
+                        | В последних версиях Microsoft Access используются файлы баз данных .ACCDB. 
+                        | Если файл .ACCDB, не содержит форм, модулей на VBA и прочих нововведений, 
+                        | то его можно сохранить как файл .MDB. А также из файла .ACCDB Можно экспортировать 
+                        | в новый файл, который можно будет сохранить с расширением .MDB.
+                    hr
+                    //h5 Some More Text
+                    //p Cupcake sugar plum dessert tart powder chocolate fruitcake jelly.
+                    fieldset.form-group
+                        label.custom-file.center-block.block
+                              input(type="file" id="file" class="custom-file-input")
+                              span.custom-file-control
+                    form
+                       tr
+                         th Select File
+                         td
+                             input(id="csv" name="csv" type="file")
+                .modal-footer
+                    button(type="button" class="btn grey btn-outline-secondary" data-dismiss="modal") Close
+                    button(type="button" class="btn btn-outline-primary") Save changes
 
 
 
 block footer
+
+    script(src="/robust-assets/js/components/modal/components-modal.js" type="text/javascript")
     //script(src="/robust-assets/js/plugins/tables/jquery.dataTables.min.js" type="text/javascript")
     //script(src="/robust-assets/js/plugins/tables/datatable/dataTables.bootstrap4.min.js" type="text/javascript")
     //script(src="/robust-assets/js/plugins/tables/datatable/dataTables.buttons.min.js" type="text/javascript")

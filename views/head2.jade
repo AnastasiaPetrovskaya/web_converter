@@ -9,33 +9,131 @@ block vertical-menu
               a(class="nav-link nav-menu-main menu-toggle hidden-xs")
                 i(class="icon-menu5 font-large-1")
 
+        .navbar-container.content.container-fluid
+          #navbar-mobile.collapse.navbar-toggleable-sm
+            ul.nav.navbar-nav
+              li.nav-item.hidden-sm-down
+                a.nav-link.nav-menu-main.menu-toggle.hidden-xs
+                  i.icon-menu5
+            ul.nav.navbar-nav.float-xs-right
+              li.dropdown.dropdown-notification.nav-item
+                a(href="#" data-toggle="dropdown" class="nav-link nav-link-label")
+                  i(class="ficon icon-bell4")
+                  span(class="tag tag-pill tag-default tag-default tag-up") 2
+                ul(class="dropdown-menu dropdown-menu-media dropdown-menu-right")
+                  li(class="dropdown-menu-header")
+                    h6(class="dropdown-header m-0")
+                      span.grey.darken-2 Notifications
+                      span.notification-tag.tag.tag-default.tag-danger.float-xs-right.m-0 2 New
+                  li.list-group.scrollable-container
+                    a(href="javascript:void(0)" class="list-group-item")
+                      .media
+                        .media-left.valign-middle
+                          i.icon-cart3.icon-bg-circle.bg-cyan
+                        .media-body
+                          h6.media-heading You have new order!
+                          p.notification-text.font-small-3.text-muted Lorem ipsum dolor sit amet, consectetuer elit.
+                          small
+                            time(datetime="2015-06-11T18:29:20+08:00" class="media-meta text-muted") 30 minutes ago
+                    a(href="javascript:void(0)" class="list-group-item")
+                      .media
+                        .media-left.valign-middle
+                          i.icon-monitor3.icon-bg-circle.bg-red.bg-darken-1
+                        .media-body
+                          h6.media-heading.red.darken-1 99% Server load
+                          p.notification-text.font-small-3.text-muted Aliquam tincidunt mauris eu risus.
+                          small
+                            time(datetime="2015-06-11T18:29:20+08:00" class="media-meta text-muted") Five hour ago
+              li.dropdown.dropdown-notification.nav-item
+                a(href="#" data-toggle="dropdown" class="nav-link nav-link-label")
+                  i.ficon.icon-mail6
+                  span.tag.tag-pill.tag-default.tag-up 2
+                ul.dropdown-menu.dropdown-menu-media.dropdown-menu-right
+                  li.dropdown-menu-header
+                    h6.dropdown-header.m-0
+                      span.grey.darken-2 Messages
+                      span.notification-tag.tag.tag-default.tag-info.float-xs-right.m-0 4 New
+                  li.list-group.scrollable-container
+                    a(href="javascript:void(0)" class="list-group-item")
+                      .media
+                        .media-left
+                          span.avatar.avatar-sm.avatar-online.rounded-circle
+                            img(src="images/default-user.png" alt="avatar")
+                        .media-body
+                          h6.media-heading Margaret Govan
+                          p.notification-text.font-small-3.text-muted I like your portfolio, let's start the project.
+                          small
+                            time(datetime="2015-06-11T18:29:20+08:00" class="media-meta text-muted") Today
+                    a(href="javascript:void(0)" class="list-group-item")
+                      .media
+                        .media-left
+                          span.avatar.avatar-sm.avatar-busy.rounded-circle
+                            img(src="images/default-user.png" alt="avatar")
+                        .media-body
+                          h6.media-heading Bret Lezama
+                          p.notification-text.font-small-3.text-muted I have seen your work, there is
+                            small
+                              time(datetime="2015-06-11T18:29:20+08:00" class="media-meta text-muted") Tuesday
+              li.dropdown.dropdown-user.nav-item
+                a(href="#" data-toggle="dropdown" class="dropdown-toggle nav-link dropdown-user-link")
+                  span.avatar.avatar-online
+                    img(src="images/default-user.png" alt="avatar")
+                  span.user-name=profile.login
+                div.dropdown-menu.dropdown-menu-right
+                  a(href="#" class="dropdown-item")
+                    i(class="icon-head") Edit Profile
+                  a(href="#" class="dropdown-item")
+                    i(class="icon-mail6") My Inbox
+                  a(href="#" class="dropdown-item")
+                    i(class="icon-clipboard2") Task
+                  a(href="#" class="dropdown-item")
+                    i(class="icon-calendar5") Calender
+                  .dropdown-divider
+                    a(href="#" class="dropdown-item")
+                      i(class="icon-power3") Logout
+
+
     div(id="main-menu" data-scroll-to-active="true" class="main-menu menu-dark menu-fixed menu-shadow menu-accordion")
       div(class="main-menu-header")
-        input(type="text" placeholder="Search" class="menu-search form-control round")
+        input(type="text" placeholder="Поиск" class="menu-search form-control round")
       div.main-menu-content
         ul(id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main")
           li(class=" nav-item")
             a(href="/")
               i(class="icon-home3")
               span(data-i18n="nav.dash.main" class="menu-title") Домашняя страница
-              span(class="tag tag tag-primary tag-pill float-xs-right mr-2") 5
-            ul.menu-content
-              li
-                a(href="index.html" data-i18n="nav.dash.project" class="menu-item") Projecta
-              li
-                a(href="dashboard-ecommerce.html" data-i18n="nav.dash.ecommerce" class="menu-item") eCommercea
-              li
-                a(href="dashboard-analytics.html" data-i18n="nav.dash.analytics" class="menu-item") Analyticsa
-              li
-                a(href="dashboard-crm.html" data-i18n="nav.dash.crm" class="menu-item") CRMa
-              li
-                a(href="dashboard-fitness.html" data-i18n="nav.dash.fitness" class="menu-item") Fitnessa
+          li(class=" nav-item")
+             a(href="/databases")
+               i(class="icon-database2")
+               span(data-i18n="nav.dash.main" class="menu-title") Базы данных
+           li(class=" nav-item")
+             a(href="/")
+               i(class="icon-chain")
+               span(data-i18n="nav.dash.main" class="menu-title") Реляционная алгебра
+               span(class="tag tag tag-primary tag-pill float-xs-right mr-2")
+             ul.menu-content
+               li
+                 a(href="index.html" data-i18n="nav.dash.project" class="menu-item") Простейший конвертор
+               li
+                 a(href="dashboard-ecommerce.html" data-i18n="nav.dash.ecommerce" class="menu-item") eCommercea
+               li
+                 a(href="dashboard-analytics.html" data-i18n="nav.dash.analytics" class="menu-item") Analyticsa
+               li
+                 a(href="dashboard-crm.html" data-i18n="nav.dash.crm" class="menu-item") CRMa
+               li
+                 a(href="dashboard-fitness.html" data-i18n="nav.dash.fitness" class="menu-item") Fitnessa
+
+           li(class=" nav-item")
+             a(href="/")
+               i(class="icon-users3")
+               span(data-i18n="nav.dash.main" class="menu-title") Студенты
+               span(class="tag tag tag-primary tag-pill float-xs-right mr-2")
 
           li(class=" nav-item")
             a(href="/")
               i(class="icon-home3")
-              span(data-i18n="nav.dash.main" class="menu-title") Реляционная алгебра
-              span(class="tag tag tag-primary tag-pill float-xs-right mr-2") 5
+              span(data-i18n="nav.dash.main" class="menu-title") Образец вложенности
+              //span(class="tag tag tag-primary tag-pill float-xs-right mr-2") 5
             ul.menu-content
               li
                 a(href="index.html" data-i18n="nav.dash.project" class="menu-item") Projecta

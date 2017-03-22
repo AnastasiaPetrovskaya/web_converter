@@ -29,5 +29,5 @@ http.require_controller('clients');
 http.require_controller('money_transactions');
 http.require_controller('databases');
 http.require_controller('main', {is_root: true});
-require('./lib/models.js')(app);
+//require('./lib/models.js')(app);
 require('./models')(app);
