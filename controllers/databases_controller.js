@@ -9,6 +9,9 @@
     check_access = ApplicationHelper.check_access,
     PartnersHelper = require('../helpers/partners_helper');
 */
+//var multiparty = require('multiparty');
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' }).array('db', 12);
 
 var get = {
     '/': function (req, res) {
@@ -44,6 +47,49 @@ var get = {
 };
 
 var post = {
+
+    '/add': function (req, res) {
+        var res_data = {};
+
+        console.log('in add db controller');
+        console.log('req.body', req.body);
+        console.log('req.files', req.files);
+
+        upload(req,res, function(err) {
+            if (err) {
+                console.log('err', err)
+            } 
+
+            console.log('req.body', req.body);
+            console.log('req.files', req.files);
+        });
+
+
+        res.success({});
+
+        /*if (req.body.user) {
+            console.log(req, 'BadRequest');
+            res.error('BadRequest');
+            return;
+        }
+
+        check_access(req, req.body.partner.parent_id)
+        .then(function () {
+            return Partner.make(req.body.partner, req.body.user)
+        })
+        .then(function (result) {
+            res_data = result;
+            return app.cache.partners.add(result.partner.id, result.partner);
+        })
+        .then(function () {
+            res.success(res_data);
+        })
+        .catch(function (err) {
+            log_http_error(req, err.stack);
+            res.error(err);
+        });*/
+    },
+
     '/': function (req, res) {
         var res_data = {};
 
