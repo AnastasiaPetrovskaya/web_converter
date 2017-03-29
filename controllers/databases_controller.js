@@ -11,7 +11,7 @@
 */
 //var multiparty = require('multiparty');
 var multer  = require('multer')
-var upload = multer({ dest: 'uploads/' }).array('db', 12);
+var upload = multer({ dest: 'mdb2postgres/' }).array('db', 12);
 
 var get = {
     '/': function (req, res) {
@@ -52,20 +52,27 @@ var post = {
         var res_data = {};
 
         console.log('in add db controller');
-        console.log('req.body', req.body);
-        console.log('req.files', req.files);
+
+        var db_data = req.body;
+        db_data.owner_id = req.user.id;
 
         upload(req,res, function(err) {
             if (err) {
                 console.log('err', err)
-            } 
+            }
+            var db_data = req.body;
+            db_data.owner_id = req.user.id;
 
-            console.log('req.body', req.body);
-            console.log('req.files', req.files);
+            app.DataBase.make(db_data, req.files[0].filename)
+                .then(function(db) {
+                    console.log('db', db);
+                    res.success({});
+                }).catch(function(err) {
+                    res.error('Error', err);
+                });
         });
 
 
-        res.success({});
 
         /*if (req.body.user) {
             console.log(req, 'BadRequest');

@@ -8,16 +8,14 @@ module.exports = function(options) {
     /* Редирект, если пользователь не аутентифицирован */
     function redirect(req, res, next) {
         var path = options.redirect;
-        console.log("rediresct", req.route.path !== path,  req.route.path, path);
+        //console.log("rediresct", req.route.path !== path,  req.route.path, path);
         if(options.redirect && req.route.path !== path){
-            console.log('res.redirect check auth 13');
             res.redirect(path);
         } else {
             if (req.route.path === path) {
-                console.log("no redirect");
+                //console.log("no redirect");
                 next();
             } else {
-                console.log('res.erorr check auth 20');
                 res.error('AccessDenied');
             }
         }
@@ -32,7 +30,6 @@ module.exports = function(options) {
     function reset_session(req) {
         if (options.client_session) {
             req.session.reset();
-            res.clearCookie('session');
         }
     }
 
@@ -44,15 +41,14 @@ module.exports = function(options) {
 
         var token = null;
 
-        if (req.session && req.session.token) {
-            console.log('token find 2');
+        if (req.headers['x-auth-token']) {
+            token = req.headers['x-auth-token'];
+        } else if (req.session && req.session.token) {
             token = req.session.token;
         } else if (req.query.token) {
-            console.log('token find 3');
             token = req.query.token;
             delete req.query.token;
         } else if (req.body.token) {
-            console.log('token find 4');
             token = req.body.token;
             delete req.body.token;
         };
@@ -63,19 +59,19 @@ module.exports = function(options) {
             /* Ищем пользователя по токену 
              */
 
-            console.log("here 0 token", token);
+            //console.log("here 0 token", token);
             app.Token.find_token(token, function(err, data) {
-                console.log("here 1");
+                //console.log("here 1");
                 if (err) {
-                    console.log("here 2", err);
+                    //console.log("here 2", err);
                     reset_session(req);
                     redirect(req, res, next);
                 } else if (!data) {
-                    console.log("here 3");
+                    //console.log("here 3");
                     reset_session(req);
                     redirect(req, res, next);
                 } else {
-                    console.log("here 4");
+                    //console.log("here 4");
                     req.user = data;
                     res.locals.profile = data;
                     next();

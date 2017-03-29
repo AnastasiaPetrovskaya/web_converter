@@ -78,7 +78,7 @@ module.exports = function (app) {
     if (app) {
         app.models_list = Object.keys(models);
         for (var model in models) {
-            console.log('models[model]', models[model]);
+            //console.log('models[model]', models[model]);
             app[model] = models[model];
         }
 

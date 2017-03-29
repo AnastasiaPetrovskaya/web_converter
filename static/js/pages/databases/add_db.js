@@ -21,7 +21,21 @@ $(document).ready(function(){
             enctype: 'multipart/form-data',
             processData: false,
             success: function (response) {
-              alert('success');
+                $("#mdb_2_psql").modal('hide');
+                //$('#mdb_2_psql').modal('toggle'); 
+                //alert('success');
+                bootbox.alert({
+                    message: "Новая база данных успешно создана",
+                    className: "slideInDown",
+                    buttons: {
+                        ok: {
+                            label: "OK",
+                            className: "btn-success"
+                        }
+                    },
+                    callback: function() { location.reload(); }
+                });
+
             }
         });
 
