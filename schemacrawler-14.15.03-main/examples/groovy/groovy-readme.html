@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>SchemaCrawler Example</title>
+    <link rel="stylesheet" type="text/css" href="../sc.css">
+    <link rel="stylesheet" type="text/css" href="examples/sc.css">
+  </head>
+  <body>
+<h1>SchemaCrawler - Groovy Scripting Example</h1>
+<div class="section">
+<h2>Description<a name="Description"></a></h2>
+<p>SchemaCrawler allows scripting with database metadata, using Groovy. This example shows how to script with Groovy.</p></div>
+<div class="section">
+<h2>How to Setup<a name="How_to_Setup"></a></h2>
+
+<ol style="list-style-type: decimal">
+  
+<li>Make sure that java is on your PATH</li>
+  
+<li>Start a command shell in the <tt>ivy</tt> directory</li>
+  
+<li>Run <tt>download.cmd groovy</tt> (or <tt>download.sh groovy</tt> on Unix) to  install Groovy scripting support</li>
+</ol></div>
+<div class="section">
+<h2>How to Run<a name="How_to_Run"></a></h2>
+
+<ol style="list-style-type: decimal">
+  
+<li>Make sure that java is on your PATH</li>
+  
+<li>Start the test database server by following instructions in the <tt>_testdb/README.html</tt> file</li>
+  
+<li>Start a command shell in the <tt>groovy</tt> example directory</li>
+  
+<li>Run <tt>groovy.cmd tables.groovy</tt> (or <tt>groovy.sh tables.groovy</tt> on Unix)</li>
+</ol></div>
+<div class="section">
+<h2>How to Experiment<a name="How_to_Experiment"></a></h2>
+
+<ol style="list-style-type: decimal">
+  
+<li>Run <tt>groovy.cmd droptables.groovy</tt> (or <tt>groovy.sh droptables.groovy</tt> on Unix).  (In order to restore the database, restart the database server.)</li>
+  
+<li>Try modifying the Groovy in the *.groovy files to do different things.  You also have access to a live database connection.</li>
+</ol></div>
+    <hr/>
+    &#169 2000-2016, Sualeh Fatehi. <br />
+    <a href="http://www.schemacrawler.com/">SchemaCrawler</a>
+  </body>
+</html>

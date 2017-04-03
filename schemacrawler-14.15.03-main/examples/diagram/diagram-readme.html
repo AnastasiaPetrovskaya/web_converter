@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>SchemaCrawler Example</title>
+    <link rel="stylesheet" type="text/css" href="../sc.css">
+    <link rel="stylesheet" type="text/css" href="examples/sc.css">
+  </head>
+  <body>
+<h1>SchemaCrawler - Diagram Example</h1>
+<div class="section">
+<h2>Description<a name="Description"></a></h2>
+<p>The diagram example demonstrates the integration of SchemaCrawler with Graphviz.</p></div>
+<div class="section">
+<h2>How to Run<a name="How_to_Run"></a></h2>
+
+<ol style="list-style-type: decimal">
+  
+<li>Make sure that java is on your PATH</li>
+  
+<li>Start the test database server by following instructions in the <tt>_testdb/README.html</tt> file</li>
+  
+<li>Start a command shell in the diagram example directory</li>
+  
+<li>Run <tt>diagram.cmd</tt> (or <tt>diagram.sh</tt> on Unix)</li>
+</ol></div>
+<div class="section">
+<h2>How to Experiment<a name="How_to_Experiment"></a></h2>
+
+<ol style="list-style-type: decimal">
+  
+<li>Try using grep options to include certain tables. For example, try using a command-line option of <tt>-grepcolumns=.*\\.AUTHOR.*</tt></li>
+  
+<li>Try controlling display of foreign-key names, column ordinal numbers, and schema names by setting the  following properties in the SchemaCrawler configuration file, <tt>config/schemacrawler.config.properties</tt>.</li>
+</ol>
+
+<div class="source">
+<pre>schemacrawler.format.show_ordinal_numbers=true        
+schemacrawler.format.hide_foreignkey_names=true
+schemacrawler.format.show_unqualified_names=true
+</pre></div>
+
+<ol style="list-style-type: decimal">
+  
+<li>Try using Graphviz command-line options by setting the following property in the SchemaCrawler configuration file,  <tt>config/schemacrawler.config.properties</tt>.</li>
+</ol>
+
+<div class="source">
+<pre>schemacrawler.graph.graphviz_opts=-Gdpi=300
+</pre></div></div>
+    <hr/>
+    &#169 2000-2016, Sualeh Fatehi. <br />
+    <a href="http://www.schemacrawler.com/">SchemaCrawler</a>
+  </body>
+</html>

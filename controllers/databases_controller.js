@@ -16,9 +16,27 @@ var upload = multer({ dest: 'mdb2postgres/' }).array('db', 12);
 var get = {
     '/': function (req, res) {
         //console.log('app', app);
+        res.render('databases/index');
+    },
+
+    '/table': function (req, res) {
+        console.log('table');
         app.DataBase.findAll()
             .then(function(dbs) {
-                res.render('databases/index', { dbs: dbs });
+                res.render('databases/table', { dbs: dbs });
+            }).catch(function(err) {
+                console.log('err', err);
+                res.error('Error', err);
+            });
+    },
+
+    '/schema/:id': function (req, res) {
+        console.log('schema', req.params);
+        app.DataBase.get_schema(req.params.id)
+            .then(function(filename) {
+                console.log('filename', filename);
+                res.success({});
+                //res.render('databases/table', { dbs: dbs });
             }).catch(function(err) {
                 console.log('err', err);
                 res.error('Error', err);

@@ -1,10 +1,34 @@
-$(document).ready(function(){
-    $("#export_from_mdb").submit(function(event){
-        console.log("submit event");
+$(document).ready(function() {
+
+    $('#databases_table').on('click', '#schema', function(event) {
 
         event.preventDefault();
 
-        var formData = new FormData();
+        $.get('/databases/schema/' + $(this).parents('tr').attr('data-id'), function(res) {
+            bootbox.alert({
+                message: 'success',
+                className: "slideInDown",
+                buttons: {
+                    ok: {
+                        label: "OK",
+                        className: "btn-success"
+                    }
+                }
+            });
+        }).fail(function(err) {
+            bootbox.alert({
+                message: 'err' + err.message,
+                className: "slideInDown",
+                buttons: {
+                    ok: {
+                        label: "OK",
+                        className: "btn-success"
+                    }
+                }
+            });
+        });
+
+        /*var formData = new FormData();
         formData.append('db', $('#mdb_file')[0].files[0]);
         formData.append('title', $('#mdb_title').val());
         formData.append('description', $('#mdb_description').val());
@@ -42,7 +66,7 @@ $(document).ready(function(){
                 });
 
             }
-        });
+        });*/
 
 
     /*    $.post('/databases/add', data).done(function() {
@@ -53,4 +77,5 @@ $(document).ready(function(){
         */
 
     });
+
 });
