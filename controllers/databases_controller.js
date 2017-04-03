@@ -35,8 +35,18 @@ var get = {
         app.DataBase.get_schema(req.params.id)
             .then(function(filename) {
                 console.log('filename', filename);
-                res.success({});
+                //res.success({});
                 //res.render('databases/table', { dbs: dbs });
+                /*var options = {
+                    root: __dirname + '/../static/db_schema/',
+                    dotfiles: 'deny',
+                    headers: {
+                        'x-timestamp': Date.now(),
+                        'x-sent': true
+                    }
+                };
+                res.sendFile(filename, options);*/
+                res.success({'file': filename })
             }).catch(function(err) {
                 console.log('err', err);
                 res.error('Error', err);

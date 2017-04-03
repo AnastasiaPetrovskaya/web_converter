@@ -3,11 +3,11 @@ $(document).ready(function() {
     $('#databases_table').on('click', '#schema', function(event) {
 
         event.preventDefault();
-
-        $.get('/databases/schema/' + $(this).parents('tr').attr('data-id'), function(res) {
             bootbox.alert({
-                message: 'success',
+                title: 'Схема базы данных',
+                message: '<div id="db_schema_div" class="text-center"><i class="fa fa-spin fa-spinner"></i> Loading...</div>',
                 className: "slideInDown",
+                size: 'large',
                 buttons: {
                     ok: {
                         label: "OK",
@@ -15,6 +15,21 @@ $(document).ready(function() {
                     }
                 }
             });
+
+        $.get('/databases/schema/' + $(this).parents('tr').attr('data-id'), function(res) {
+            $('#db_schema_div').html('<img src="/db_schema/' + res.file +
+                 '" style="max-height: 100%;max-width: 100%;" alt="">');
+           /* bootbox.alert({
+                title: 'Схема базы данных',
+                message:  ,
+                className: "slideInDown",
+                buttons: {
+                    ok: {
+                        label: "OK",
+                        className: "btn-success"
+                    }
+                }
+            });*/
         }).fail(function(err) {
             bootbox.alert({
                 message: 'err' + err.message,

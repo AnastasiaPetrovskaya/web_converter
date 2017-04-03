@@ -8,7 +8,7 @@ require('pg').defaults.parseInt8 = true;
 var node_validator = require('node-validator');
 
 module.exports = function (app) {
-    var pg_config = app.config.postgres[process.env.NODE_ENV],
+    var pg_config = app.config.postgres,
         json_fields = {};
 
     global.Sequelize = require('sequelize');
