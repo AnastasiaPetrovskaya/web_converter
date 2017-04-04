@@ -5,7 +5,10 @@ $(document).ready(function() {
         event.preventDefault();
             bootbox.alert({
                 title: 'Схема базы данных',
-                message: '<div id="db_schema_div" class="text-center"><i class="fa fa-spin fa-spinner"></i> Loading...</div>',
+                message: '<div id="db_schema_div" class="text-xs-center"><i class="fa fa-spin fa-spinner"></i> Подождите...</div>',
+                //message: '<div id="db_schema_div"><div class="loader-container">' + 
+                //    '<div class=fading-circle loader-blue-grey>' + '</div></div></div>',
+                //message: '<div id="db_schema_div"><i class="fa fa-spin fa-spinner"></i> Loading...</div>',
                 className: "slideInDown",
                 size: 'large',
                 buttons: {
