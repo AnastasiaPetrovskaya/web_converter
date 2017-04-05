@@ -1,6 +1,8 @@
 var child_process = require('child-process-promise');
 var username = app.config.postgres.user;
 var password = app.config.postgres.password;
+var database = app.config.postgres.database;
+
 
 module.exports = function (models) {
     var DataBase = models.DataBase;
@@ -82,21 +84,21 @@ module.exports = function (models) {
                 }).then(function (db) {
                     if (!db)
                         throw {message: 'DdDoNotExists'};
+                    ctx.db = db;
 
                     //выполняем команду dropdb
-                    return execFile('./mdb_to_psql.sh', [filename, db_data.title], {cwd: "./mdb2postgres"});
+                    return child_process.exec('dropdb -U ' + username + ' -W ' + password + 
+                            ' --maintenance=' + database + ' ' + db.title);
                 }).then(function(result) {
                     var stdout = result.stdout;
                     var stderr = result.stderr;
 
                     console.log('stdout', stdout);
                     console.log('stderr', stderr);
-                    //если скрипт отработал корректно, то нужно создать базу в бд
-                    return DataBase.create(db_data);
-                }).then(function(db){
-                    return db.dataValues();
+                    //если скрипт отработал корректно, то нужно удалить запись о базе из бд
+                    return ctx.db.destroy();
                 }).catch(function(err) {
-                    console.log('make db method err', err);
+                    console.log('remove db method err', err);
                     throw {message: err};
                 });
         });

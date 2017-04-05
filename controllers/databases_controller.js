@@ -157,19 +157,12 @@ var _delete = {
    '/:id':  function (req, res) {
         var id = Number(req.params.id);
 
-        check_access(req, id)
-        .then(function () {
-            return Partner.bt_remove(id);
-        })
-        .then(function () {
-            return app.cache.partners.remove(id).then(function () {
-                res.success();
+        app.DataBase.remove(id)
+            .then(function() {
+                res.success({});
+            }).catch(function(err) {
+                res.error('Error', err);
             });
-        })
-        .catch(function (err) {
-            log_http_error(req, err);
-            res.error(err);
-        });
     }
 };
 

@@ -66,7 +66,8 @@ module.exports = function (app) {
         //Dispenser : require('./models/dispenser'),
         //MoneyEncashment : require('./models/money_encashment')
         CheckPoint: require('./models/check_point'),
-        DataBase: require('./models/data_base.js')
+        DataBase: require('./models/data_base.js'),
+        Table: require('./models/table.js')
     };
 
 
