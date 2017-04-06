@@ -119,9 +119,9 @@ module.exports = function (models) {
     
     CheckPoint.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
     DataBase.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
-    DataBase.hasMany(Tables, {as: 'users', onDelete: 'CASCADE', foreignKey: {name: 'db_id', allowNull: false}});
+    DataBase.hasMany(Table, {as: 'users', onDelete: 'CASCADE', foreignKey: {name: 'db_id', allowNull: false}});
 
-    Table.belongsTo(Database, {foreignKey: {name: 'db_id', allowNull: false}});
+    Table.belongsTo(DataBase, {foreignKey: {name: 'db_id', allowNull: false}});
     User.hasMany(DataBase, {foreignKey: {name: 'owner_id', allowNull: false}});
 
 

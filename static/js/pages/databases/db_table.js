@@ -1,38 +1,59 @@
 $(document).ready(function() {
 
+
+    $('#databases_table').on('click', '#delete', function(event) {
+	var db_id = $(this).parents('tr').attr('data-id');
+
+        event.preventDefault();
+        bootbox.promt({
+            title: 'Удалерие базы данных',
+            message: 'Вы уверены,� что хотите удалить данную базу, после удале6ия ее нев�озможно будет успользовать'
+            className: "slideInDown",
+            buttons: {
+                confirm: {
+                    label: "OK",
+                    className: "btn-danger"
+                },
+                cancel: {
+                    label: " Отмена",
+                    className: "btn-success"
+                }
+            },
+	    callback: function(result){
+		if (result) {
+		    $.ajax('/databases/remove/' + db_id, {method: 'DELETE'})
+			.done(function(result) {
+			    if (result.success){
+                                getTable('/databases/table', options, '#databases_table', function() {});
+			    }
+			})
+			.fail(function(result){});
+		}
+	    }
+        });
+    });
+
+
+
     $('#databases_table').on('click', '#schema', function(event) {
 
         event.preventDefault();
-            bootbox.alert({
-                title: 'Схема базы данных',
-                message: '<div id="db_schema_div" class="text-xs-center"><i class="fa fa-spin fa-spinner"></i> Подождите...</div>',
-                //message: '<div id="db_schema_div"><div class="loader-container">' + 
-                //    '<div class=fading-circle loader-blue-grey>' + '</div></div></div>',
-                //message: '<div id="db_schema_div"><i class="fa fa-spin fa-spinner"></i> Loading...</div>',
-                className: "slideInDown",
-                size: 'large',
-                buttons: {
-                    ok: {
-                        label: "OK",
-                        className: "btn-success"
-                    }
+        bootbox.alert({
+            title: 'Схема базы данных',
+            message: '<div id="db_schema_div" class="text-xs-center"><i class="fa fa-spin fa-spinner"></i> Подождите...</div>',
+            className: "slideInDown",
+            size: 'large',
+            buttons: {
+                ok: {
+                    label: "OK",
+                    className: "btn-success"
                 }
-            });
+            }
+        });
 
         $.get('/databases/schema/' + $(this).parents('tr').attr('data-id'), function(res) {
             $('#db_schema_div').html('<img src="/db_schema/' + res.file +
                  '" style="max-height: 100%;max-width: 100%;" alt="">');
-           /* bootbox.alert({
-                title: 'Схема базы данных',
-                message:  ,
-                className: "slideInDown",
-                buttons: {
-                    ok: {
-                        label: "OK",
-                        className: "btn-success"
-                    }
-                }
-            });*/
         }).fail(function(err) {
             bootbox.alert({
                 message: 'err' + err.message,
