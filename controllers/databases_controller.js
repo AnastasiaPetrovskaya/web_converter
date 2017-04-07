@@ -154,7 +154,7 @@ var post = {
 
 
 var _delete = {
-   '/:id':  function (req, res) {
+   '/remove/:id':  function (req, res) {
         var id = Number(req.params.id);
 
         app.DataBase.remove(id)

@@ -25,7 +25,8 @@ $(document).ready(function() {
                     $.ajax('/databases/remove/' + db_id, {method: 'DELETE'})
                         .done(function(result) {
                             if (result.success){
-                                            getTable('/databases/table', options, '#databases_table', function() {});
+                                var options = {};
+                                getTable('/databases/table', options, '#databases_table', function() {});
                             }
                         })
                        .fail(function(result){});

@@ -1,7 +1,9 @@
 var child_process = require('child-process-promise');
+var pg = require('pg');
 var username = app.config.postgres.user;
 var password = app.config.postgres.password;
 var database = app.config.postgres.database;
+var host = app.config.postgres.host;
 
 
 module.exports = function (models) {
@@ -86,15 +88,29 @@ module.exports = function (models) {
                         throw {message: 'DdDoNotExists'};
                     ctx.db = db;
 
-                    //выполняем команду dropdb
-                    return child_process.exec('dropdb -U ' + username + ' -W ' + password + 
-                            ' --maintenance=' + database + ' ' + db.title);
-                }).then(function(result) {
-                    var stdout = result.stdout;
-                    var stderr = result.stderr;
+                    var conn_str = 'postgres://' + username + ':' + password + '@' + host + '/postgres';
 
-                    console.log('stdout', stdout);
-                    console.log('stderr', stderr);
+                    return new Promise(function (resolve, reject) {
+                        pg.connect(conn_str, function(err, client, done) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                console.log('Executing:', 'DROP DATABASE IF EXISTS ' + db.title);
+                                client.query('DROP DATABASE IF EXISTS ' + db.title, function(err) {
+                                    if (err) {
+                                        console.log('0 init_db error\n', err.stack);
+                                        reject(err);
+                                    } else {
+                                        resolve();
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    //выполняем команду dropdb
+                    //return child_process.exec('dropdb -U ' + username + ' -W ' + password + 
+                    //        ' ' + db.title + ';');
+                }).then(function(result) {
                     //если скрипт отработал корректно, то нужно удалить запись о базе из бд
                     return ctx.db.destroy();
                 }).catch(function(err) {
