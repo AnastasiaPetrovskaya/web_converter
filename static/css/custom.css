@@ -10,3 +10,13 @@
     background-color: #1D2B36 !important;
 }
 
+.custom-bootbox > .modal-dialog > .modal-content > .modal-header {
+    background-color: #1D2B36 !important;
+    color: #FFFFFF !important;
+}
+
+
+.custom-bootbox > .modal-dialog > .modal-content > .modal-header > button.close {
+    color: #FFFFFF !important;
+}
+

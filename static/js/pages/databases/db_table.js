@@ -2,38 +2,37 @@ $(document).ready(function() {
 
 
     $('#databases_table').on('click', '#delete', function(event) {
-	var db_id = $(this).parents('tr').attr('data-id');
+        var db_id = $(this).parents('tr').attr('data-id');
 
         event.preventDefault();
-        bootbox.promt({
-            title: 'Удалерие базы данных',
-            message: 'Вы уверены,� что хотите удалить данную базу, после удале6ия ее нев�озможно будет успользовать'
-            className: "slideInDown",
+        bootbox.confirm({
+            title: '<i class="icon-trash2"></i> Вы уверены, что хотите удалить данную базу?',
+            message: 'После удаления базы данных ее невозможно будет использовать.' +
+                'Кроме того будут удалены тестовые вопросы, которые вы создавали для данной базы.',
+            className: "slideInDown custom-bootbox",
             buttons: {
                 confirm: {
                     label: "OK",
-                    className: "btn-danger"
+                    className: "btn-success"
                 },
                 cancel: {
                     label: " Отмена",
-                    className: "btn-success"
+                    className: "btn-danger mr-1"
                 }
             },
-	    callback: function(result){
-		if (result) {
-		    $.ajax('/databases/remove/' + db_id, {method: 'DELETE'})
-			.done(function(result) {
-			    if (result.success){
-                                getTable('/databases/table', options, '#databases_table', function() {});
-			    }
-			})
-			.fail(function(result){});
-		}
-	    }
+            callback: function(result){
+                if (result) {
+                    $.ajax('/databases/remove/' + db_id, {method: 'DELETE'})
+                        .done(function(result) {
+                            if (result.success){
+                                            getTable('/databases/table', options, '#databases_table', function() {});
+                            }
+                        })
+                       .fail(function(result){});
+                }
+            }
         });
     });
-
-
 
     $('#databases_table').on('click', '#schema', function(event) {
 

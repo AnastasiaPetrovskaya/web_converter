@@ -1,8 +1,0 @@
-.no-boder {
-    border: 0px !important;
-}
-
-.bg-custom-blue-gray {
-    background-color: #2c4762 !important;
-}
-

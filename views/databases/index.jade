@@ -97,19 +97,18 @@ block body
                                     option(value="common") Универсальная база (доступна всем и во всех режимах)
                                 .help-block
 
-                        hr
-                        .text-xs-right
-                            button#mdb_submit(type="submit" class="btn btn-success") Создать
+                .modal-footer
+                    button#mdb_submit(type="submit" class="btn btn-success mr-1 ") Создать
+                    button(type="reset" class="btn btn-danger ") Отмена
+
+                    //hr
+                        //.text-xs-right
+                            button#mdb_submit(type="submit" class="btn btn-min-width btn-success mr-1 mt-1") Создать
                                 //i(class="icon-thumbs-up position-right")
-                            button(type="reset" class="btn btn-danger") Отмена
+                            button(type="reset" class="btn btn-danger btn-min-width  mt-1") Отмена
                                 //i(class="icon-refresh position-right")
                             //button(type="submit" class="btn grey btn-outline-secondary" data-dismiss="modal") Close
                             //button(type="reset" class="btn btn-outline-primary") Save changes
-                    //form
-                       tr
-                         th Select File
-                         td
-                             input(id="csv" name="csv" type="file")
                 //.modal-footer
                     button(type="button" class="btn grey btn-outline-secondary" data-dismiss="modal") Close
                     button(type="button" class="btn btn-outline-primary") Save changes
