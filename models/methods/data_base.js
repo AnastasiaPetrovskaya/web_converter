@@ -1,3 +1,4 @@
+'use strict'
 var child_process = require('child-process-promise');
 var pg = require('pg');
 var username = app.config.postgres.user;
@@ -8,11 +9,10 @@ var host = app.config.postgres.host;
 
 module.exports = function (models) {
     var DataBase = models.DataBase;
+    var Table = models.Table;
 
     DataBase.make = function (db_data, filename) {
         var ctx = {};
-        console.log('db_data', db_data);
-        console.log('filename', filename);
 
         return sequelize.transaction(function (t) {
             return DataBase.unscoped().findOne({
@@ -24,7 +24,6 @@ module.exports = function (models) {
 
                     //выполнение скрипта в папке mdb2postgres, котрорый 
                     //отвечает за создание и экспорта базы на сервере
-                    console.log('app.config.postgres', app.config.postgres)
                     return child_process.execFile('./mdb_to_psql.sh', 
                         [filename, db_data.title, username, password],
                          {cwd: "./mdb2postgres"});
@@ -32,12 +31,50 @@ module.exports = function (models) {
                     var stdout = result.stdout;
                     var stderr = result.stderr;
 
-                    console.log('stdout', stdout);
-                    console.log('stderr', stderr);
+                    //console.log('stdout', stdout);
+                    //console.log('stderr', stderr);
+
                     //если скрипт отработал корректно, то нужно создать базу в бд
-                    return DataBase.create(db_data);
+                    return DataBase.create(db_data, {transaction: t});
                 }).then(function(db){
-                    return db.dataValues;
+                    ctx.db = db.dataValues;
+
+                    var conn_str = 'postgres://' + username + ':' + password + '@' +
+                        host + '/' +  ctx.db.title;
+
+                    return new Promise(function (resolve, reject) {
+                        pg.connect(conn_str, function(err, client, done) {
+                            //console.log('client', client);
+                            if (err) {
+                                reject(err);
+                            } else {
+                                //console.log('Executing:', 'DROP DATABASE IF EXISTS ' + db.title);
+                                client.query("SELECT table_name FROM information_schema.tables WHERE table_schema='public';", function(err, result) {
+                                    if (err) {
+                                       // console.log('0 init_db error\n', err.stack);
+                                        reject(err);
+                                    } else {
+                                        resolve(result);
+                                    }
+                                });
+                            }
+                        });
+                    });
+
+                }).then(function(result) {
+                    //console.log('result query tables', result.rows);
+                    var tables = result.rows.map(table => table.table_name);
+                    var table_data = { db_id : ctx.db.id};
+
+                    var create_table = function(title) {
+                        table_data.title = title;
+                        return Table.create(table_data, {transaction: t});
+                    };
+
+                    return Promise.all(tables.map(create_table));
+                }).then(function(result) {
+                    //console.log('result', result);
+                    return ctx.db;
                 }).catch(function(err) {
                     console.log('make db method err', err);
                     throw {message: err};

@@ -24,7 +24,7 @@ module.exports = function (models) {
         console.log('user', ctx.user.dataValues.id);
 
         return models.DataBase.create({
-            title: 'Fake db',
+            title: 'Fake_db',
             note: 'ненастоящая база',
             description: 'база созданная при инициализации базы данных',
             type: 'common',
