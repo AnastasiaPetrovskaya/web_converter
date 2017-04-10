@@ -59,10 +59,10 @@ var get = {
         //check_access(req, id).then(function () {
         app.DataBase.find({
             where : {id: id},
-            include: [{model: app.Table}]
+            include: [{as: 'tables', model: app.Table}]
 
             }).then(function (db) {
-                console.log('db', db);
+                console.log('db', db.dataValues);
                 if (!db) {
                     throw {message: 'NotFound'};
                 } else {
