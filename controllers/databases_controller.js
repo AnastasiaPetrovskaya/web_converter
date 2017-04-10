@@ -57,8 +57,12 @@ var get = {
         var id = Number(req.params.id);
 
         //check_access(req, id).then(function () {
-        app.DataBase.findById(id)
-            .then(function (db) {
+        app.DataBase.find({
+            where : {id: id},
+            include: [{model: app.Table}]
+
+            }).then(function (db) {
+                console.log('db', db);
                 if (!db) {
                     throw {message: 'NotFound'};
                 } else {
@@ -102,27 +106,6 @@ var post = {
 
 
 
-        /*if (req.body.user) {
-            console.log(req, 'BadRequest');
-            res.error('BadRequest');
-            return;
-        }
-
-        check_access(req, req.body.partner.parent_id)
-        .then(function () {
-            return Partner.make(req.body.partner, req.body.user)
-        })
-        .then(function (result) {
-            res_data = result;
-            return app.cache.partners.add(result.partner.id, result.partner);
-        })
-        .then(function () {
-            res.success(res_data);
-        })
-        .catch(function (err) {
-            log_http_error(req, err.stack);
-            res.error(err);
-        });*/
     },
 
     '/': function (req, res) {
