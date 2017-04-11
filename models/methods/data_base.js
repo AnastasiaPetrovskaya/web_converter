@@ -112,6 +112,7 @@ module.exports = function (models) {
 
     DataBase.tables_data = function (db_id, tables) {
         var ctx = {};
+        ctx.tables_data = [];
 
         return sequelize.transaction(function (t) {
             return DataBase.findOne({
@@ -124,48 +125,40 @@ module.exports = function (models) {
                     ctx.db = db;
                     var queries = [];
 
-
                     // подключение к бд для запроса данных из таблиц
                     var conn_str = 'postgres://' + username + ':' + password + '@' +
                         host + '/' +  ctx.db.title;
 
                     return new Promise(function (resolve, reject) {
                         pg.connect(conn_str, function(err, client, done) {
-                            
                             if (err) {
                                 reject(err);
                             } else {
-
                                 var get_table_data = function(table_title) {
                                     return new Promise(function(resolve, reject)  {
                                         client.query("SELECT * FROM " + table_title + ";", function(err, res) {
+                                            if (err) {
+                                                reject(err);
+                                            } else {
+                                                ctx.tables_data.push(res);
+                                                resolve(res);
+                                            }
+                                        });
+                                    });
+                                };
 
-                                client.query("SELECT table_name FROM information_schema.tables WHERE table_schema='public';", function(err, result) {
-                                    if (err) {
-                                       // console.log('0 init_db error\n', err.stack);
+                                Promise.all(tables.map(get_table_data))
+                                    .then(function(res) {
+                                        resolve(res);
+                                    }).catch(function(err) {
                                         reject(err);
-                                    } else {
-                                        resolve(result);
-                                    }
-                                });
+                                    });
                             }
                         });
                     });
-
                 }).then(function(result) {
-                    //console.log('result query tables', result.rows);
-                    var tables = result.rows.map(table => table.table_name);
-                    var table_data = { db_id : ctx.db.id};
-
-                    var create_table = function(title) {
-                        table_data.title = title;
-                        return Table.create(table_data, {transaction: t});
-                    };
-
-                    return Promise.all(tables.map(create_table));
-                }).then(function(result) {
-                    //console.log('result', result);
-                    return ctx.db;
+                    console.log('result get tables data', result);
+                    return ctx;
                 }).catch(function(err) {
                     console.log('make db method err', err);
                     throw {message: err};
