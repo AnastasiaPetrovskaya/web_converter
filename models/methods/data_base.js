@@ -30,7 +30,6 @@ module.exports = function (models) {
                 }).then(function(result) {
                     var stdout = result.stdout;
                     var stderr = result.stderr;
-
                     //console.log('stdout', stdout);
                     //console.log('stderr', stderr);
 
@@ -44,7 +43,6 @@ module.exports = function (models) {
 
                     return new Promise(function (resolve, reject) {
                         pg.connect(conn_str, function(err, client, done) {
-                            //console.log('client', client);
                             if (err) {
                                 reject(err);
                             } else {
