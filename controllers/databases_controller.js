@@ -19,8 +19,19 @@ var get = {
         res.render('databases/index');
     },
 
+    '/tables_data/:id': function(req, res) {
+        console.log('in tables_data controller');
+        app.DataBase.tables_data(req.params.id)
+            .then(function(result) {
+                console.log('result in controller tables_data', result);
+                res.render('databases/tables_data', { tables: result });
+            }).catch(function(err) {
+                console.log('err', err);
+                res.error('Error', err);
+            });
+    },
+
     '/table': function (req, res) {
-        console.log('table');
         app.DataBase.findAll()
             .then(function(dbs) {
                 res.render('databases/table', { dbs: dbs });

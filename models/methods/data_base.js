@@ -117,12 +117,20 @@ module.exports = function (models) {
         return sequelize.transaction(function (t) {
             return DataBase.findOne({
                     where: {id: db_id},
-                    include: {as: 'tables', model: Table, arttributes: ['title']},
+                    include: [{
+                        as: 'tables', 
+                        model: Table,
+                        attributes: ['title']
+                    }],
                     transaction: t
                 }).then(function (db) {
+                    //console.log('db', db.dataValues);
                     if (!db)
                         throw {message: 'DdDoesNotExist'};
-                    ctx.db = db;
+                    ctx.db = db.dataValues;
+                    var tables = ctx.db.tables.map(table => table.dataValues.title);
+                    console.log('tables', tables);
+
                     var queries = [];
 
                     // подключение к бд для запроса данных из таблиц
@@ -160,7 +168,7 @@ module.exports = function (models) {
                     console.log('result get tables data', result);
                     return ctx;
                 }).catch(function(err) {
-                    console.log('make db method err', err);
+                    console.log('get tables data err', err);
                     throw {message: err};
                 });
         });
