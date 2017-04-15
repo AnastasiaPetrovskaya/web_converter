@@ -19,4 +19,16 @@
 .custom-bootbox > .modal-dialog > .modal-content > .modal-header > button.close {
     color: #FFFFFF !important;
 }
+.largeWidth {
+    margin: 0 auto;
+    width: 90%;
+}
 
+.largeWidth  > .modal-dialog  {
+    max-width: 90% !important;
+}
+
+.largeWidth  > .modal-dialog > .modal-content {
+    margin: 0 auto;
+    width: 100% !important;
+}

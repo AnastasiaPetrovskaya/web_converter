@@ -30,8 +30,8 @@ module.exports = function (models) {
                 }).then(function(result) {
                     var stdout = result.stdout;
                     var stderr = result.stderr;
-                    //console.log('stdout', stdout);
-                    //console.log('stderr', stderr);
+                    console.log('stdout', stdout);
+                    console.log('stderr', stderr);
 
                     //если скрипт отработал корректно, то нужно создать базу в бд
                     return DataBase.create(db_data, {transaction: t});
@@ -148,7 +148,10 @@ module.exports = function (models) {
                                             if (err) {
                                                 reject(err);
                                             } else {
-                                                ctx.tables_data.push(res);
+                                                ctx.tables_data.push({
+                                                    title: table_title,
+                                                    data: res.rows
+                                                });
                                                 resolve(res);
                                             }
                                         });
@@ -166,7 +169,7 @@ module.exports = function (models) {
                     });
                 }).then(function(result) {
                     console.log('result get tables data', result);
-                    return ctx;
+                    return ctx.tables_data;
                 }).catch(function(err) {
                     console.log('get tables data err', err);
                     throw {message: err};

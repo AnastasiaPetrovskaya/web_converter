@@ -41,8 +41,8 @@ $(document).ready(function() {
         bootbox.alert({
             title: 'Схема базы данных',
             message: '<div id="db_schema_div" class="text-xs-center"><i class="fa fa-spin fa-spinner"></i> Подождите...</div>',
-            className: "slideInDown",
-            size: 'large',
+            className: "slideInDown largeWidth custom-bootbox",
+            //size: 'large',
             buttons: {
                 ok: {
                     label: "OK",
