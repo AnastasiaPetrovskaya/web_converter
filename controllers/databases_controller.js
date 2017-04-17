@@ -114,10 +114,26 @@ var post = {
                     res.error('Error', err);
                 });
         });
-
-
-
     },
+
+    '/sql_query': function (req, res) {
+        var res_data = {};
+
+        console.log('in sql query controller');
+
+        var sql = req.body.sql;
+        var db = req.body.db_id;
+        db_data.owner_id = req.user.id;
+
+        app.DataBase.execute_sql(db, sql)
+            .then(function(data) {
+                console.log('data', data);
+                res.success({data: data});
+            }).catch(function(err) {
+                res.error('Error', err);
+            });
+    },
+
 
     '/': function (req, res) {
         var res_data = {};

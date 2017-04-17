@@ -110,6 +110,36 @@ module.exports = function (models) {
             });
     },
 
+    DataBase.get_schema = function (db_id, sql) {
+        var ctx = {};
+        console.log('db_id', db_id);
+
+        return DataBase.findById(db_id)
+            .then(function (db) {
+                if (!db)
+                    throw {message: 'DdNotExists'};
+
+                //выполнение команды по генерации схемы
+                ctx.filename = db.id + Date.now() + '.png';
+                return child_process.exec('./schemacrawler.sh -url="jdbc:postgresql://localhost/' 
+                    + db.title + '" -u="' + username + '" -password="' + password + 
+                    '" -i=maximum -c=schema -fmt=png -outputfile=../../static/db_schema/' 
+                    + ctx.filename + ' -weakassociations=true', 
+                    {cwd: "./schemacrawler-14.15.03-main/_schemacrawler"});
+            }).then(function(result) {
+                var stdout = result.stdout;
+                var stderr = result.stderr;
+
+                console.log('stdout', stdout);
+                console.log('stderr', stderr);
+                //если скрипт отработал корректно, то нужно вернуть название файла
+                return ctx.filename;
+            }).catch(function(err) {
+                console.log('get db schema err', err);
+                throw {message: err};
+            });
+    },
+
     DataBase.tables_data = function (db_id, tables) {
         var ctx = {};
         ctx.tables_data = [];
