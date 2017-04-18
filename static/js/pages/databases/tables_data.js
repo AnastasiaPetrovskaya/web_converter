@@ -8,15 +8,12 @@ $(document).ready(function() {
         for (key in table.data[0]) {
             fields.push({ name: key, type: "text"});
         }
+        //fields.push({type: 'text', name: 'table_title', editing: false, visible: false});
         fields.push({type: 'control'});
 
-       /* table.data.map(function(el) {
+        /*table.data.map(function(el) {
+            el.table_title = table.title;
             console.log('el', el);
-            var row = {};
-            for (var key in el) {
-                console.log('key', key);
-            }
-            data.push(el[key]);
         });*/
 
 
@@ -60,6 +57,28 @@ $(document).ready(function() {
 
                         return flag;
                     });
+                },
+
+                insertItem: function(item) {
+                    //var d = $.Deferred();
+                    console.log('item', item);
+                    var options = {},
+                        values = "",
+                        columns = "";
+
+                    for (key in item) {
+                        columns += key + ",";
+                        values += item[key] + ",";
+                    }
+                    values = values.slice(0, -1);
+                    columns = columns.slice(0, -1);
+
+                    var sql_query = 'INSERT INTO ' + table.title + ' (' + columns +
+                            ') VALUES (' + values + ');';
+                    console.log('sql_query', sql_query);
+
+                    return true;
+                    //$.post('/databases/sql_query/' + db_id, 
                 }
             }
  

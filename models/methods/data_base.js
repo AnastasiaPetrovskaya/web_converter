@@ -49,9 +49,11 @@ module.exports = function (models) {
                                 //console.log('Executing:', 'DROP DATABASE IF EXISTS ' + db.title);
                                 client.query("SELECT table_name FROM information_schema.tables WHERE table_schema='public';", function(err, result) {
                                     if (err) {
-                                       // console.log('0 init_db error\n', err.stack);
+                                        // console.log('0 init_db error\n', err.stack);
+                                        done();
                                         reject(err);
                                     } else {
+                                        done();
                                         resolve(result);
                                     }
                                 });
@@ -110,7 +112,7 @@ module.exports = function (models) {
             });
     },
 
-    DataBase.get_schema = function (db_id, sql) {
+    DataBase.execute_sql = function (db_id, sql) {
         var ctx = {};
         console.log('db_id', db_id);
 
@@ -118,24 +120,31 @@ module.exports = function (models) {
             .then(function (db) {
                 if (!db)
                     throw {message: 'DdNotExists'};
+                ctx.db = db.dataValues;
 
-                //выполнение команды по генерации схемы
-                ctx.filename = db.id + Date.now() + '.png';
-                return child_process.exec('./schemacrawler.sh -url="jdbc:postgresql://localhost/' 
-                    + db.title + '" -u="' + username + '" -password="' + password + 
-                    '" -i=maximum -c=schema -fmt=png -outputfile=../../static/db_schema/' 
-                    + ctx.filename + ' -weakassociations=true', 
-                    {cwd: "./schemacrawler-14.15.03-main/_schemacrawler"});
+                return new Promise(function (resolve, reject) {
+                    pg.connect(conn_str, function(err, client, done) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            //console.log('Executing:', 'DROP DATABASE IF EXISTS ' + db.title);
+                            client.query(sql, function(err, result) {
+                                if (err) {
+                                    done();
+                                    reject(err);
+                                } else {
+                                    done();
+                                    resolve(result);
+                                }
+                            });
+                        }
+                    });
+                });
+
             }).then(function(result) {
-                var stdout = result.stdout;
-                var stderr = result.stderr;
-
-                console.log('stdout', stdout);
-                console.log('stderr', stderr);
-                //если скрипт отработал корректно, то нужно вернуть название файла
-                return ctx.filename;
+                return {tables_data: result, db_id: ctx.db.id, sql: sql};
             }).catch(function(err) {
-                console.log('get db schema err', err);
+                console.log('execute sql err', err);
                 throw {message: err};
             });
     },
@@ -190,8 +199,10 @@ module.exports = function (models) {
 
                                 Promise.all(tables.map(get_table_data))
                                     .then(function(res) {
+                                        done();
                                         resolve(res);
                                     }).catch(function(err) {
+                                        done();
                                         reject(err);
                                     });
                             }
@@ -199,7 +210,7 @@ module.exports = function (models) {
                     });
                 }).then(function(result) {
                     console.log('result get tables data', result);
-                    return ctx.tables_data;
+                    return  {tables_data: ctx.tables_data, db_id: ctx.db.id};
                 }).catch(function(err) {
                     console.log('get tables data err', err);
                     throw {message: err};
@@ -230,9 +241,11 @@ module.exports = function (models) {
                                 console.log('Executing:', 'DROP DATABASE IF EXISTS ' + db.title);
                                 client.query('DROP DATABASE IF EXISTS ' + db.title, function(err) {
                                     if (err) {
+                                        done();
                                         console.log('0 init_db error\n', err.stack);
                                         reject(err);
                                     } else {
+                                        done();
                                         resolve();
                                     }
                                 });

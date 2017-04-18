@@ -24,7 +24,10 @@ var get = {
         app.DataBase.tables_data(req.params.id)
             .then(function(result) {
                 console.log('result in controller tables_data', result);
-                res.render('databases/tables_data', { tables: result });
+                res.render('databases/tables_data', {
+                    tables: result.tables_data, 
+                    db_id: result.db_id 
+                });
             }).catch(function(err) {
                 console.log('err', err);
                 res.error('Error', err);
@@ -116,14 +119,14 @@ var post = {
         });
     },
 
-    '/sql_query': function (req, res) {
+    '/sql_query/:id': function (req, res) {
         var res_data = {};
 
         console.log('in sql query controller');
 
         var sql = req.body.sql;
-        var db = req.body.db_id;
-        db_data.owner_id = req.user.id;
+        var db = Number(req.params.id);;
+        //db_data.owner_id = req.user.id;
 
         app.DataBase.execute_sql(db, sql)
             .then(function(data) {

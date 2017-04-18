@@ -92,6 +92,7 @@ block body
 block append footer
     script.
         tables_data =!{JSON.stringify(tables)};
+        db_id = '#{db_id}';
 
     script(src="/robust-assets/js/components/modal/components-modal.js" type="text/javascript")
 
