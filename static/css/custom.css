@@ -32,3 +32,48 @@
     margin: 0 auto;
     width: 100% !important;
 }
+
+a {
+    color: #337ab7;
+    text-decoration: none;
+}
+
+a:focus {
+    color: #02325a;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #02325a;
+    text-decoration: none;
+}
+
+.editable-container.editable-inline {
+    display: inline; 
+}
+
+.editable-input {
+    display: inline; 
+}
+
+.editableform .form-control {
+    width: 100%;
+}
+
+.editableform div {
+    width: 100%;
+}
+
+.editableform textarea {
+    min-width: 400px;
+}
+
+.btn-in-table {
+    padding: 0.2rem;
+    min-width: 35px;
+    min-height: 26px;
+}
+.editable-buttons {
+    margin-top: 7px;
+    margin-left: 0px;
+}

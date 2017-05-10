@@ -1,0 +1,30 @@
+var Question = sequelize.define(
+    'question',
+    {
+        title: {type: Sequelize.STRING, allowNull: false},
+        tag: {type: Sequelize.STRING, allowNull: true},
+        query_type: {type: Sequelize.ENUM('RA', 'TC'), allowNull: false},
+        text: {type: Sequelize.STRING, allowNull: false},
+        sql_answer: {type: Sequelize.STRING, allowNull: false},
+        help: {type: Sequelize.STRING, allowNull: true},
+        last_using: {type: Sequelize.DATE , allowNull: true},
+        db_type: {type: Sequelize.ENUM('test', 'prepare', 'common', 'private'), allowNull: false}
+    },
+    {
+        tableName: 'question',
+        paranoid: true,
+        timestamps: true,
+        createdAt: 'created',
+        updatedAt: 'updated',
+        deletedAt: 'deleted',
+       /* indexes: [
+            {
+               name: 'user_partnerid_index',
+                method: 'BTREE',
+                fields: ['partner_id']
+            }
+        ]*/
+    }
+);
+
+module.exports = Question;

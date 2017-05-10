@@ -1,0 +1,54 @@
+if (questions.length === 0)
+    p.text-muted.mt-2.text-xs-center Нет записей
+else
+    table.table.table-striped.table-bordered.zero-configuration
+        thead
+            tr
+                th Название
+                th Тип
+                th Тег
+                th База данных
+                th Тип базы данных
+                th 
+        tbody
+            each question in questions
+                tr(data-id=question.id)
+                    td= question.title
+                    td
+                        if (question.type === "RA")
+                            span.label.label-primary Общий доступ
+                        else if (question.type === "TC")
+                            span.label.label-info Персональный доступ
+                        else
+                            span.label.label-danger Не задан
+                    td
+                        if (question.tag)
+                            =question.tag
+                        else
+                            | -
+                    td
+                        if (question.database.id && question.database.title)
+                            a(href="/databases/" + question.database.id)= question.database.title
+                        else
+                            | -
+                    td
+                        if (question.db_type === "common")
+                            .tag.tag-default Общий доступ
+                        else if (question.db_type === "private")
+                            .tag.tag-danger Персональный доступ
+                        else if (question.db_type === "test")
+                            .tag.tag-primary Тестовая база
+                        else if (question.db_type === "prepare")
+                            .tag.tag.bg-info.bg-darken-2 База для контрольных мероприятий
+                        else
+                            | Не задан
+                    td
+                        .btn-toolbar.float-xs-right(role="toolbar")
+                            a.btn.btn-icon.btn-outline-info.btn-sm(style="min-width:3.5rem" href="/questions/" + question.id data-toggle="tooltip" title="Подробная информация")
+                                i.icon-info2
+                            a.btn.btn-icon.btn-outline-success.btn-sm(style="min-width:3.5rem" href="/questions/" + question.id data-toggle="tooltip" title="Пробное выполнение задания")
+                                i.icon-clipboard2
+                            button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удаление вопроса")
+                                i.icon-trash2
+
+

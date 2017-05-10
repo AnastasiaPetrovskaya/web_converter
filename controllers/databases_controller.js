@@ -20,10 +20,9 @@ var get = {
     },
 
     '/tables_data/:id': function(req, res) {
-        console.log('in tables_data controller');
         app.DataBase.tables_data(req.params.id)
             .then(function(result) {
-                console.log('result in controller tables_data', result);
+                //console.log('result in controller tables_data', result);
                 res.render('databases/tables_data', {
                     tables: result.tables_data, 
                     db_id: result.db_id 
@@ -37,6 +36,7 @@ var get = {
     '/table': function (req, res) {
         app.DataBase.findAll()
             .then(function(dbs) {
+                //console.log('dbs', dbs);
                 res.render('databases/table', { dbs: dbs });
             }).catch(function(err) {
                 console.log('err', err);
@@ -45,21 +45,9 @@ var get = {
     },
 
     '/schema/:id': function (req, res) {
-        console.log('schema', req.params);
         app.DataBase.get_schema(req.params.id)
             .then(function(filename) {
-                console.log('filename', filename);
-                //res.success({});
-                //res.render('databases/table', { dbs: dbs });
-                /*var options = {
-                    root: __dirname + '/../static/db_schema/',
-                    dotfiles: 'deny',
-                    headers: {
-                        'x-timestamp': Date.now(),
-                        'x-sent': true
-                    }
-                };
-                res.sendFile(filename, options);*/
+                //console.log('filename', filename);
                 res.success({'file': filename })
             }).catch(function(err) {
                 console.log('err', err);
@@ -70,13 +58,10 @@ var get = {
     '/:id': function (req, res) {
         var id = Number(req.params.id);
 
-        //check_access(req, id).then(function () {
         app.DataBase.find({
             where : {id: id},
             include: [{as: 'tables', model: app.Table}]
-
             }).then(function (db) {
-                console.log('db', db.dataValues);
                 if (!db) {
                     throw {message: 'NotFound'};
                 } else {
@@ -84,7 +69,6 @@ var get = {
                     res.render('databases/show', { db: db });
                 }
             }).catch(function (err) {
-                //log_http_error(req, err.stack);
                 console.log('err', err);
                 res.error(err);
             });
@@ -96,8 +80,6 @@ var post = {
 
     '/add': function (req, res) {
         var res_data = {};
-
-        console.log('in add db controller');
 
         var db_data = req.body;
         db_data.owner_id = req.user.id;
@@ -114,6 +96,7 @@ var post = {
                     console.log('db', db);
                     res.success({});
                 }).catch(function(err) {
+                    console.log('err', err);
                     res.error('Error', err);
                 });
         });
@@ -122,47 +105,17 @@ var post = {
     '/sql_query/:id': function (req, res) {
         var res_data = {};
 
-        console.log('in sql query controller');
-
         var sql = req.body.sql;
         var db = Number(req.params.id);;
-        //db_data.owner_id = req.user.id;
 
         app.DataBase.execute_sql(db, sql)
             .then(function(data) {
-                console.log('data', data);
                 res.success({data: data});
             }).catch(function(err) {
+                //console.log('err', err);
                 res.error('Error', err);
             });
     },
-
-
-    '/': function (req, res) {
-        var res_data = {};
-
-        if (req.body.user) {
-            console.log(req, 'BadRequest');
-            res.error('BadRequest');
-            return;
-        }
-
-        check_access(req, req.body.partner.parent_id)
-        .then(function () {
-            return Partner.make(req.body.partner, req.body.user)
-        })
-        .then(function (result) {
-            res_data = result;
-            return app.cache.partners.add(result.partner.id, result.partner);
-        })
-        .then(function () {
-            res.success(res_data);
-        })
-        .catch(function (err) {
-            log_http_error(req, err.stack);
-            res.error(err);
-        });
-    }
 };
 
 

@@ -122,6 +122,10 @@ module.exports = function (models) {
                     throw {message: 'DdNotExists'};
                 ctx.db = db.dataValues;
 
+                // подключение к бд для запроса данных из таблиц
+                var conn_str = 'postgres://' + username + ':' + password + '@' +
+                    host + '/' +  ctx.db.title;
+
                 return new Promise(function (resolve, reject) {
                     pg.connect(conn_str, function(err, client, done) {
                         if (err) {
@@ -142,7 +146,7 @@ module.exports = function (models) {
                 });
 
             }).then(function(result) {
-                return {tables_data: result, db_id: ctx.db.id, sql: sql};
+                return {result: result, db: ctx.db, sql: sql};
             }).catch(function(err) {
                 console.log('execute sql err', err);
                 throw {message: err};
@@ -239,7 +243,7 @@ module.exports = function (models) {
                                 reject(err);
                             } else {
                                 console.log('Executing:', 'DROP DATABASE IF EXISTS ' + db.title);
-                                client.query('DROP DATABASE IF EXISTS ' + db.title, function(err) {
+                                client.query('DROP DATABASE IF EXISTS "' + db.title + '";', function(err) {
                                     if (err) {
                                         done();
                                         console.log('0 init_db error\n', err.stack);

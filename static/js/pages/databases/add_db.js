@@ -9,9 +9,10 @@ $(document).ready(function(){
         formData.append('title', $('#mdb_title').val());
         formData.append('description', $('#mdb_description').val());
         formData.append('type', $('#type').val());
+        formData.append('note', $('#mdb_note').val());
 
-        $('#mdb_submit').prop('disabled', true);
-        $('#mdb_submit').html('<i class="icon-spinner12"></i>');
+        $('#submit').prop('disabled', true);
+        //$('#submit').html('<i class="fa fa-spin fa-spinner"></i>');
 
         $.ajax({
             url: '/databases/add',

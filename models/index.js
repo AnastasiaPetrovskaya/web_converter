@@ -35,39 +35,13 @@ module.exports = function (app) {
     sequelize.json_validator = node_validator;
 
     var models = {
-        //Application: require('./models/application'),
         Token: require('./models/user_session_token'),
-        //AuthToken: require('./models/auth_token'),
-        //Card: require('./models/card'),
-        //CardSession: require('./models/card_session'),
-        //Game: require('./models/game'),
-        //Tape: require('./models/tape'),
-        //GameState: require('./models/game_state'),
-        //GameBet: require('./models/game_bet'),
-        //Invoice: require('./models/invoice'),
-        //Message: require('./models/message'),
-        //MoneyTransfer: require('./models/money_transfer'),
-        //Partner: require('./models/partner'),
-        //Payment: require('./models/payment'),
-        // Player: require('./models/player'),
-        // PlayerSession: require('./models/player_session'),
         Role: require('./models/role'),
-        //Sms: require('./models/sms'),
-        //Terminal: require('./models/terminal'),
-        //TerminalKey: require('./models/terminal_key'),
-        //TerminalLog: require('./models/terminal_log'),
-        //TerminalSession: require('./models/terminal_session'),
         User: require('./models/user'),
-        //UserLog: require('./models/user_log'),
-        //MoneyTransaction: require('./models/money_transaction'),
-        //CashierSession: require('./models/cashier_session'),
-        //Jackpot : require('./models/jackpot'),
-        //BillAcceptor : require('./models/bill_acceptor'),
-        //Dispenser : require('./models/dispenser'),
-        //MoneyEncashment : require('./models/money_encashment')
         CheckPoint: require('./models/check_point'),
-        DataBase: require('./models/data_base.js'),
-        Table: require('./models/table.js')
+        DataBase: require('./models/database.js'),
+        Table: require('./models/table.js'),
+        Question: require('./models/question.js')
     };
 
 

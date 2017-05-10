@@ -5,47 +5,8 @@ module.exports = function (models) {
         User = models.User,
         CheckPoint = models.CheckPoint,
         DataBase = models.DataBase,
+        Question = models.Question,
         Table = models.Table;
-
-    //Application.hasMany(Token, {foreignKey: {name: 'application_id', allowNull: false}});
-
-    //Invoice.belongsTo(User, {as: 'sender', foreignKey: {name: 'sender_id', allowNull: false}});
-    //Invoice.belongsTo(User, {as: 'recipient', foreignKey: {name: 'recipient_id', allowNull: false}});
-    //Invoice.hasMany(Payment, {foreignKey: {name: 'invoice_id', allowNull: false}});
-
-    //Message.belongsTo(User, {as: 'sender', foreignKey: {name: 'sender_id', allowNull: false}});
-    //Message.belongsTo(User, {as: 'recipient', foreignKey: {name: 'recipient_id', allowNull: false}});
-
-    //MoneyTransfer.belongsTo(Partner, {as: 'sender', foreignKey: {name: 'sender_id', allowNull: false}});
-    //MoneyTransfer.belongsTo(Partner, {as: 'recipient', foreignKey: {name: 'recipient_id', allowNull: false}});
-
-    //MoneyTransaction.belongsTo(Partner, {foreignKey: {name: 'partner_id', allowNull: false}});
-    //MoneyTransaction.belongsTo(Terminal, {foreignKey: {name: 'terminal_id', allowNull: true}});
-    //MoneyTransaction.belongsTo(CashierSession, {foreignKey: {name: 'cashier_session_id', allowNull: true}});
-
-    //Partner.hasMany(MoneyTransaction, {foreignKey: {name: 'partner_id'}});
-    //Partner.belongsTo(Partner, {as: 'parent', foreignKey: {name: 'parent_id'}});
-    //Partner.hasMany(Terminal, {as: 'terminals', foreignKey: 'partner_id'});
-    //Partner.hasMany(Partner, {as: 'children', foreignKey: {name: 'parent_id', allowNull: false}});
-    //Partner.hasMany(User, {as: 'users', foreignKey: {name: 'partner_id', allowNull: false}});
-    //Partner.hasMany(MoneyTransfer, {foreignKey: {name: 'partner_id'}});
-    // Partner.hasMany(Player, {foreignKey: {name: 'partner_id', allowNull: false}});
-    //Partner.hasMany(TerminalSession, {foreignKey: {name: 'partner_id', allowNull: false}});
-    //Partner.hasMany(GameBet, {foreignKey: {name: 'partner_id', allowNull: false}});
-    //Partner.hasMany(Sms, {foreignKey: {name: 'partner_id', allowNull: false}});
-    //Partner.hasMany(Card, {foreignKey: {name: 'partner_id', allowNull: false}});
-    //Partner.hasMany(CardSession, {foreignKey: {name: 'partner_id', allowNull: false}});
-    //Partner.hasMany(Jackpot, {foreignKey: {name: 'partner_id', allowNull: false}});
-
-    //Payment.belongsTo(User, {as: 'sender', foreignKey: {name: 'sender_id', allowNull: false}});
-    //Payment.belongsTo(User, {as: 'recipient', foreignKey: {name: 'recipient_id', allowNull: false}});
-    //Payment.belongsTo(Invoice, {as: 'invoice', foreignKey: {name: 'invoice_id', allowNull: false}});
-
-    // Player.belongsTo(Partner, {foreignKey: {name: 'partner_id', allowNull: false}});
-    // Player.hasMany(PlayerSession, {foreignKey: {name: 'player_id', allowNull: false}});
-
-    // PlayerSession.belongsTo(Player, {foreignKey: {name: 'player_id', allowNull: false}});
-    // PlayerSession.belongsTo(TerminalSession, {foreignKey: {name: 'terminal_session_id', allowNull: false}});
 
     Role.hasMany(Token, {foreignKey: {name: 'role_id', allowNull: false}});
 
@@ -120,9 +81,13 @@ module.exports = function (models) {
     CheckPoint.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
     DataBase.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
     DataBase.hasMany(Table, {as: 'tables', onDelete: 'CASCADE', foreignKey: {name: 'db_id', allowNull: false}});
+    DataBase.hasMany(Question, {as: 'questions', onDelete: 'CASCADE', foreignKey: {name: 'db_id', allowNull: false}});
 
     Table.belongsTo(DataBase, {foreignKey: {name: 'db_id', allowNull: false}});
+    
+    Question.belongsTo(DataBase, {foreignKey: {name: 'db_id', allowNull: false}});
+    Question.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
+    
     User.hasMany(DataBase, {foreignKey: {name: 'owner_id', allowNull: false}});
-
-
+    User.hasMany(Question, {foreignKey: {name: 'owner_id', allowNull: false}});
 };

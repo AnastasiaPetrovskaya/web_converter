@@ -30,6 +30,32 @@ module.exports = function (models) {
             type: 'common',
             owner_id: ctx.user.dataValues.id
         });
+    }).then(function (db) {
+        ctx.db = db;
+        console.log('db', ctx.db.dataValues.id);
+
+        return models.Question.create({
+            title: 'Fake_question_1',
+            query_type: 'RA',
+            text: 'Это тестовы вопрос по реляционной алгебре, который не привязан к реальной базе данных',
+            sql_answer: 'SELECT * FROM STUDENTS;',
+            owner_id: ctx.user.dataValues.id,
+            db_id: ctx.db.dataValues.id,
+            db_type: ctx.db.dataValues.type
+        });
+    }).then(function (question) {
+        ctx.questionRA = question;
+        console.log('question1', ctx.questionRA.dataValues.id);
+
+        return models.Question.create({
+            title: 'Fake_question_2',
+            query_type: 'TC',
+            text: 'Это тестовы вопрос по исчислению на кортежах, который не привязан к реальной базе данных',
+            sql_answer: 'SELECT * FROM STUDENTS;',
+            owner_id: ctx.user.dataValues.id,
+            db_id: ctx.db.dataValues.id,
+            db_type: ctx.db.dataValues.type
+        });
     }).catch(function(err){
         console.log(err.stack);
         console.log('Err during initing db', err.stack);

@@ -37,7 +37,7 @@ block body
                                                 button(type="button" class="btn btn-tumblr btn-mid-width mr-1 mb-1" data-toggle="modal" data-target="#mdb_2_psql") 
                                                     i.icon-plus3 
                                                     | Экспорт из .mdb
-                                                button(type="button" class="btn btn-tumblr btn-mid-width mr-1 mb-1")
+                                                //button(type="button" class="btn btn-tumblr btn-mid-width mr-1 mb-1")
                                                     i.icon-plus3 
                                                     | Экспорт еще какой-нибудь
                                     .row
@@ -74,31 +74,36 @@ block body
                         .form-group
                             h6 Выберете файл MS Access с расширением .mdb
                             .controls
-                                input#mdb_file.form-control(type="file" name="pattern" pattern=".*\.mdb" data-validation-pattern-message="Файл должен иметь расширение '.mdb'" required aria-invalid="false")
+                                input#mdb_file.form-control(type="file" name="pattern" pattern=".*\.mdb" data-validation-pattern-message="Файл должен иметь расширение '.mdb'" data-validation-required-message="Данное поле обязательно для заполнения" required aria-invalid="false")
                                 .help-block
                         .form-group
-                            h6 Введите название базы данных (допустимые символы: "A-Z", "a-z" и "_")
+                            h6 Введите название базы данных (допустимые символы: "A-Z", "a-z", "0-9" и "_")
                             .controls
-                                input#mdb_title.form-control(type="text" name="pattern" pattern="^[a-zA-Z_]+$" data-validation-pattern-message="Название базы может содержать только буквы латинского алфавита и символ '_'" required aria-invalid="false")
+                                input#mdb_title.form-control(type="text" name="pattern" pattern="^[a-zA-Z_0-9]+$" data-validation-pattern-message="Название базы может содержать только буквы латинского алфавита, цифрфы и символ '_'" data-validation-required-message="Данное поле обязательно для заполнения" required aria-invalid="false")
+                                .help-block
+                        .form-group
+                            h6 Введите кортокое примечание к базе данных, если это необходимо
+                            .controls
+                                input#mdb_note.form-control(type="text")
                                 .help-block
                         .form-group
                             h6 Введите описание базы данных
                             .controls
-                                textarea#mdb_description.form-control(name="textarea" required aria-invalid="false")
+                                textarea#mdb_description.form-control(name="textarea" required data-validation-required-message="Данное поле обязательно для заполнения" aria-invalid="false")
                                 .help-block
                         .form-group
                             h6 Выберите тип базы данных
                             .controls
-                                select#type.form-control(required name="select")
+                                select#type.form-control(required name="select" data-validation-required-message="Необходимо выбрать тип базы данных")
                                     option(value="") 
-                                    option(value="test") Тестовая база данных 
-                                    option(value="control") База данных для контрольных мероприятий
+                                    option(value="test") База данных для контрольных мероприятий 
+                                    option(value="prepare") Обучающая база данных для самостоятельной подготовки
                                     option(value="private") Персональная база (доступна только вам)
                                     option(value="common") Универсальная база (доступна всем и во всех режимах)
                                 .help-block
 
                 .modal-footer
-                    button#mdb_submit(type="submit" form="export_from_mdb" class="btn btn-success mr-1 ") Создать
+                    button#submit(type="submit" form="export_from_mdb" class="btn btn-success mr-1 ") Создать
                     button(type="reset" form="export_from_mdb" class="btn btn-danger ") Отмена
 
                     //hr

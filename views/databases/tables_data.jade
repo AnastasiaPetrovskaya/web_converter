@@ -7,7 +7,55 @@ block body
           div(class="content-header-left col-md-6 col-xs-12")
             h3(class="content-header-title mb-0") Таблицы базы данных 
           div(class="content-header-lead col-xs-12 mt-1")
-        .content-body
+        .content-body.mt-2
+            .row
+                .col-xs-12
+                   // .card
+                        //.card-header
+                            h4.card-title Данные таблицы 
+                        .card-body
+                            .card-block#jsGrid
+                                ul.nav.nav-tabs.nav-only-icon.nav-top-border.no-hover-bg
+                                    each tb, index in tables
+                                        if (index == 0)
+                                            li.nav-item.active
+                                                a.px-2.nav-link(data-toggle="tab" style="color:#555 !important" href="#table" + index aria-controls="activeIcon22" aria-expanded="true")= tb.title
+                                        else
+                                            li.nav-item
+                                                a.px-2.nav-link(data-toggle="tab" style="color:#555 !important" href="#table" + index aria-controls="linkIcon22" aria-expanded="false")= tb.title
+
+                                div.tab-content
+                                    each tb, index in tables
+                                        if (index == 0)
+                                            div.tab-pane.active(role="tabpanel" id="table" + index  class=tb.title)
+                                                p.mt-1.text-xs-center
+                                                    i.icon-spinner.spinner.font-large-1
+                                        else
+                                            div.tab-pane(role="tabpanel" id="table" + index class=tb.title)
+                                                p.mt-1.text-xs-center
+                                                    i.icon-spinner.spinner.font-large-1
+
+
+
+                            .card-block
+                                ul.nav.nav-tabs.nav-only-icon.nav-top-border.no-hover-bg
+                                    li.nav-item
+                                        a.px-2.nav-link.active(data-toggle="tab"  href="#terminals" aria-controls="activeIcon22" aria-expanded="true")
+                                            | cashouts
+                                    li.nav-item
+                                        a.nav-link(style="color:#555 !important" href="#sms" data-toggle="tab" aria-controls="linkIcon22" aria-expanded="false") SMS
+
+                                div.tab-content
+                                    div#terminals.tab-pane.active(role="tabpanel")
+                                        #cashout-table.no-border-top
+                                            p.mt-1.text-xs-center
+                                                i.icon-spinner.spinner.font-large-1
+                                    div#sms.tab-pane(role="tabpanel")
+                                        #sms-table.no-border-top
+                                            p.mt-1.text-xs-center
+                                                i.icon-spinner.spinner.font-large-1
+
+
                 .row#jsGrid
                     .col-sm-12
                         each tb in tables
@@ -17,7 +65,7 @@ block body
                                 .card-body.collapse.in
                                     div.card-block.card-dashboard
                                        p Данные таблицы
-                                       div(id="#{tb.title}")
+                                       div(class="#{tb.title}")
 
     //div(class="modal fade text-xs-left" id="mdb_2_psql" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true")
         div(class="modal-dialog" role="document")
@@ -111,4 +159,5 @@ block append footer
     
     //script( src="/robust-assets/js/components/tables/jsgrid/jsgrid.js" type="text/javascript")
 
+    script(src="/js/pages/databases/js_grid_date_field.js" type="text/javascript")
     script(src="/js/pages/databases/tables_data.js" type="text/javascript")

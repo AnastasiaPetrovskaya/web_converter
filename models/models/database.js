@@ -1,13 +1,13 @@
 var DataBase = sequelize.define(
-    'data_base',
+    'database',
     {
         title: {type: Sequelize.STRING, allowNull: false},
         description: {type: Sequelize.STRING, allowNull: false},
-        type: {type: Sequelize.STRING, allowNull: false},
+        type: {type: Sequelize.ENUM('test', 'prepare', 'common', 'private'), allowNull: false},
         note: {type: Sequelize.STRING}
     },
     {
-        tableName: 'data_base',
+        tableName: 'database',
         paranoid: true,
         timestamps: true,
         createdAt: 'created',

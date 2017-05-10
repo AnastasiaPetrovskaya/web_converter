@@ -19,15 +19,15 @@ else
                             | -
                     td
                         if (db.type === "common")
-                            span.label.label-primary Общий доступ
+                            .tag.tag-default Общий доступ
                         else if (db.type === "private")
-                            span.label.label-info Персональный доступ
+                            .tag.tag-danger Персональный доступ
                         else if (db.type === "test")
-                            span.label.label-warning Тестовая база
-                        else if (db.type === "control")
-                            span.label.label-danger База для контрольных мероприятий
+                            .tag.tag-primary База для контрольных мероприятий
+                        else if (db.type === "prepare")
+                            .tag.tag.bg-info.bg-darken-2 Обучающая база данных для самостоятельной подготовки
                         else
-                            span.label.label-danger Не задан
+                            | Не задан
                     td
                         .btn-toolbar(role="toolbar")
                             a.btn.btn-icon.btn-outline-primary.btn-sm(style="min-width:3.5rem" href="/databases/" + db.id data-toggle="tooltip" title data-original-title="Подробная информация")
