@@ -38,5 +38,8 @@
     "pg-hstore": "^2.3.2",
     "sequelize": "^3.30.2",
     "validators": "^0.3.1"
+  },
+  "devDependencies": {
+    "mocha": "^3.4.1"
   }
 }

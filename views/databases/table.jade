@@ -30,20 +30,20 @@ else
                             | Не задан
                     td
                         .btn-toolbar(role="toolbar")
-                            a.btn.btn-icon.btn-outline-primary.btn-sm(style="min-width:3.5rem" href="/databases/" + db.id data-toggle="tooltip" title data-original-title="Подробная информация")
+                            a.btn.btn-icon.btn-outline-primary.btn-sm(style="min-width:3.5rem" href="/databases/" + db.id data-toggle="tooltip" title="Подробная информация")
                                 i.icon-info2
-                            button#schema.btn.btn-icon.btn-outline-info.btn-sm(style="min-width:3.5rem"  data-toggle="tooltip" title data-original-title="Схема базы данных")
+                            button#schema.btn.btn-icon.btn-outline-info.btn-sm(style="min-width:3.5rem"  data-toggle="tooltip" title="Схема базы данных")
                                 i.icon-sitemap
-                            a.btn.btn-icon.btn-outline-success.btn-sm(style="min-width:3.5rem" href="/databases/tables_data/" + db.id data-toggle="tooltip" title data-original-title="Данные таблиц")
+                            a.btn.btn-icon.btn-outline-success.btn-sm(style="min-width:3.5rem" href="/databases/tables_data/" + db.id data-toggle="tooltip" title="Данные таблиц")
                                 //i.icon-database2
                                 //i.icon-file-text-o
                                 i.icon-table3
-                            a.btn.btn-icon.btn-outline-warning.btn-sm(style="min-width:3.5rem" href="/databases/" + db.id data-toggle="tooltip" title data-original-title="SQL запрос")
+                            button.btn#sql.btn-icon.btn-outline-warning.btn-sm(style="min-width:3.5rem"   data-toggle="tooltip" title="SQL запрос")
                                 //i.icon-trash-o
                                 i(style="font-weight:bold") SQL
                                 //span.avatar.avatar-online
                                     img(src="img/sql.svg")
-                            button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title data-original-title="Удаление базы данных")
+                            button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удаление базы данных")
                                 //i.icon-trash-o
                                 i.icon-trash2
 

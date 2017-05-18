@@ -16,8 +16,9 @@ block body
                                     .col-md-8
                                         h4.card-title.no-capitalize Информация
                                     .col-md-4
-                                        button#edit.btn-in-table.btn.btn-secondary.btn-sm.float-xs-right(data-edit="disable")
+                                        button#edit.btn-in-table.btn.btn-secondary.btn-sm.float-xs-right(data-edit="disable" title="Редактировать")
                                             i.font-medium-2.btn-i-hack.icon-edit
+                                            //|Редактировать
 
                                 //h4.card-title Информация
                             .card-body.collapse.in
@@ -68,8 +69,8 @@ block body
                                  .heading-elements
                                      ul.list-inline.mb-0
                                          li
-                                             a(data-action="expand")
-                                                 i.icon-expand2
+                                             a(data-action="expand" title="Развернуть")
+                                                 i.icon-expand2(style="color:#373a3c")
                             .card-body.collapse.in
                                 .card-block.card-dashboard
                                     #db_schema_div.text-xs-center

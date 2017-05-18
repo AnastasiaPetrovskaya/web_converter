@@ -1,3 +1,5 @@
+//var convert_algebra = require('../lib/re_al_to_sql').convert_algebra_to_sql;
+var AlgebraQueries = require('../lib/re_al_to_sql');
 
 var get = {
     '/': function (req, res) {
@@ -36,6 +38,20 @@ var get = {
             });
     },
 
+    '/trial/:id': function (req, res) {
+        var id = Number(req.params.id);
+
+        app.Question.find({
+                where : {id: id},
+                include: [{model: app.DataBase}]
+            }).then(function(question) {
+                res.render('questions/trial', { question: question });
+            }).catch(function(err) {
+                console.log('err', err);
+                res.error('Error', err);
+            });
+    },
+
     '/:id': function (req, res) {
         var id = Number(req.params.id);
 
@@ -63,11 +79,12 @@ var post = {
     '/add': function (req, res) {
         var res_data = {};
         var question_data = req.body;
+        console.log('question_data', question_data);
         question_data.owner_id = req.user.id;
 
         app.Question.make(question_data)
             .then(function(question) {
-                console.log('question created', question);
+                //console.log('question created', question);
                 res.success({
                     id: question.dataValues.id, 
                     title: question.dataValues.title
@@ -76,9 +93,32 @@ var post = {
                 console.log('err', err);
                 res.error(err);
             });
-
-
     },
+
+    '/trial': function(req, res) {
+        console.log('question controller post trial', req.body);
+        console.log('queeries', JSON.parse(req.body.queries));
+        queries = JSON.parse(req.body.queries);
+        //console.log('el', queries[0].alias);
+        //res.success({});
+        var algebra_answer = new AlgebraQueries(queries);
+        //console.log('algebra answer', algebra_answer);
+
+        //convert_algebra()
+        algebra_answer.create_sql_script()
+            .then(function(result) {
+                console.log('result', result);
+
+                return app.DataBase.execute_sql(req.body.db_id, result)
+            }).then(function(query_res) {
+                console.log('query_res', query_res.result.rows);
+                res.success({});
+            }).catch(function(err) {
+                console.log('err', err);
+                res.error(err);
+            });
+    },
+
 };
 
 

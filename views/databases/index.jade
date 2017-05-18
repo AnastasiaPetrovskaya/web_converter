@@ -118,6 +118,14 @@ block body
                     button(type="button" class="btn grey btn-outline-secondary" data-dismiss="modal") Close
                     button(type="button" class="btn btn-outline-primary") Save changes
 
+    #sql_query_modal.hidden-xs-up
+        .row#sql_query_div
+            .col-lg-6.col-md-12
+                label(for="sql_query_text")
+                textarea#sql_query_text(style="width:100%; resize:both" rows="5" placeholder="SELECT DISTINCT * FROM ...;" )
+        .row
+            .col-md-12#sql_query_data
+
 
 
 block append footer

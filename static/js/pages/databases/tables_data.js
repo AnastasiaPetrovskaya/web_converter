@@ -17,7 +17,7 @@ $(document).ready(function() {
 
         $('.' + table.title).jsGrid({
             width: "100%",
-            height: "600px",
+            //height: "600px",
  
             editing: true,
             inserting: true,
@@ -26,6 +26,7 @@ $(document).ready(function() {
             paging: true,
             pageSize: 15,
             pageButtonCount: 5,
+            pagerFormat: "Страницы: {pages}",
             deleteConfirm: "Вы уерены, что хотите удалить данную запись из таблицы?",
  
             data: table.data,

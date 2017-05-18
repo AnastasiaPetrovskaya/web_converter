@@ -7,7 +7,7 @@ block body
           div(class="content-header-left col-md-6 col-xs-12")
             h3(class="content-header-title mb-0") Таблицы базы данных 
           div(class="content-header-lead col-xs-12 mt-1")
-        .content-body.mt-2
+        .content-body
             .row
                 .col-xs-12
                    // .card
@@ -56,16 +56,16 @@ block body
                                                 i.icon-spinner.spinner.font-large-1
 
 
-                .row#jsGrid
-                    .col-sm-12
-                        each tb in tables
-                            .card
-                                .card-header
-                                    h4.card-title Данные таблицы "#{tb.title}"
-                                .card-body.collapse.in
-                                    div.card-block.card-dashboard
-                                       p Данные таблицы
-                                       div(class="#{tb.title}")
+            .row#jsGrid
+                .col-xs-12
+                    each tb in tables
+                        .card
+                            .card-header
+                                h4.card-title Данные таблицы "#{tb.title}"
+                            .card-body.collapse.in
+                                div.card-block.card-dashboard
+                                   //p Данные таблицы
+                                   div(class="#{tb.title}")
 
     //div(class="modal fade text-xs-left" id="mdb_2_psql" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true")
         div(class="modal-dialog" role="document")

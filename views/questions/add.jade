@@ -110,6 +110,7 @@ block body
                                                     i.icon-expand2
                                 .card-body.collapse.in
                                     .card-block.card-dashboard
+                                        #sql_query_text
                                         #sql_answer_div.text-xs-center
                                             | После выбора базы данных и ввода ответа в формате SQL в можете получить результат выполнения запроса. ()
                                             //i.fa.fa-spin.fa-spinner
@@ -125,6 +126,16 @@ block append footer
     script(src="/robust-assets/js/plugins/forms/icheck/icheck.min.js" type="text/javascript")
     script(src="/robust-assets/js/plugins/forms/toggle/bootstrap-switch.min.js" type="text/javascript")
     script(src="/robust-assets/js/plugins/forms/toggle/switchery.min.js" type="text/javascript")
+
+
+    script( src="/robust-assets/js/core/libraries/jquery_ui/jquery-ui.min.js" type="text/javascript")
+    script( src="/robust-assets/js/plugins/tables/jsgrid/jsgrid.min.js" type="text/javascript")
+    script( src="/robust-assets/js/plugins/tables/jsgrid/griddata.js" type="text/javascript")
+    script( src="/robust-assets/js/plugins/tables/jsgrid/jquery.validate.min.js" type="text/javascript")
+    
+    //script( src="/robust-assets/js/components/tables/jsgrid/jsgrid.js" type="text/javascript")
+
+    script(src="/js/pages/databases/js_grid_date_field.js" type="text/javascript")
 
     script(src="/robust-assets/js/components/forms/validation/form-validation.js" type="text/javascript")
 

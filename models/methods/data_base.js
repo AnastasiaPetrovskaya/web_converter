@@ -84,7 +84,7 @@ module.exports = function (models) {
 
     DataBase.get_schema = function (db_id) {
         var ctx = {};
-        console.log('db_id', db_id);
+        //console.log('db_id', db_id);
 
         return DataBase.findById(db_id)
             .then(function (db) {
@@ -102,8 +102,8 @@ module.exports = function (models) {
                 var stdout = result.stdout;
                 var stderr = result.stderr;
 
-                console.log('stdout', stdout);
-                console.log('stderr', stderr);
+                //console.log('stdout', stdout);
+                //console.log('stderr', stderr);
                 //если скрипт отработал корректно, то нужно вернуть название файла
                 return ctx.filename;
             }).catch(function(err) {
@@ -114,7 +114,7 @@ module.exports = function (models) {
 
     DataBase.execute_sql = function (db_id, sql) {
         var ctx = {};
-        console.log('db_id', db_id);
+        //console.log('db_id', db_id);
 
         return DataBase.findById(db_id)
             .then(function (db) {
@@ -143,13 +143,14 @@ module.exports = function (models) {
                             });
                         }
                     });
+                    pg.end();
                 });
 
             }).then(function(result) {
                 return {result: result, db: ctx.db, sql: sql};
             }).catch(function(err) {
                 console.log('execute sql err', err);
-                throw {message: err};
+                throw  {message: err.message};
             });
     },
 

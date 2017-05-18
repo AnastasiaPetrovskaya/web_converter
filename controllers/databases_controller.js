@@ -112,8 +112,8 @@ var post = {
             .then(function(data) {
                 res.success({data: data});
             }).catch(function(err) {
-                //console.log('err', err);
-                res.error('Error', err);
+                console.log('err', err);
+                res.error(err);
             });
     },
 };
