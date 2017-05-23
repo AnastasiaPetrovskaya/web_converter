@@ -1,5 +1,11 @@
 $(document).ready(function() {
 
+    //var options = {};
+    var options = {
+        db_id: window.db_id ? window.db_id : null
+    };
+
+    getTable('/questions/table', options, '#questions_table', function() {});
     $('#questions_table').on('click', '#delete', function(event) {
         var db_id = $(this).parents('tr').attr('data-id');
 

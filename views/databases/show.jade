@@ -10,7 +10,7 @@ block body
         .content-body
                 .row
                     .col-sm-6
-                        .card
+                        .card#info_card
                             .card-header
                                 h4.card-title Информация
                             .card-body.collapse.in
@@ -23,12 +23,32 @@ block body
                                                       td Название:
                                                       td #{db.title}
                                                     tr
+                                                      td Тип базы данных:
+                                                      td 
+                                                          if (db.type === "common")
+                                                              .tag.tag-default Общий доступ
+                                                          else if (db.type === "private")
+                                                              .tag.tag-danger Персональный доступ
+                                                          else if (db.type === "test")
+                                                              .tag.tag-primary База для контрольных мероприятий
+                                                          else if (db.type === "prepare")
+                                                              .tag.tag.bg-info.bg-darken-2 Обучающая база данных для самостоятельной подготовки
+                                                          else
+                                                              | Не задан
+                                                    tr
+                                                      td Примечание:
+                                                      td 
+                                                          if (db.note)
+                                                              #{db.note}
+                                                          else
+                                                              | -
+                                                    tr
                                                       td Описание:
                                                       td #{db.description}
 
 
                     .col-sm-6
-                        .card
+                        .card#schema_card
                             .card-header
                                  h4.card-title.no-capitalize Схема базы данных
 
@@ -37,11 +57,41 @@ block body
                                          li
                                              a(data-action="expand" title="Развернуть")
                                                  i.icon-expand2(style="color:#373a3c")
-                            .card-body.collapse.in
-                                .card-block.card-dashboard
+                            .card-body.collapse.in.text-xs-center#db_schema_div(style="height:80%")
+                                 i.fa.fa-spin.fa-spinner
+                                 &nbsp; Подождите...
+                                //.card-block.card-dashboard
                                     #db_schema_div.text-xs-center
                                         i.fa.fa-spin.fa-spinner
                                         &nbsp; Подождите...
+
+
+                    .col-xs-12
+                        .card
+                            .card-header
+                                h4.card-title Список контрольных вопросов
+                            .card-body.collapse.in
+                                .card-block.card-dashboard
+                                    p.card-text.font-medium-1
+                                        | В данном списке представлены контрольные вопросы к данной базе данных.
+
+                                    .row
+                                        .col-md-6
+                                            fieldset
+                                                .input-group
+                                                    input(type="text" class="form-control" placeholder="Поиск по названию" aria-label="Amount")
+                                                    span.input-group-btn
+                                                        button.btn.btn-tumblr(type="button")
+                                                            i.icon-search5 
+                                                            | Поиск
+                                        .col-md-6
+                                            .form-group
+                                                a.btn.btn-tumblr.btn-mid-width.mr-1.mb-1(type="button" href="/questions/add") 
+                                                    i.icon-plus3 
+                                                    | Добавление нового вопроса
+                                    .row
+                                        #questions_table.col-md-12
+                                            //include ./../parts/pagination
 
 block append footer
     script.
@@ -58,6 +108,7 @@ block append footer
     script(src="/robust-assets/js/components/forms/validation/form-validation.js" type="text/javascript")
     
     script(src="/js/pages/databases/show.js" type="text/javascript")
+    script(src="/js/pages/questions/_table.js" type="text/javascript")
     //script(src="/robust-assets/js/plugins/tables/jquery.dataTables.min.js" type="text/javascript")
     //script(src="/robust-assets/js/plugins/tables/datatable/dataTables.bootstrap4.min.js" type="text/javascript")
     //script(src="/robust-assets/js/plugins/tables/datatable/dataTables.buttons.min.js" type="text/javascript")

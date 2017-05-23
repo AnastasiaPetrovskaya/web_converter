@@ -10,8 +10,7 @@ $(document).ready(function() {
         };
 
         $('#submit_btn').prop('disabled', true);
-        $('#submit_btn').html('<i class="fa fa-spinner fa-spin"></i>');
-
+        $('#submit_btn').html('<i class="icon-spinner spinner"></i>');
 
         $.post('/login', data).done(function() {
             window.location.href = '/';

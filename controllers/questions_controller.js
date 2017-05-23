@@ -21,9 +21,16 @@ var get = {
 
     '/table': function (req, res) {
         var limit = 20,
-            skip = 0;
+            skip = 0,
+            options = {};
+
+        if (req.query.db_id)
+            options.db_id = req.query.db_id;
+
+        console.log('options', options);
 
         app.Question.findAndCountAll({
+                where: options,
                 include: [
                     {model: app.DataBase, attributes: ['id', 'title']}
                 ],

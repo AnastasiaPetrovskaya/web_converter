@@ -81,3 +81,8 @@ a:hover {
 .card-title {
     text-transform: none !important;
 }
+
+.form-group.validate input, .form-group.validate select, .form-group.validate textarea {
+    color: #373a3c !important;
+    border-color: #37BC9B;
+}

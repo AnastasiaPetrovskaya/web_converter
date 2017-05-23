@@ -36,7 +36,10 @@ $(document).ready(function(){
                     'create_new_one': {
                         label: 'Создать еще один',
                         className: 'btn-success',
-                        callback: function() { window.location.reload(); }
+                        callback: function() { 
+                            return false;
+                            //window.location.reload(); 
+                        }
                     }
                 }
 
@@ -139,7 +142,7 @@ $(document).ready(function(){
 
                 $('#sql_answer_div').jsGrid({
                     width: "100%",
-                    height: "600px",
+                    //height: "600px",
  
                     //editing: true,
                     //inserting: true,
