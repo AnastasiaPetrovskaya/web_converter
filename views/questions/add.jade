@@ -119,6 +119,12 @@ block body
 
 
 block append footer
+    if (question)
+        script.
+            var question = !{JSON.stringify(question)};
+    else
+        script.
+            var question = false;
 
     script(src="/robust-assets/js/components/modal/components-modal.js" type="text/javascript")
 

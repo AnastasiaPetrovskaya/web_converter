@@ -24,10 +24,16 @@ var get = {
 
         var ctx = {};
         //получение списка всех учебных баз данных
-        app.DataBase.findAll({
-                attributes: ['id', 'title', 'type']
+        app.Question.find({
+                where : {id: id},
+                include: [{model: app.DataBase}]
+            }).then(function (question) {
+                ctx.question = question;
+                return app.DataBase.findAll({
+                        attributes: ['id', 'title', 'type']
+                });
             }).then(function(dbs) {
-                res.render('questions/add', {dbs: dbs});
+                res.render('questions/add', {dbs: dbs, question: ctx.question});
             }).catch(function(err) {
                 console.log('err', err);
                 res.error('Error', err);
