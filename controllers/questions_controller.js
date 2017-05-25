@@ -1,5 +1,5 @@
 //var convert_algebra = require('../lib/re_al_to_sql').convert_algebra_to_sql;
-var AlgebraQueries = require('../lib/re_al_to_sql');
+var AlgebraAnswer = require('../lib/RelationalAlgebraAnswer');
 
 var get = {
     '/': function (req, res) {
@@ -129,7 +129,7 @@ var post = {
         queries = JSON.parse(req.body.queries);
         //console.log('el', queries[0].alias);
         //res.success({});
-        var algebra_answer = new AlgebraQueries(queries);
+        var algebra_answer = new AlgebraAnswer(queries);
         //console.log('algebra answer', algebra_answer);
 
         //convert_algebra()

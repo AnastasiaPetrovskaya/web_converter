@@ -50,7 +50,8 @@ $(document).ready(function() {
                 title: $(this).find('[name="title"] strong').text(),
                 alias: $(this).find('[name="alias"]').val(),
                 target_list: $(this).find('[name="target_list"]').val(),
-                text: $(this).find('[name="text"]').val()
+                text: $(this).find('[name="text"]').val(),
+                description: $(this).find('[name="description"]').val()
             }
             queries.push(query_item);
         });
@@ -59,7 +60,8 @@ $(document).ready(function() {
             title: 'result',
             alias: $('#alias').val(),
             target_list: $('#target_list').val(),
-            text: $('#text').val()
+            text: $('#text').val(),
+            description: $('#description').text(),
         }
         queries.push(query_item);
 
