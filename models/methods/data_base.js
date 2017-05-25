@@ -151,7 +151,13 @@ module.exports = function (models) {
                 return {result: result, db: ctx.db, sql: sql};
             }).catch(function(err) {
                 console.log('execute sql err', err);
-                throw  {message: err.message};
+                var obj = {};
+                if (err.position)
+                    obj.sql_err_position = err.position;
+                obj.message = err.message;
+                obj.sql = sql;
+
+                throw  obj;
             });
     },
 

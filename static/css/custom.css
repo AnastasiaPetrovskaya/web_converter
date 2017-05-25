@@ -86,3 +86,8 @@ a:hover {
     color: #373a3c !important;
     border-color: #37BC9B;
 }
+
+ tr.selected td {
+    background: #c4e2ff;
+    border-color: #c4e2ff;
+}

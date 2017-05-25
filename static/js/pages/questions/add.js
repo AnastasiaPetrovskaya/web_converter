@@ -110,7 +110,7 @@ $(document).ready(function(){
         }
 
 
-        $('#sql_answer_div').html('<div id="db_schema_div" class="text-xs-center"><i class="fa fa-spin fa-spinner"></i> Подождите...</div>');
+        $('#sql_answer_div').html('<div class="text-xs-center"><i class="fa fa-spin fa-spinner"></i> Подождите...</div>');
 
 
         var res = $.ajax({
@@ -200,12 +200,21 @@ $(document).ready(function(){
                 });
 
             } else {
-                $('#sql_answer_div').val('Запрос не дал результатов');
+                $('#sql_answer_div').html('<div class="text-xs-center"> Ваш запрос не дал результатов</div>');
             }
         } else {
             console.log(res);
-            //$successButton.html(lang.add).prop('disabled', false);
-            bootboxError(res.error);
+            var err_html = '<p>'+ res.error + '</p><p>' + 
+                        res.sql.substring(0, res.sql_err_position - 1) + 
+                        '<kbd>' + res.sql.substr(+res.sql_err_position - 1, 1) +
+                        '</kbd>' + res.sql.substr(+res.sql_err_position) + '</p>';
+            $('#sql_answer_div').html(err_html);
+
+            if (res.sql && res.sql_err_position) {
+                bootboxError(err_html);
+            } else {
+                bootboxError(res.error);
+            }
             return false;
         }
     });

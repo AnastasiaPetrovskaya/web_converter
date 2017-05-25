@@ -19,6 +19,21 @@ var get = {
             });
     },
 
+    '/copy/:id': function (req, res) {
+        var id = Number(req.params.id);
+
+        var ctx = {};
+        //получение списка всех учебных баз данных
+        app.DataBase.findAll({
+                attributes: ['id', 'title', 'type']
+            }).then(function(dbs) {
+                res.render('questions/add', {dbs: dbs});
+            }).catch(function(err) {
+                console.log('err', err);
+                res.error('Error', err);
+            });
+    },
+
     '/table': function (req, res) {
         var limit = 20,
             skip = 0,
