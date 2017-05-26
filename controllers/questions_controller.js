@@ -124,25 +124,41 @@ var post = {
     },
 
     '/trial': function(req, res) {
-        console.log('question controller post trial', req.body);
-        console.log('queeries', JSON.parse(req.body.queries));
+        //console.log('question controller post trial', req.body);
+        //console.log('queeries', JSON.parse(req.body.queries));
         queries = JSON.parse(req.body.queries);
+        var question_id = req.body.question_id;
+        var db_id = req.body.db_id;
         //console.log('el', queries[0].alias);
         //res.success({});
         var algebra_answer = new AlgebraAnswer(queries);
-        //console.log('algebra answer', algebra_answer);
+        console.log('algebra answer', algebra_answer);
 
         //convert_algebra()
+        var ctx = {};
         algebra_answer.create_sql_script()
             .then(function(result) {
                 console.log('result', result);
 
-                return app.DataBase.execute_sql(req.body.db_id, result)
-            }).then(function(query_res) {
-                console.log('query_res', query_res.result.rows);
-                res.success({});
+                return app.DataBase.execute_sql(db_id, result);
+            }).then(function(sql_res) {
+                console.log('query_res', sql_res.result.rows);
+                algebra_answer.student_rows = sql_res.result.rows;
+
+                return app.Question.findById(question_id);
+            }).then(function(question) {
+
+                return app.DataBase.execute_sql(db_id, question.sql_answer);
+            }).then(function(sql_res) {
+                algebra_answer.teacher_rows = sql_res.result.rows;
+                var mark = algebra_answer.check_answer();
+
+                console.log('!!!!!!!!!!!!!!!!!!mark', mark);
+
+                //сверка результатов выполнения двух запросов
+                res.success( mark);
             }).catch(function(err) {
-                console.log('err', err);
+                console.log('post /trial err', err);
                 res.error(err);
             });
     },

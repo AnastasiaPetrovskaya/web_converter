@@ -40,7 +40,9 @@ $(document).ready(function() {
         $("#help_tables_container").find('form:last').find('[name="title"] strong').text(title);
     });
 
-    $("#answer").submit(function(event){
+    $("#answer").submit(function(event) {
+        event.preventDefault();
+
         console.log("submit event");
         var queries = [],
             query_item = {};
@@ -65,7 +67,6 @@ $(document).ready(function() {
         }
         queries.push(query_item);
 
-        event.preventDefault();
         //var target_query = $(this).serialize();
         var data = {
             question_id: question_id,
@@ -86,35 +87,26 @@ $(document).ready(function() {
         }).responseText;
         res = JSON.parse(res);
 
+        event.preventDefault();
         console.log(res);
 
-        return false;
+        //return false;
 
-        /*if (res.success) {
-            bootbox.dialog({
-                className: 'slideInDown',
-                message: 'Вопрос' + '<a class="alert-link" href="/questions/' + res.id + '"> "' + res.title + '"</a> ' + ' добавлен' +
-                '<p>' + '</p>',
-                buttons: { 
-                    'back_to_list': {
-                        label: 'Вернутся к списку вопросов',
-                        className: 'btn-default mr-1',
-                        callback: function() { window.location.assign('/questions'); }
-                    },
-                    'create_new_one': {
-                        label: 'Создать еще один',
-                        className: 'btn-success',
-                        callback: function() { window.location.reload(); }
-                    }
-                }
-
-            });
+        if (res.success) {
+            if (res.mark > 0) {
+                bootbox.alert({
+                    className: 'slideInDown',
+                    message: 'Правильный ответ!'
+                });
+            } else {
+                bootboxError('Неправильный ответ! ' + res.comment);
+            }
         } else {
             console.log(res);
             //$successButton.html(lang.add).prop('disabled', false);
             bootboxError(res.error);
             return false;
-        }*/
+        }
     });
 
 
