@@ -14,3 +14,7 @@ venv
 generated_reports/*
 !generated_reports/.keep
 *.swo
+static/db_schema/*.png
+!static/db_schema/.keep
+mdb2postgres/*
+mdb2postgres/.keep
