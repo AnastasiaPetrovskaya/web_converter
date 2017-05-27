@@ -16,7 +16,7 @@ block vertical-menu
                 a.nav-link.nav-menu-main.menu-toggle.hidden-xs
                   i.icon-menu5
             ul.nav.navbar-nav.float-xs-right
-              li.dropdown.dropdown-notification.nav-item
+              //li.dropdown.dropdown-notification.nav-item
                 a(href="#" data-toggle="dropdown" class="nav-link nav-link-label")
                   i(class="ficon icon-bell4")
                   span(class="tag tag-pill tag-default tag-default tag-up") 2
@@ -44,7 +44,7 @@ block vertical-menu
                           p.notification-text.font-small-3.text-muted Aliquam tincidunt mauris eu risus.
                           small
                             time(datetime="2015-06-11T18:29:20+08:00" class="media-meta text-muted") Five hour ago
-              li.dropdown.dropdown-notification.nav-item
+              //li.dropdown.dropdown-notification.nav-item
                 a(href="#" data-toggle="dropdown" class="nav-link nav-link-label")
                   i.ficon.icon-mail6
                   span.tag.tag-pill.tag-default.tag-up 2
@@ -79,17 +79,18 @@ block vertical-menu
                   span.avatar.avatar-online
                     img(src="/images/default-user.png" alt="avatar")
                   span.user-name=profile.login
-                div.dropdown-menu.dropdown-menu-right
-                  a(href="#" class="dropdown-item")
-                    i(class="icon-head") Edit Profile
-                  a(href="#" class="dropdown-item")
-                    i(class="icon-mail6") My Inbox
-                  a(href="#" class="dropdown-item")
-                    i(class="icon-clipboard2") Task
-                  a(href="#" class="dropdown-item")
-                    i(class="icon-calendar5") Calender
-                  .dropdown-divider
-                    a(href="#" class="dropdown-item")
+                div.dropdown-menu.dropdown-menu-right.text-xs-center
+                  //a(href="#" class="dropdown-item")
+                  //  i(class="icon-head") Edit Profile
+                  //a(href="#" class="dropdown-item")
+                  //  i(class="icon-mail6") My Inbox
+                  //a(href="#" class="dropdown-item")
+                  //  i(class="icon-clipboard2") Task
+                  a(href="/logout" class="dropdown-item")
+                    i.mr-1(class="icon-power3")
+                    | Выход
+                  //.dropdown-divider
+                    a(href="/logout" class="dropdown-item")
                       i(class="icon-power3") Logout
 
 
@@ -110,17 +111,17 @@ block vertical-menu
              a(href="/questions")
                i(class="icon-clipboard2")
                span(data-i18n="nav.dash.main" class="menu-title") Контрольные вопросы
-           li(class=" nav-item")
-             a(href="/")
-               i(class="icon-chain")
-               span(data-i18n="nav.dash.main" class="menu-title") Реляционная алгебра
-           li(class=" nav-item")
-             a(href="/")
-               i(class="icon-users3")
-               span(data-i18n="nav.dash.main" class="menu-title") Студенты
-               span(class="tag tag tag-primary tag-pill float-xs-right mr-2")
+          //li(class=" nav-item")
+            a(href="/")
+              i(class="icon-chain")
+              span(data-i18n="nav.dash.main" class="menu-title") Реляционная алгебра
+          //li(class=" nav-item")
+            a(href="/")
+              i(class="icon-users3")
+              span(data-i18n="nav.dash.main" class="menu-title") Студенты
+              span(class="tag tag tag-primary tag-pill float-xs-right mr-2")
 
-          li(class=" nav-item")
+          //li(class=" nav-item")
             a(href="/")
               i(class="icon-home3")
               span(data-i18n="nav.dash.main" class="menu-title") Образец вложенности

@@ -37,7 +37,7 @@
         });
 
         // Scroll to currently active menu on page load if data-scroll-to-active is true
-        if($('.main-menu').data('scroll-to-active') === true){
+        /*if($('.main-menu').data('scroll-to-active') === true){
             var position;
             if( $(".main-menu-content").find('li.active').parents('li').length > 0 ){
               position = $(".main-menu-content").find('li.active').parents('li').last().position();
@@ -47,7 +47,7 @@
             }
             $.robust.menu.container.scrollTop(position.top);
             this.update();
-        }
+        }*/
       },
 
       update: function() {

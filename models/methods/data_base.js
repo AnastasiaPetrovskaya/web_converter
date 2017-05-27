@@ -59,6 +59,7 @@ module.exports = function (models) {
                                 });
                             }
                         });
+                        pg.end();
                     });
 
                 }).then(function(result) {
@@ -77,7 +78,7 @@ module.exports = function (models) {
                     return ctx.db;
                 }).catch(function(err) {
                     console.log('make db method err', err);
-                    throw {message: err};
+                    throw err;
                 });
         });
     },
@@ -221,6 +222,7 @@ module.exports = function (models) {
                         });
                     });
                 }).then(function(result) {
+                    pg.end();
                     console.log('result get tables data', result);
                     return  {tables_data: ctx.tables_data, db_id: ctx.db.id};
                 }).catch(function(err) {

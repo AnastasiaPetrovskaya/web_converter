@@ -91,3 +91,20 @@ a:hover {
     background: #c4e2ff;
     border-color: #c4e2ff;
 }
+
+div.bootbox.success .modal-content {
+    border-color: #37BC9B !important;
+    background-color: #69eecd !important;
+    color: #005837 !important;
+}
+
+div.bootbox.fail .modal-content {
+    border-color: #DA4453 !important;
+    background-color: #ff7685 !important;
+    color: #760000 !important;
+}
+
+.courier_new { 
+	font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace; 
+}
+

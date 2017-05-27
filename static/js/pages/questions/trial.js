@@ -17,9 +17,9 @@ $(document).ready(function() {
         });
     });
 
-    $("#sql_answer_btn").click(function() {
-        $('#sql_answer_card').show();
-        get_sql_res(db_id,sql_answer, '#sql_answer_div');
+    $("#sql_right_answer_btn").click(function() {
+        $('#sql_right_answer_card').show();
+        get_sql_res(db_id, sql_answer, '#sql_right_answer_data');
     });
 
     $("#add_table").click(function() {
@@ -39,6 +39,12 @@ $(document).ready(function() {
         $("#help_tables_container").append(new_table_block);
         $("#help_tables_container").find('form:last').find('[name="title"] strong').text(title);
     });
+
+    $('#help_tables_container').on('click', '#delete_help_table', function() {
+        $(this).parents('form').remove();
+    });
+
+
 
     $("#answer").submit(function(event) {
         event.preventDefault();
@@ -93,13 +99,35 @@ $(document).ready(function() {
         //return false;
 
         if (res.success) {
+            $('#sql_answer_card').show();
+            show_sql_res(res.answer_sql, '#sql_answer_text', res.answer_data, '#sql_answer_data');
+            if (res.right_answer_data && res.right_answer_sql) {
+                $('#sql_right_answer_card').show();
+                show_sql_res(res.right_answer_sql, '#sql_right_answer_text', res.right_answer_data, '#sql_right_answer_data');
+            }
+
+
             if (res.mark > 0) {
-                bootbox.alert({
-                    className: 'slideInDown',
-                    message: 'Правильный ответ!'
+                bootbox.dialog({
+                    className: 'slideInDown success mb-2',
+                    onEscape: true,
+                    backdrop: true,
+                    message: 'Правильный ответ!',
+                    buttons: {}
                 });
             } else {
-                bootboxError('Неправильный ответ! ' + res.comment);
+                var msg = 'Неправильный ответ! ';
+                if (res.comment) {
+                    msg += res.comment;
+                }
+
+                bootbox.dialog({
+                    className: 'slideInDown fail mb-2',
+                    onEscape: true,
+                    backdrop: true,
+                    message: msg,
+                    buttons: {}
+                });
             }
         } else {
             console.log(res);
@@ -108,6 +136,40 @@ $(document).ready(function() {
             return false;
         }
     });
+
+
+    var show_sql_res = function(sql, sql_selector, rows, rows_selector) {
+        $(sql_selector).text(sql);
+
+       if (rows.length > 0) {
+           var fields = [],
+               query_data = rows;
+
+           for (key in query_data[0]) {
+               if (key.toLowerCase().indexOf('id') != -1 || key.toLowerCase().indexOf('ид') != -1)
+                   fields.push({ name: key, type: "text", editing: false});
+               else if (key.toLowerCase().indexOf('date') != -1 || key.toLowerCase().indexOf('дата') != -1)
+                   fields.push({ name: key, type: "date"});
+               else
+                   fields.push({ name: key, type: "text"});
+           }
+
+           $(rows_selector).jsGrid({
+               width: "100%",
+               sorting: true,
+               paging: true,
+               pageSize: 15,
+               pageButtonCount: 5,
+               pagerFormat: "Страницы: {pages}",
+               data: query_data,
+               fields: fields,
+           });
+
+       } else {
+           $(rows_selector).val('Запрос не дал результатов');
+       }
+    };
+
 
 
 });

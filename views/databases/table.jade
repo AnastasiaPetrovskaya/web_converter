@@ -7,7 +7,7 @@ else
                 th Название
                 th Примечание
                 th Тип
-                th Управление
+                th.text-xs-right Управление
         tbody
             each db in dbs
                 tr(data-id=db.id)
@@ -28,7 +28,7 @@ else
                             .tag.tag.bg-info.bg-darken-2 Обучающая база данных для самостоятельной подготовки
                         else
                             | Не задан
-                    td
+                    td.text-xs-right
                         .btn-toolbar(role="toolbar")
                             a.btn.btn-icon.btn-outline-primary.btn-sm(style="min-width:3.5rem" href="/databases/" + db.id data-toggle="tooltip" title="Подробная информация")
                                 i.icon-info2
@@ -38,7 +38,7 @@ else
                                 //i.icon-database2
                                 //i.icon-file-text-o
                                 i.icon-table3
-                            button.btn#sql.btn-icon.btn-outline-warning.btn-sm(style="min-width:3.5rem"   data-toggle="tooltip" title="SQL запрос")
+                            //button.btn#sql.btn-icon.btn-outline-warning.btn-sm(style="min-width:3.5rem"   data-toggle="tooltip" title="SQL запрос")
                                 //i.icon-trash-o
                                 i(style="font-weight:bold") SQL
                                 //span.avatar.avatar-online

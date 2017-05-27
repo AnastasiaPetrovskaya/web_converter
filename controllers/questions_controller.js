@@ -82,18 +82,23 @@ var get = {
 
     '/:id': function (req, res) {
         var id = Number(req.params.id);
+        var ctx = {};
 
         app.Question.find({
                 where : {id: id},
                 include: [{model: app.DataBase}]
             }).then(function (question) {
-                //console.log('question', question);
+
                 if (!question) {
                     throw {message: 'NotFound'};
                 } else {
-                    //тут необходимо будет сгенерировать схему бд в виде картинки
-                    res.render('questions/show', { question: question });
+                    ctx.question = question;
+                    return app.DataBase.execute_sql(question.db_id, question.sql_answer);
                 }
+            }).then(function(sql_res) {
+
+                ctx.question.right_answer_data = sql_res.result.rows;
+                res.render('questions/show', { question: ctx.question });
             }).catch(function (err) {
                 console.log('err', err);
                 res.error(err);
@@ -132,31 +137,38 @@ var post = {
         //console.log('el', queries[0].alias);
         //res.success({});
         var algebra_answer = new AlgebraAnswer(queries);
-        console.log('algebra answer', algebra_answer);
+        //console.log('algebra answer', algebra_answer);
 
         //convert_algebra()
         var ctx = {};
         algebra_answer.create_sql_script()
             .then(function(result) {
-                console.log('result', result);
+                ctx.answer_sql = result;
+                //console.log('result', result);
 
                 return app.DataBase.execute_sql(db_id, result);
             }).then(function(sql_res) {
-                console.log('query_res', sql_res.result.rows);
-                algebra_answer.student_rows = sql_res.result.rows;
+                //console.log('query_res', sql_res.result.rows);
+                algebra_answer.answer_data = sql_res.result.rows;
+                ctx.answer_data = sql_res.result.rows;
 
                 return app.Question.findById(question_id);
             }).then(function(question) {
+                //TODO проверка прав возвращать ли правильный ответ
+                ctx.right_answer_sql = question.sql_answer;
 
                 return app.DataBase.execute_sql(db_id, question.sql_answer);
             }).then(function(sql_res) {
-                algebra_answer.teacher_rows = sql_res.result.rows;
-                var mark = algebra_answer.check_answer();
+                algebra_answer.right_answer_data = sql_res.result.rows;
+                ctx.right_answer_data = sql_res.result.rows;
+                var mark = algebra_answer.check();
 
-                console.log('!!!!!!!!!!!!!!!!!!mark', mark);
+                //console.log('!!!!!!!!!!!!!!!!!!mark', mark);
+                console.log('!!!!!!!!!!!!!!!!!!ctx', ctx);
+                var result = Object.assign({}, mark, ctx)
 
                 //сверка результатов выполнения двух запросов
-                res.success( mark);
+                res.success(result);
             }).catch(function(err) {
                 console.log('post /trial err', err);
                 res.error(err);

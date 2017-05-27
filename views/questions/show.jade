@@ -16,9 +16,9 @@ block body
                                     .col-md-8
                                         h4.card-title.no-capitalize Информация
                                     .col-md-4
-                                        button#edit.btn-in-table.btn.btn-secondary.btn-sm.float-xs-right(data-edit="disable" title="Редактировать")
-                                            i.font-medium-2.btn-i-hack.icon-edit
-                                            //|Редактировать
+                                        button#edit.btn-in-table.btn.px-1.btn-secondary.float-xs-right(data-edit="disable" title="Редактировать")
+                                            i.btn-i-hack.icon-edit(style="margin-right:0.5rem")
+                                            |Редактировать
 
                                 //h4.card-title Информация
                             .card-body.collapse.in
@@ -60,6 +60,12 @@ block body
                                                     tr
                                                         td Описание базы данных:
                                                         td #{question.database.description}
+                                        .div
+                                            button#sql_right_answer_btn.btn.btn-info.mr-1.float-xs-right(type="button")
+                                                //i.icon-check2
+                                                | Выполнить SQL
+
+
 
 
                     .col-sm-6
@@ -69,13 +75,31 @@ block body
                                  .heading-elements
                                      ul.list-inline.mb-0
                                          li
-                                             a(data-action="expand" title="Развернуть")
-                                                 i.icon-expand2(style="color:#373a3c")
+                                             //a(data-action="expand" title="Развернуть")
+                                                 i.icon-expand2(style="color:#373a3c margin-right:0.5rem")
+                                             a.btn-in-table.btn.px-1.btn-secondary.float-xs-right( data-action="expand" title="Развернуть" style="padding-top:0.2rem; padding-bottom:0.2rem")
+                                                 i.icon-expand2(style="color:#373a3c; margin-right:0.5rem")
+                                                 | Развернуть
                             .card-body.collapse.in
                                 .card-block.card-dashboard
                                     #db_schema_div.text-xs-center
                                         i.fa.fa-spin.fa-spinner
                                         &nbsp; Подождите...
+                        .card
+                            .card-header
+                                h4.card-title.no-capitalize Просмотр результата SQL
+                                //.heading-elements
+                                    ul.list-inline.mb-0
+                                        li
+                                            a(data-action="expand")
+                                                i.icon-expand2
+                            .card-body.collapse.in
+                                .card-block.card-dashboard
+                                    p.courier_new#sql_right_answer_text(style="white-space:pre-line")= question.sql_answer
+                                    #sql_right_answer_data
+                                        .text-xs-center
+                                            i.fa.fa-spin.fa-spinner
+                                            &nbsp; Подождите...
 
 
 
@@ -83,6 +107,7 @@ block append footer
     script.
         var question_id = '#{question.id}';
         var db_id = '#{question.database.id}';
+        var right_answer_data = !{JSON.stringify(question.right_answer_data)};
 
     script(src="/robust-assets/js/components/modal/components-modal.js" type="text/javascript")
 

@@ -17,8 +17,8 @@ block body
                                         h4.card-title.no-capitalize Ответ
                                     .col-md-8
                                         .float-xs-right
-                                            button#help_btn.btn.btn-default.mr-1 Подсказка
-                                            button#sql_answer_btn.btn.btn-default Правильный ответ
+                                            //button#help_btn.btn.btn-default.mr-1 Подсказка
+                                            button#sql_right_answer_btn.btn.btn-secondary Правильный ответ
                             .card-body.collapse.in
                                 .card-block.card-dashboard
                                     p Составьте запрос к базе данных "#{question.database.title}" на 
@@ -49,7 +49,7 @@ block body
                                                         | реляционной алгебре:
                                                     else if (question.query_type == 'TC')
                                                         | исчислении на кортежах:
-                                                textarea#text.form-control(rows="5" name="text" placeholder="" required aria-invalid="false" data-validation-required-message="Данное поле обязательно для заполнения")
+                                                textarea.courier_new#text.form-control(rows="5" name="text" placeholder="" required aria-invalid="false" data-validation-required-message="Данное поле обязательно для заполнения")
                                                 .help-block
                                         .form-actions
                                             //button.btn.btn-default.float-xs-right(type="button")
@@ -80,7 +80,10 @@ block body
                                  .heading-elements
                                      ul.list-inline.mb-0
                                          li
-                                             a(data-action="expand")
+                                             a.btn-in-table.btn.px-1.btn-secondary.float-xs-right( data-action="expand" title="Развернуть" style="padding-top:0.2rem; padding-bottom:0.2rem")
+                                                 i.icon-expand2(style="color:#373a3c; margin-right:0.5rem")
+                                                 | Развернуть
+                                             //a(data-action="expand")
                                                  i.icon-expand2
                             .card-body.collapse.in
                                 .card-block.card-dashboard
@@ -91,23 +94,40 @@ block body
                                         &nbsp; Подождите...
 
 
-                        .card#sql_answer_card(style="display:none")
+                        .card#sql_right_answer_card(style="display:none")
                             .card-header
-                                h4.card-title.no-capitalize Правильный ответ
-                                .heading-elements
+                                h4.card-title.no-capitalize Правильный ответ, заданный на языке SQL
+                                //.heading-elements
                                     ul.list-inline.mb-0
                                         li
                                             a(data-action="expand")
                                                 i.icon-expand2
                             .card-body.collapse.in
                                 .card-block.card-dashboard
-                                    #sql_answer
-                                        label Ответ на языке SQL:
-                                        p= question.sql_answer
-                                    #sql_answer_div.text-xs-center
-                                        i.fa.fa-spin.fa-spinner
-                                        &nbsp; Подождите...
+                                    #sql_right_answer
+                                        //label Ответ на языке SQL:
+                                        p.courier_new#sql_right_answer_text(style="white-space:pre-line")= question.sql_answer
+                                    #sql_right_answer_data
+                                        .text-xs-center
+                                            i.fa.fa-spin.fa-spinner
+                                            &nbsp; Подождите...
 
+                        .card#sql_answer_card(style="display:none")
+                            .card-header
+                                h4.card-title.no-capitalize Результат конвертации вашего ответа на язык SQL
+                                //.heading-elements
+                                    ul.list-inline.mb-0
+                                        li
+                                            a(data-action="expand")
+                                                i.icon-expand2
+                            .card-body.collapse.in
+                                .card-block.card-dashboard
+                                    div
+                                        p.courier_new#sql_answer_text(style="white-space:pre-line")
+                                    #sql_answer_data
+                                        .text-xs-center
+                                            i.fa.fa-spin.fa-spinner
+                                            &nbsp; Подождите...
 
     #new_help_table.hidden-xs-up
         form.form-horizontal(novalidate data-backdrop="static")
@@ -115,8 +135,8 @@ block body
                 .form-group
                     label(name="title" for="delete_btn") 
                         strong Название таблицы
-                    button#delete_btn.btn.btn-danger.ml-1(type="button") Удалить таблицу 
-                    button#delete_btn.btn.btn-default.ml-1(type="button") Посмортеть результат
+                    button#delete_help_table.btn.btn-danger.ml-1(type="button") Удалить таблицу 
+                    //button#delete_btn.btn.btn-default.ml-1(type="button") Посмортеть результат
                 .form-group
                     label(for="alias") Описание запроса
                     textarea.form-control(rows="2" type="text" required name="description" aria-invalid="false" data-validation-required-message="Необходимо ввести алиасы таблиц")
