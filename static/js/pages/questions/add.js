@@ -10,6 +10,23 @@ $(document).ready(function() {
         $form.find('#db_id').val(question.db_id);
         //console.log(question);
 
+        $('#db_schema_div').html('<div id="db_schema_div" class="text-xs-center"><i class="fa fa-spin fa-spinner"></i> Подождите...</div>');
+
+        $.get('/databases/schema/' + question.db_id, function(res) {
+            $('#db_schema_div').html('<img src="/db_schema/' + res.file +
+                 '" style="max-height: 100%;max-width: 100%;" alt="">');
+        }).fail(function(err) {
+            bootbox.alert({
+                message: 'err' + err.message,
+                className: "slideInDown",
+                buttons: {
+                    ok: {
+                        label: "OK",
+                        className: "btn-success"
+                    }
+                }
+            });
+        });
     }
 
 
