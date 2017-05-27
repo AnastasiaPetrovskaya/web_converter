@@ -17,9 +17,9 @@ $(document).ready(function() {
         });
     });
 
-    $("#sql_answer_btn").click(function() {
-        $('#sql_answer_card').show();
-        get_sql_res(db_id,sql_answer, '#sql_answer_div');
+    $("#sql_right_answer_btn").click(function() {
+        $('#sql_right_answer_card').show();
+        get_sql_res(db_id, sql_answer, '#sql_right_answer_data');
     });
 
     $("#add_table").click(function() {
@@ -40,7 +40,15 @@ $(document).ready(function() {
         $("#help_tables_container").find('form:last').find('[name="title"] strong').text(title);
     });
 
-    $("#answer").submit(function(event){
+    $('#help_tables_container').on('click', '#delete_help_table', function() {
+        $(this).parents('form').remove();
+    });
+
+
+
+    $("#answer").submit(function(event) {
+        event.preventDefault();
+
         console.log("submit event");
         var queries = [],
             query_item = {};
@@ -50,7 +58,8 @@ $(document).ready(function() {
                 title: $(this).find('[name="title"] strong').text(),
                 alias: $(this).find('[name="alias"]').val(),
                 target_list: $(this).find('[name="target_list"]').val(),
-                text: $(this).find('[name="text"]').val()
+                text: $(this).find('[name="text"]').val(),
+                description: $(this).find('[name="description"]').val()
             }
             queries.push(query_item);
         });
@@ -59,11 +68,11 @@ $(document).ready(function() {
             title: 'result',
             alias: $('#alias').val(),
             target_list: $('#target_list').val(),
-            text: $('#text').val()
+            text: $('#text').val(),
+            description: $('#description').text(),
         }
         queries.push(query_item);
 
-        event.preventDefault();
         //var target_query = $(this).serialize();
         var data = {
             question_id: question_id,
@@ -84,36 +93,83 @@ $(document).ready(function() {
         }).responseText;
         res = JSON.parse(res);
 
+        event.preventDefault();
         console.log(res);
 
-        return false;
+        //return false;
 
-        /*if (res.success) {
-            bootbox.dialog({
-                className: 'slideInDown',
-                message: 'Вопрос' + '<a class="alert-link" href="/questions/' + res.id + '"> "' + res.title + '"</a> ' + ' добавлен' +
-                '<p>' + '</p>',
-                buttons: { 
-                    'back_to_list': {
-                        label: 'Вернутся к списку вопросов',
-                        className: 'btn-default mr-1',
-                        callback: function() { window.location.assign('/questions'); }
-                    },
-                    'create_new_one': {
-                        label: 'Создать еще один',
-                        className: 'btn-success',
-                        callback: function() { window.location.reload(); }
-                    }
+        if (res.success) {
+            $('#sql_answer_card').show();
+            show_sql_res(res.answer_sql, '#sql_answer_text', res.answer_data, '#sql_answer_data');
+            if (res.right_answer_data && res.right_answer_sql) {
+                $('#sql_right_answer_card').show();
+                show_sql_res(res.right_answer_sql, '#sql_right_answer_text', res.right_answer_data, '#sql_right_answer_data');
+            }
+
+
+            if (res.mark > 0) {
+                bootbox.dialog({
+                    className: 'slideInDown success mb-2',
+                    onEscape: true,
+                    backdrop: true,
+                    message: 'Правильный ответ!',
+                    buttons: {}
+                });
+            } else {
+                var msg = 'Неправильный ответ! ';
+                if (res.comment) {
+                    msg += res.comment;
                 }
 
-            });
+                bootbox.dialog({
+                    className: 'slideInDown fail mb-2',
+                    onEscape: true,
+                    backdrop: true,
+                    message: msg,
+                    buttons: {}
+                });
+            }
         } else {
             console.log(res);
             //$successButton.html(lang.add).prop('disabled', false);
             bootboxError(res.error);
             return false;
-        }*/
+        }
     });
+
+
+    var show_sql_res = function(sql, sql_selector, rows, rows_selector) {
+        $(sql_selector).text(sql);
+
+       if (rows.length > 0) {
+           var fields = [],
+               query_data = rows;
+
+           for (key in query_data[0]) {
+               if (key.toLowerCase().indexOf('id') != -1 || key.toLowerCase().indexOf('ид') != -1)
+                   fields.push({ name: key, type: "text", editing: false});
+               else if (key.toLowerCase().indexOf('date') != -1 || key.toLowerCase().indexOf('дата') != -1)
+                   fields.push({ name: key, type: "date"});
+               else
+                   fields.push({ name: key, type: "text"});
+           }
+
+           $(rows_selector).jsGrid({
+               width: "100%",
+               sorting: true,
+               paging: true,
+               pageSize: 15,
+               pageButtonCount: 5,
+               pagerFormat: "Страницы: {pages}",
+               data: query_data,
+               fields: fields,
+           });
+
+       } else {
+           $(rows_selector).val('Запрос не дал результатов');
+       }
+    };
+
 
 
 });

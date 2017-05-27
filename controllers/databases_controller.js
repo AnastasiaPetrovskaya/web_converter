@@ -97,7 +97,7 @@ var post = {
                     res.success({});
                 }).catch(function(err) {
                     console.log('err', err);
-                    res.error('Error', err);
+                    res.error(err);
                 });
         });
     },

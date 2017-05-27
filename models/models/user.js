@@ -8,7 +8,7 @@ var User = sequelize.define(
     },
     {
         tableName: 'users',
-        paranoid: true,
+        //paranoid: true,
         timestamps: true,
         createdAt: 'created',
         updatedAt: 'updated',

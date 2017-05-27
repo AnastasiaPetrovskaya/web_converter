@@ -4,15 +4,15 @@ var Question = sequelize.define(
         title: {type: Sequelize.STRING, allowNull: false},
         tag: {type: Sequelize.STRING, allowNull: true},
         query_type: {type: Sequelize.ENUM('RA', 'TC'), allowNull: false},
-        text: {type: Sequelize.STRING, allowNull: false},
-        sql_answer: {type: Sequelize.STRING, allowNull: false},
+        text: {type: Sequelize.TEXT, allowNull: false},
+        sql_answer: {type: Sequelize.TEXT, allowNull: false},
         help: {type: Sequelize.STRING, allowNull: true},
         last_using: {type: Sequelize.DATE , allowNull: true},
         db_type: {type: Sequelize.ENUM('test', 'prepare', 'common', 'private'), allowNull: false}
     },
     {
         tableName: 'question',
-        paranoid: true,
+        //paranoid: true,
         timestamps: true,
         createdAt: 'created',
         updatedAt: 'updated',

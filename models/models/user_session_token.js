@@ -8,7 +8,7 @@ var Token = sequelize.define('token',
     },
     {
         tableName: 'tokens',
-        paranoid: true,
+        //paranoid: true,
         timestamps: true,
         createdAt: 'created',
         updatedAt: 'updated',

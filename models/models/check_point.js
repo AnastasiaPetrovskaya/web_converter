@@ -9,7 +9,7 @@ var CheckPoint = sequelize.define(
     },
     {
         tableName: 'check_point',
-        paranoid: true,
+        //paranoid: true,
         timestamps: true,
         createdAt: 'created',
         updatedAt: 'updated',

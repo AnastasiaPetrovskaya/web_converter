@@ -65,4 +65,42 @@ $(document).ready(function() {
         });
     });
 
+
+
+    if (window.right_answer_data) {
+
+       if (right_answer_data.length > 0) {
+           var fields = [],
+               query_data = right_answer_data;
+
+           for (key in query_data[0]) {
+               if (key.toLowerCase().indexOf('id') != -1 || key.toLowerCase().indexOf('ид') != -1)
+                   fields.push({ name: key, type: "text", editing: false});
+               else if (key.toLowerCase().indexOf('date') != -1 || key.toLowerCase().indexOf('дата') != -1)
+                   fields.push({ name: key, type: "date"});
+               else
+                   fields.push({ name: key, type: "text"});
+           }
+
+           $('#sql_right_answer_data').jsGrid({
+               width: "100%",
+               sorting: true,
+               paging: true,
+               pageSize: 15,
+               pageButtonCount: 5,
+               pagerFormat: "Страницы: {pages}",
+               data: query_data,
+               fields: fields,
+           });
+
+       } else {
+           $('#sql_right_answer_data').val('Запрос не дал результатов');
+       }
+    };
+
+
+    $("#sql_right_answer_btn").click(function() {
+        get_sql_res(db_id, $('[data-name="sql_answer"]').text(), '#sql_right_answer_data');
+    });
+
 });

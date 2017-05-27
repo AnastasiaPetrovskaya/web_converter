@@ -5,7 +5,7 @@ var Table = sequelize.define(
     },
     {
         tableName: 'table',
-        paranoid: true,
+        //paranoid: true,
         timestamps: true,
         createdAt: 'created',
         updatedAt: 'updated',

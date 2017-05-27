@@ -11,8 +11,8 @@ $(document).ready(function(){
         formData.append('type', $('#type').val());
         formData.append('note', $('#mdb_note').val());
 
-        $('#submit').prop('disabled', true);
-        //$('#submit').html('<i class="fa fa-spin fa-spinner"></i>');
+        $('.modal #btn_submit').prop('disabled', true);
+        $('.modal #btn_submit').html('<i class="icon-spinner spinner"></i>');
 
         var res = $.ajax({
             url: '/databases/add',
@@ -26,6 +26,8 @@ $(document).ready(function(){
         }).responseText;
 
         res = JSON.parse(res);
+        $('#btn_submit').prop('disabled', false);
+        $('#btn_submit').html('Создать');
 
         if (res.success) {
             $("#mdb_2_psql").modal('hide');
@@ -48,7 +50,6 @@ $(document).ready(function(){
             });
         } else {
             console.log('res', res);
-            $('#submit').prop('disabled', false);
             bootboxError('Ошибка добавления новой базы данных. ' + res.error);
         }
 

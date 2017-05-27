@@ -59,6 +59,7 @@ module.exports = function (models) {
                                 });
                             }
                         });
+                        pg.end();
                     });
 
                 }).then(function(result) {
@@ -77,7 +78,7 @@ module.exports = function (models) {
                     return ctx.db;
                 }).catch(function(err) {
                     console.log('make db method err', err);
-                    throw {message: err};
+                    throw err;
                 });
         });
     },
@@ -151,7 +152,13 @@ module.exports = function (models) {
                 return {result: result, db: ctx.db, sql: sql};
             }).catch(function(err) {
                 console.log('execute sql err', err);
-                throw  {message: err.message};
+                var obj = {};
+                if (err.position)
+                    obj.sql_err_position = err.position;
+                obj.message = err.message;
+                obj.sql = sql;
+
+                throw  obj;
             });
     },
 
@@ -215,6 +222,7 @@ module.exports = function (models) {
                         });
                     });
                 }).then(function(result) {
+                    pg.end();
                     console.log('result get tables data', result);
                     return  {tables_data: ctx.tables_data, db_id: ctx.db.id};
                 }).catch(function(err) {

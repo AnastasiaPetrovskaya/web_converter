@@ -103,6 +103,12 @@
         $('a[data-action="expand"]').on('click',function(e){
             e.preventDefault();
             $(this).closest('.card').find('[data-action="expand"] i').toggleClass('icon-expand2 icon-contract');
+            if ($(this).closest('.card').find('[data-action="expand"] i').hasClass('icon-expand2')) {
+                $(this).closest('.card').find('[data-action="expand"]').html('<i style="color:#373a3c; margin-right:0.5rem" class="icon-expand2"></i> Развернуть');
+            } else {
+                $(this).closest('.card').find('[data-action="expand"]').html('<i style="color:#373a3c; margin-right:0.5rem" class="icon-contract"></i> Свернуть');
+            }
+
             $(this).closest('.card').toggleClass('card-fullscreen');
         });
 

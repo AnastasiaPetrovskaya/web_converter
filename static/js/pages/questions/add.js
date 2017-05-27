@@ -1,5 +1,19 @@
-$(document).ready(function(){
-    $("#new_question").submit(function(event){
+$(document).ready(function() {
+    var $form = $("#new_question");
+    if (question) {
+        $form.find('#title').val(question.title + '(копия)');
+        $form.find('#tag').val(question.tag);
+        $form.find('#text').val(question.text);
+        $form.find('#sql_answer').val(question.sql_answer);
+        $form.find('#help').val(question.help);
+        $form.find('#query_type').val(question.query_type);
+        $form.find('#db_id').val(question.db_id);
+        //console.log(question);
+
+    }
+
+
+    $form.submit(function(event){
         console.log("submit event");
 
         event.preventDefault();
@@ -36,7 +50,8 @@ $(document).ready(function(){
                     'create_new_one': {
                         label: 'Создать еще один',
                         className: 'btn-success',
-                        callback: function() { 
+                        callback: function() {
+                            bootbox.hideAll();
                             return false;
                             //window.location.reload(); 
                         }
@@ -110,7 +125,7 @@ $(document).ready(function(){
         }
 
 
-        $('#sql_answer_div').html('<div id="db_schema_div" class="text-xs-center"><i class="fa fa-spin fa-spinner"></i> Подождите...</div>');
+        $('#sql_answer_div').html('<div class="text-xs-center"><i class="fa fa-spin fa-spinner"></i> Подождите...</div>');
 
 
         var res = $.ajax({
@@ -200,12 +215,21 @@ $(document).ready(function(){
                 });
 
             } else {
-                $('#sql_answer_div').val('Запрос не дал результатов');
+                $('#sql_answer_div').html('<div class="text-xs-center"> Ваш запрос не дал результатов</div>');
             }
         } else {
             console.log(res);
-            //$successButton.html(lang.add).prop('disabled', false);
-            bootboxError(res.error);
+            var err_html = '<p>'+ res.error + '</p><p>' + 
+                        res.sql.substring(0, res.sql_err_position - 1) + 
+                        '<kbd>' + res.sql.substr(+res.sql_err_position - 1, 1) +
+                        '</kbd>' + res.sql.substr(+res.sql_err_position) + '</p>';
+            $('#sql_answer_div').html(err_html);
+
+            if (res.sql && res.sql_err_position) {
+                bootboxError(err_html);
+            } else {
+                bootboxError(res.error);
+            }
             return false;
         }
     });

@@ -8,7 +8,7 @@ var DataBase = sequelize.define(
     },
     {
         tableName: 'database',
-        paranoid: true,
+        //paranoid: true,
         timestamps: true,
         createdAt: 'created',
         updatedAt: 'updated',
