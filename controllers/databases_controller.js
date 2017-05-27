@@ -106,6 +106,7 @@ var post = {
         var res_data = {};
 
         var sql = req.body.sql;
+        sql = sql.replace(/\"/g, "'");
         var db = Number(req.params.id);;
 
         app.DataBase.execute_sql(db, sql)
