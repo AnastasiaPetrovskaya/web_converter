@@ -1,6 +1,10 @@
 {
  "dev": {
-    "port": 2006
+    "port": 2004,
+    "check_auth": {
+        "redirect": "/login",
+        "cache": true
+    }
  },
  "test": {
     "port": 2004,
