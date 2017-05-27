@@ -114,6 +114,9 @@ var post = {
         var question_data = req.body;
         console.log('question_data', question_data);
         question_data.owner_id = req.user.id;
+        if (question_data.sql_answer) {
+            question_data.sql_answer = question_data.sql_answer.replace(/\"/g, "'");
+        }
 
         app.Question.make(question_data)
             .then(function(question) {
@@ -207,6 +210,10 @@ var put = {
         delete data.db_id;
         delete data.db_title;
         delete data.deleted;
+
+        if (data.sql_answer) {
+            data.sql_answer = data.sql_answer.replace(/\"/g, "'");
+        }
 
         console.log('data', data);
         app.Question.update(

@@ -65,7 +65,7 @@ block body
                                                     .help-block
                                                 .form-group
                                                     label(for="sql_answer") Ответ в формате SQL запроса
-                                                    textarea#sql_answer.form-control(rows="6" name="sql_answer" placeholder="" required aria-invalid="false" data-validation-required-message="Данное поле обязательно для заполнения")
+                                                    textarea#sql_answer.form-control(rows="10" name="sql_answer" placeholder="" required aria-invalid="false" data-validation-required-message="Данное поле обязательно для заполнения")
                                                     .help-block
                                                 .form-group
                                                     label(for="help") Подсказка (Опциональное поле)
@@ -110,7 +110,7 @@ block body
                                                     i.icon-expand2
                                 .card-body.collapse.in
                                     .card-block.card-dashboard
-                                        #sql_query_text
+                                        #sql_query_text(style="white-space:pre-line")
                                         #sql_answer_div
                                             .text-xs-center
                                                 | После выбора базы данных и ввода ответа в формате SQL в можете получить результат выполнения запроса. ()
