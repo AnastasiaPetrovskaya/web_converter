@@ -23,6 +23,8 @@ var http = app.http;
 http.set_static(path.join(__dirname, 'static')); /* node-common function */
 http.set('views', path.join(__dirname, 'views'));
 http.set('view engine', 'jade');
+
+require('./lib/application_helper');
 http.require_controller('auth');
 http.require_controller('banks');
 http.require_controller('clients');

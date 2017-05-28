@@ -12,6 +12,12 @@ $(document).ready(function() {
         $("#copy_question").attr("href", "/questions/copy/" + question_id);
     });
 
+    $(document).on('click', '#questions_table ul.pagination a.page-link', function(e) {
+        options.page = e.target.innerHTML;
+        getTable('/questions/table', options, '#questions_table');
+    });
+
+
     $('#copy_question').click(function(e) {
         if (!question_id) {
             e.preventDefault()

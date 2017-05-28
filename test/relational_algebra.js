@@ -18,7 +18,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: "X[X.Nгр = Y.Nгр]Y[X.Nгр, X.Фио, Y.Спец]"
+                query_body: "X[X.Nгр = Y.Nгр]Y[X.Nгр, X.Фио, Y.Спец]"
             });
 
             query.proection_transformation()
@@ -40,7 +40,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: "X[X.Nгр = Y.Nгр]Y"
+                query_body: "X[X.Nгр = Y.Nгр]Y"
             });
 
             query.proection_transformation()
@@ -62,7 +62,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: "((Z[Z.Nз, Z.Nгр])[X.Nгр = Z.Nгр])X[X.Nгр = Y.Nгр]Y"
+                query_body: "((Z[Z.Nз, Z.Nгр])[X.Nгр = Z.Nгр])X[X.Nгр = Y.Nгр]Y"
             });
 
             query.proection_transformation()
@@ -87,7 +87,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: "((X*Y)*Z)"
+                query_body: "((X*Y)*Z)"
             });
 
             query.multiplication_transformation()
@@ -106,7 +106,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: "(X*(Y*Z))"
+                query_body: "(X*(Y*Z))"
             });
 
             query.multiplication_transformation()
@@ -125,7 +125,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: "((X*T)*(Y*Z))"
+                query_body: "((X*T)*(Y*Z))"
             });
 
             query.multiplication_transformation()
@@ -144,7 +144,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: "((X*T)*((Y*Z)*S))"
+                query_body: "((X*T)*((Y*Z)*S))"
             });
 
             query.multiplication_transformation()
@@ -163,7 +163,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: "(X*T)"
+                query_body: "(X*T)"
             });
 
             query.multiplication_transformation()
@@ -182,13 +182,13 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: '(Z*(X[X.Nгр="224"]))'
+                query_body: "(Z*(X[X.Nгр='224']))"
             });
 
             query.multiplication_transformation()
             .then(function(res) {
                 //console.log('query', query);
-                assert.equal(query.query_body, '((Z*X)[X.Nгр="224"])');
+                assert.equal(query.query_body, "((Z*X)[X.Nгр='224'])");
                 done();
             }).catch(function(err) {
                 //console.log('err', err);
@@ -201,13 +201,13 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: '((Z*Y)*(X[X.Nгр="224"]))'
+                query_body: "((Z*Y)*(X[X.Nгр='224']))"
             });
 
             query.multiplication_transformation()
             .then(function(res) {
                 //console.log('query', query);
-                assert.equal(query.query_body, '((Z*Y*X)[X.Nгр="224"])');
+                assert.equal(query.query_body, "((Z*Y*X)[X.Nгр='224'])");
                 done();
             }).catch(function(err) {
                 //console.log('err', err);
@@ -220,13 +220,13 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: '(((Z*Y)[Y.Nгр="224"])*X)'
+                query_body: "(((Z*Y)[Y.Nгр='224'])*X)"
             });
 
             query.multiplication_transformation()
             .then(function(res) {
                 //console.log('query', query);
-                assert.equal(query.query_body, '((Z*Y*X)[Y.Nгр="224"])');
+                assert.equal(query.query_body, "((Z*Y*X)[Y.Nгр='224'])");
                 done();
             }).catch(function(err) {
                 //console.log('err', err);
@@ -239,13 +239,13 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: '((X[X.Nгр="224"])*(Y*Z))'
+                query_body: "((X[X.Nгр='224'])*(Y*Z))"
             });
 
             query.multiplication_transformation()
             .then(function(res) {
                 //console.log('query', query);
-                assert.equal(query.query_body, '((X*Y*Z)[X.Nгр="224"])');
+                assert.equal(query.query_body, "((X*Y*Z)[X.Nгр='224'])");
                 done();
             }).catch(function(err) {
                 //console.log('err', err);
@@ -258,7 +258,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: '((X[X.Возр>18])*((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z)'
+                query_body: '((X[X.Возр>18])*((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z)'
                     });
 
                 query.multiplication_transformation()
@@ -280,7 +280,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: "((X[X.Возр>18])*((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z))"
+                    query_body: "((X[X.Возр>18])*((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z))"
                 });
 
                 query.concatenate_selection()
@@ -301,7 +301,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: "((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z)"
+                    query_body: "((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z)"
                 });
 
                 query.concatenate_selection()
@@ -322,7 +322,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: '(((X[X.Возр>18])*((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z))[Z.Спец="Прикладнаяматематика"])'
+                    query_body: "(((X[X.Возр>18])*((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z))[Z.Спец='Прикладнаяматематика'])"
                 });
 
                 query.concatenate_selection()
@@ -330,7 +330,7 @@ describe('Algebra', function() {
                     //console.log("res", res);
                     //console.log('query', query);
 
-                    assert.equal(query.query_body, '(((X[X.Возр>18])*(Y[(Y.Boзр<20)AND(Y.Nз=Z.Nз)]Z))[Z.Спец="Прикладнаяматематика"])');
+                    assert.equal(query.query_body, "(((X[X.Возр>18])*(Y[(Y.Boзр<20)AND(Y.Nз=Z.Nз)]Z))[Z.Спец='Прикладнаяматематика'])");
                     done();
                 }).catch(function(err) {
                     //console.log('err', err);
@@ -343,7 +343,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: "(((Y[X.Nгр=Y.Nгр]X)[Y.Boзр<20])[Y.Nз=Z.Nз]Z)"
+                    query_body: "(((Y[X.Nгр=Y.Nгр]X)[Y.Boзр<20])[Y.Nз=Z.Nз]Z)"
                 });
 
                 query.concatenate_selection()
@@ -367,7 +367,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: "((((Y*X))*(Z))[(X.Nгр=Y.Nгр)AND((Y.Boзр<20)AND(Y.Nз=Z.Nз))])"
+                    query_body: "((((Y*X))*(Z))[(X.Nгр=Y.Nгр)AND((Y.Boзр<20)AND(Y.Nз=Z.Nз))])"
                 });
 
                 query.delete_double_brackets()
@@ -388,7 +388,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: "((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z)"
+                    query_body: "((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z)"
                 });
 
                 query.delete_double_brackets()
@@ -407,7 +407,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: '(((X*((Y[Y.Boзр<20]))))[Z.Спец="Прикладнаяматематика"])'
+                    query_body: "(((X*((Y[Y.Boзр<20]))))[Z.Спец='Прикладная математика'])"
                 });
 
                 query.delete_double_brackets()
@@ -415,7 +415,7 @@ describe('Algebra', function() {
                     //console.log("res", res);
                     //console.log('query', query);
 
-                    assert.equal(query.query_body, '((X*(Y[Y.Boзр<20]))[Z.Спец="Прикладнаяматематика"])');
+                    assert.equal(query.query_body, "((X*(Y[Y.Boзр<20]))[Z.Спец='Прикладная математика'])");
                 }).catch(function(err) {
                     //console.log('err', err);
                 });
@@ -426,7 +426,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: "((((Y[X.Nгр=Y.Nгр]X))))"
+                    query_body: "((((Y[X.Nгр=Y.Nгр]X))))"
                 });
 
                 query.delete_double_brackets()
@@ -447,7 +447,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: '((((Y[Y.Спец="Прикладная математика"]))))'
+                    query_body: "((((Y[Y.Спец='Прикладнаяматематика']))))"
                 });
 
                 query.delete_double_brackets()
@@ -455,7 +455,7 @@ describe('Algebra', function() {
                     //console.log("res", res);
                     //console.log('query', query);
 
-                    assert.equal(query.query_body, '(Y[Y.Спец="Прикладная математика"])');
+                    assert.equal(query.query_body, "(Y[Y.Спец='Прикладнаяматематика'])");
                     done();
                 }).catch(function(err) {
                     //console.log('err', err);
@@ -471,7 +471,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: "((((Y*X))*(Z))[(X.Nгр=Y.Nгр)AND((Y.Boзр<20)AND(Y.Nз=Z.Nз))])"
+                    query_body: "((((Y*X))*(Z))[(X.Nгр=Y.Nгр)AND((Y.Boзр<20)AND(Y.Nз=Z.Nз))])"
                 });
 
                 query.delete_extra_brackets()
@@ -492,7 +492,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: '((X*Y*Z)[((X.Возр>18)AND(Y.Boзр<20ANDY.Nз=Z.Nз))AND(Z.Спец="Прикладнаяматематика")])'
+                    query_body: '((X*Y*Z)[((X.Возр>18)AND(Y.Boзр<20ANDY.Nз=Z.Nз))AND(Z.Спец="Прикладнаяматематика")])'
                 });
 
                 query.delete_extra_brackets()
@@ -511,7 +511,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: '(Y[X.Nгр=Y.Nгр]X)'
+                    query_body: '(Y[X.Nгр=Y.Nгр]X)'
                 });
 
                 query.delete_extra_brackets()
@@ -530,7 +530,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: "[(X.Возр>20ORX.Возр<23)ORX.Nгр=Y.Nгр]"
+                    query_body: "[(X.Возр>20ORX.Возр<23)ORX.Nгр=Y.Nгр]"
                 });
 
                 query.delete_extra_brackets()
@@ -551,7 +551,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: "[X.Возр>20OR(X.Возр<23ORX.Nгр=Y.Nгр)]"
+                    query_body: "[X.Возр>20OR(X.Возр<23ORX.Nгр=Y.Nгр)]"
                 });
 
                 query.delete_extra_brackets()
@@ -572,7 +572,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: '[(X.Возр>20ANDX.Возр<23)ANDX.Nгр=Y.Nгр]'
+                    query_body: '[(X.Возр>20ANDX.Возр<23)ANDX.Nгр=Y.Nгр]'
                 });
 
                 query.delete_extra_brackets()
@@ -593,7 +593,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: '(X.Nгр="5"AND((X.Спец="04"ORX.Спец="05")ANDX.ГодВыпуска="2016")AND(X.Возр>23ANDX.Возр<25))'
+                    query_body: '(X.Nгр="5"AND((X.Спец="04"ORX.Спец="05")ANDX.ГодВыпуска="2016")AND(X.Возр>23ANDX.Возр<25))'
                 });
 
                 query.delete_extra_brackets()
@@ -614,7 +614,7 @@ describe('Algebra', function() {
                     title: "test",
                     alias: "",
                     target_list: "",
-                    text: '(X.Nгр="5"AND(((X.Спец="04"AND(X.ГодВыпуска="2015"OR(X.ГодВыпуска="2013"ORX.ГодВыпуска="2011")))OR(X.Спец="05"AND(X.ГодВыпуска="2014"ANDX.ФИО="Петров")))ORX.ГодВыпуска="2016")AND(X.Возр>23ANDX.Возр<25))'
+                    query_body: '(X.Nгр="5"AND(((X.Спец="04"AND(X.ГодВыпуска="2015"OR(X.ГодВыпуска="2013"ORX.ГодВыпуска="2011")))OR(X.Спец="05"AND(X.ГодВыпуска="2014"ANDX.ФИО="Петров")))ORX.ГодВыпуска="2016")AND(X.Возр>23ANDX.Возр<25))'
 
                 });
 
@@ -639,7 +639,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: "((X[X.Возр>18])*((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z))"
+                query_body: "((X[X.Возр>18])*((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z))"
             });
 
             query.connection_transformation()
@@ -660,7 +660,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: "((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z)"
+                query_body: "((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z)"
             });
 
             query.connection_transformation()
@@ -681,7 +681,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: '(((X[X.Возр>18])*((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z))[Z.Спец="Прикладнаяматематика"])'
+                query_body: '(((X[X.Возр>18])*((Y[Y.Boзр<20])[Y.Nз=Z.Nз]Z))[Z.Спец="Прикладнаяматематика"])'
             });
 
             query.connection_transformation()
@@ -702,7 +702,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: "(((Y[X.Nгр=Y.Nгр]X)[Y.Boзр<20])[Y.Nз=Z.Nз]Z)"
+                query_body: "(((Y[X.Nгр=Y.Nгр]X)[Y.Boзр<20])[Y.Nз=Z.Nз]Z)"
             });
 
             query.connection_transformation()
@@ -726,7 +726,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: '(X[X.Nгр="5"AND(X.Спец="04"ORX.Спец="05")ANDX.ГодВыпуска="2016"ANDX.Возр>23ANDX.Возр<25])'
+                query_body: '(X[X.Nгр="5"AND(X.Спец="04"ORX.Спец="05")ANDX.ГодВыпуска="2016"ANDX.Возр>23ANDX.Возр<25])'
             });
             var selection = 'X.Nгр="5"AND(X.Спец="04"ORX.Спец="05")ANDX.ГодВыпуска="2016"ANDX.Возр>23ANDX.Возр<25';
 
@@ -751,7 +751,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: '(X[X.Nгр="5"AND(((X.Спец="04"AND(X.ГодВыпуска="2015"OR(X.ГодВыпуска="2013"ORX.ГодВыпуска="2011")))OR(X.Спец="05"AND(X.ГодВыпуска="2014"ANDX.ФИО="Петров")))ORX.ГодВыпуска="2016")AND(X.Возр>23ANDX.Возр<25)])'
+                query_body: '(X[X.Nгр="5"AND(((X.Спец="04"AND(X.ГодВыпуска="2015"OR(X.ГодВыпуска="2013"ORX.ГодВыпуска="2011")))OR(X.Спец="05"AND(X.ГодВыпуска="2014"ANDX.ФИО="Петров")))ORX.ГодВыпуска="2016")AND(X.Возр>23ANDX.Возр<25)])'
             });
             var selection = 'X.Nгр="5"AND((X.Спец="04"AND(X.ГодВыпуска="2015"ORX.ГодВыпуска="2013"ORX.ГодВыпуска="2011"))OR(X.Спец="05"ANDX.ГодВыпуска="2014"ANDX.ФИО="Петров")ORX.ГодВыпуска="2016")ANDX.Возр>23ANDX.Возр<25';
 
@@ -775,7 +775,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: '((Y*Z)[Y.Boзр<20ANDY.Nз=Z.Nз])'
+                query_body: '((Y*Z)[Y.Boзр<20ANDY.Nз=Z.Nз])'
             });
             var selection = 'Y.Boзр<20ANDY.Nз=Z.Nз';
 
@@ -799,7 +799,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: '((Y*Z)[X.Возр>20ORX.Возр<23ORX.Nгр=Y.Nгр])'
+                query_body: '((Y*Z)[X.Возр>20ORX.Возр<23ORX.Nгр=Y.Nгр])'
             });
             var selection = 'X.Возр>20ORX.Возр<23ORX.Nгр=Y.Nгр';
 
@@ -822,7 +822,7 @@ describe('Algebra', function() {
                 title: "test",
                 alias: "",
                 target_list: "",
-                text: '(Y*Z)'
+                query_body: '(Y*Z)'
             });
             var selection = '';
 

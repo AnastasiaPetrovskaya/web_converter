@@ -10,7 +10,7 @@ describe('Algebra full convertion', function() {
                 title: "test",
                 alias: "Студент AS X",
                 target_list: "*",
-                text: '(X)'
+                query_body: '(X)'
             });
 
             query.convert()
@@ -31,7 +31,7 @@ describe('Algebra full convertion', function() {
                 title: "test",
                 alias: "Студент AS X",
                 target_list: "X.*",
-                text: '(X)'
+                query_body: '(X)'
             });
 
             query.convert()
@@ -52,7 +52,7 @@ describe('Algebra full convertion', function() {
                 title: "test",
                 alias: "Студент AS X",
                 target_list: "X.*",
-                text: '(X[X.Nгр = "K5-224"])'
+                query_body: '(X[X.Nгр = "K5-224"])'
             });
 
             query.convert()
@@ -60,7 +60,7 @@ describe('Algebra full convertion', function() {
                     //console.log("res", res);
                     //console.log('query', query);
 
-                    assert.equal(query.sql.replace(/\s/g,''), 'SELECT DISTINCT X.* FROM СтудентAS X WHERE X.Nгр = "K5-224";'.replace(/\s/g,''));
+                    assert.equal(query.sql.replace(/\s/g,''), "SELECT DISTINCT X.* FROM СтудентAS X WHERE X.Nгр = 'K5-224';".replace(/\s/g,''));
                     done();
                 }).catch(function(err) {
                     done(err);
@@ -73,7 +73,7 @@ describe('Algebra full convertion', function() {
                 title: "test",
                 alias: "Студент AS X",
                 target_list: "X.Фио, X.Nз",
-                text: '(X[X.Nгр = "K5-224"])'
+                query_body: '(X[X.Nгр = "K5-224"])'
             });
 
             query.convert()
@@ -81,7 +81,7 @@ describe('Algebra full convertion', function() {
                     //console.log("res", res);
                     //console.log('query', query);
 
-                    assert.equal(query.sql.replace(/\s/g,''), 'SELECT DISTINCT X.Фио, X.Nз FROM СтудентAS X WHERE X.Nгр = "K5-224";'.replace(/\s/g,''));
+                    assert.equal(query.sql.replace(/\s/g,''), "SELECT DISTINCT X.Фио, X.Nз FROM СтудентAS X WHERE X.Nгр = 'K5-224';".replace(/\s/g,''));
                     done();
                 }).catch(function(err) {
                     done(err);
@@ -94,7 +94,7 @@ describe('Algebra full convertion', function() {
                 title: "test",
                 alias: "Студент AS X, Группа AS Y",
                 target_list: "X.Фио, X.Nз",
-                text: '(X[X.Nгр = "K5-224" AND X.Nгр = Y.Nгр]Y)'
+                query_body: '(X[X.Nгр = "K5-224" AND X.Nгр = Y.Nгр]Y)'
             });
 
             query.convert()
@@ -102,7 +102,7 @@ describe('Algebra full convertion', function() {
                     //console.log("res", res);
                     //console.log('query', query);
 
-                    assert.equal(query.sql.replace(/\s/g,''), 'SELECT DISTINCT X.Фио, X.Nз FROM СтудентAS X WHERE X.Nгр = "K5-224" AND EXISTS (SELECT * FROM Группа AS Y WHERE X.Nгр = Y.Nгр);'.replace(/\s/g,''));
+                    assert.equal(query.sql.replace(/\s/g,''), "SELECT DISTINCT X.Фио, X.Nз FROM СтудентAS X WHERE X.Nгр = 'K5-224' AND EXISTS (SELECT * FROM Группа AS Y WHERE X.Nгр = Y.Nгр);".replace(/\s/g,''));
                     done();
                 }).catch(function(err) {
                     done(err);
@@ -115,7 +115,7 @@ describe('Algebra full convertion', function() {
                 title: "test",
                 alias: "Студент AS X, Группа AS Y",
                 target_list: "X.Фио, X.Nз",
-                text: '(X[(Y.Спец="04" OR Y.Cпец="05") AND X.Nгр = Y.Nгр]Y)'
+                query_body: '(X[(Y.Спец="04" OR Y.Cпец="05") AND X.Nгр = Y.Nгр]Y)'
             });
 
             query.convert()
@@ -123,7 +123,7 @@ describe('Algebra full convertion', function() {
                     //console.log("res", res);
                     //console.log('query', query);
 
-                    assert.equal(query.sql.replace(/\s/g,''), 'SELECT DISTINCT X.Фио, X.Nз FROM СтудентAS X WHERE EXISTS (SELECT * FROM Группа AS Y WHERE (Y.Спец="04" OR Y.Cпец="05") AND X.Nгр = Y.Nгр);'.replace(/\s/g,''));
+                    assert.equal(query.sql.replace(/\s/g,''), "SELECT DISTINCT X.Фио, X.Nз FROM СтудентAS X WHERE EXISTS (SELECT * FROM Группа AS Y WHERE (Y.Спец='04' OR Y.Cпец='05') AND X.Nгр = Y.Nгр);".replace(/\s/g,''));
                     done();
                 }).catch(function(err) {
                     done(err);
@@ -136,7 +136,7 @@ describe('Algebra full convertion', function() {
                 title: "test",
                 alias: "Студенты AS X, Успеваемость AS Y",
                 target_list: "X.Нз, X.Фио, Y.ИдК",
-                text: '((X [X.Гр = "К05-224"]) [X.Нз = Y.Нз] (Y [Y.Оцн = "удовл"]))'
+                query_body: "((X [X.Гр = 'К05-224']) [X.Нз = Y.Нз] (Y [Y.Оцн = 'удовл']))"
             });
 
             query.convert()
@@ -144,7 +144,7 @@ describe('Algebra full convertion', function() {
                     //console.log("res", res);
                     //console.log('query', query);
 
-                    assert.equal(query.sql.replace(/\s/g,''), 'SELECT DISTINCT X.Нз, X.Фио, Y.ИдК FROM Студенты AS X, Успеваемость AS Y WHERE Y.Оцн = "удовл" AND X.Гр = "К05-224" AND  X.Нз = Y.Нз;'.replace(/\s/g,''));
+                    assert.equal(query.sql.replace(/\s/g,''), "SELECT DISTINCT X.Нз, X.Фио, Y.ИдК FROM Студенты AS X, Успеваемость AS Y WHERE Y.Оцн = 'удовл' AND X.Гр = 'К05-224' AND  X.Нз = Y.Нз;".replace(/\s/g,''));
                     done();
                 }).catch(function(err) {
                     done(err);
@@ -157,7 +157,7 @@ describe('Algebra full convertion', function() {
                 title: "test",
                 alias: "Расписание_Среда_5сем AS X,Расписание_Среда_5сем AS Y,Расписание_Среда_5сем AS Z,Расписание_Среда_5сем AS W",
                 target_list: "X.НомАуд, X.НомПары, X.Гр, X.ИдК, X.ВидЗан, X.ИдП",
-                text: '(((X[X.НомПары <> Y.НомПары AND X.НомАуд=Y.НомАуд]Y)[X.НомАуд=Z.НомАуд AND X.НомПары<>Z.НомПары AND Y.НомПары<>Z.НомПары]Z)' +
+                query_body: '(((X[X.НомПары <> Y.НомПары AND X.НомАуд=Y.НомАуд]Y)[X.НомАуд=Z.НомАуд AND X.НомПары<>Z.НомПары AND Y.НомПары<>Z.НомПары]Z)' +
                     '[X.НомАуд=W.НомАуд AND X.НомПары<>W.НомПары AND Y.НомПары<>W.НомПары AND Z.НомПары<>W.НомПары]W)'
             });
 
@@ -182,7 +182,7 @@ describe('Algebra full convertion', function() {
                 title: "test",
                 alias: "Успеваемость AS A,ОтчетГруппы AS B",
                 target_list: "A.Нз,A.ИдК,A.Семестр",
-                text: '(A[A.Гр="К05-221" AND A.Оцн<>"неуд" AND B.ВидОтч="Экзамен" AND A.Гр=B.Гр AND A.ИдК=B.ИдК AND A.УчНед<B.УчНед AND A.ВидОтч="Экзамен"]B)'
+                query_body: '(A[A.Гр="К05-221" AND A.Оцн<>"неуд" AND B.ВидОтч="Экзамен" AND A.Гр=B.Гр AND A.ИдК=B.ИдК AND A.УчНед<B.УчНед AND A.ВидОтч="Экзамен"]B)'
             });
 
             query.convert()
@@ -191,9 +191,9 @@ describe('Algebra full convertion', function() {
                     //console.log('query', query);
 
                     assert.equal(query.sql.replace(/\s/g,''), ('SELECT DISTINCT A.Нз, A.ИдК, A.Семестр FROM Успеваемость AS A ' +  
-                            'WHERE A.Гр="К05-221" AND A.Оцн<>"неуд" AND A.ВидОтч="Экзамен" AND EXISTS (' + 
+                            "WHERE A.Гр='К05-221' AND A.Оцн<>'неуд' AND A.ВидОтч='Экзамен' AND EXISTS (" + 
                             'SELECT * FROM ОтчетГруппы AS B WHERE ' + 
-                            'B.ВидОтч="Экзамен" AND A.Гр=B.Гр AND A.ИдК=B.ИдК AND A.УчНед<B.УчНед);').replace(/\s/g,''));
+                            "B.ВидОтч='Экзамен' AND A.Гр=B.Гр AND A.ИдК=B.ИдК AND A.УчНед<B.УчНед);").replace(/\s/g,''));
                     done();
                 }).catch(function(err) {
                     done(err);
@@ -206,7 +206,7 @@ describe('Algebra full convertion', function() {
                 title: "test",
                 alias: "Успеваемость AS A,ОтчетГруппы AS B",
                 target_list: "A.Нз,A.ИдК,A.Семестр",
-                text: '(A[A.Гр="К05-221" AND A.Оцн<>"неуд" AND B.ВидОтч="Экзамен" AND A.Гр=B.Гр AND A.ИдК=B.ИдК AND A.УчНед<B.УчНед AND A.ВидОтч="Экзамен"]B)'
+                query_body: '(A[A.Гр="К05-221" AND A.Оцн<>"неуд" AND B.ВидОтч="Экзамен" AND A.Гр=B.Гр AND A.ИдК=B.ИдК AND A.УчНед<B.УчНед AND A.ВидОтч="Экзамен"]B)'
             });
 
             query.convert()
@@ -215,9 +215,9 @@ describe('Algebra full convertion', function() {
                     //console.log('query', query);
 
                     assert.equal(query.sql.replace(/\s/g,''), ('SELECT DISTINCT A.Нз, A.ИдК, A.Семестр FROM Успеваемость AS A ' +  
-                            'WHERE A.Гр="К05-221" AND A.Оцн<>"неуд" AND A.ВидОтч="Экзамен" AND EXISTS (' + 
+                            "WHERE A.Гр='К05-221' AND A.Оцн<>'неуд' AND A.ВидОтч='Экзамен' AND EXISTS (" + 
                             'SELECT * FROM ОтчетГруппы AS B WHERE ' + 
-                            'B.ВидОтч="Экзамен" AND A.Гр=B.Гр AND A.ИдК=B.ИдК AND A.УчНед<B.УчНед);').replace(/\s/g,''));
+                            "B.ВидОтч='Экзамен' AND A.Гр=B.Гр AND A.ИдК=B.ИдК AND A.УчНед<B.УчНед);").replace(/\s/g,''));
                     done();
                 }).catch(function(err) {
                     done(err);

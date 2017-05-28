@@ -10,7 +10,7 @@ describe('Algebra full convertion', function() {
                 title: "test",
                 alias: "ИгрокиКлубов AS X, ИгрокиКлубов AS Y, ИгрокиКлубов AS Z",
                 target_list: "X.Клуб, X.Фио, X.ДатаРожд, X.Возраст",
-                text: '((X[X.Клуб, X.Фио, X.ДатаРожд, X.Возраст])' +
+                query_body: '((X[X.Клуб, X.Фио, X.ДатаРожд, X.Возраст])' +
                     'EXCEPT' +
                     '((Z[Z.Клуб = Y.Клуб AND Z.Игрок <> Y.Игрок AND Z.ДатаРожд < Y.ДатаРожд]Y)'+ 
                     '[Z.Клуб, Z.Фио, Z.ДатаРожд, Z.Возраст]))',
@@ -42,7 +42,7 @@ describe('Algebra full convertion', function() {
                 description: "Определить группы в которых учатся только девочки",
                 alias: "Студенты AS X, Студенты AS Y",
                 target_list: "X.Нз, X.Фио, X.Гр",
-                text: '((X[X.Нз, X.Фио, X.Гр])EXCEPT((Y[Y.П = "М"])[Y.Нз, Y.Фио, Y.Гр]))'
+                query_body: '((X[X.Нз, X.Фио, X.Гр])EXCEPT((Y[Y.П = "М"])[Y.Нз, Y.Фио, Y.Гр]))'
             });
 
             query.convert()
@@ -55,7 +55,7 @@ describe('Algebra full convertion', function() {
                             'WHERE NOT EXISTS ' +
                             '( SELECT DISTINCT * ' + 
                             'FROM Студенты AS Y ' + 
-                            'WHERE Y.П = "М" AND X.Нз=Y.Нз AND X.Фио=Y.Фио AND X.Гр=Y.Гр );').replace(/\s/g,''));
+                            "WHERE Y.П = 'М' AND X.Нз=Y.Нз AND X.Фио=Y.Фио AND X.Гр=Y.Гр );").replace(/\s/g,''));
                     done();
                 }).catch(function(err) {
                     done(err);
@@ -69,7 +69,7 @@ describe('Algebra full convertion', function() {
                 description: "Сформировать список курсов, которые читаются два или менее семестра.",
                 alias: "ОтчетГруппы AS X,ОтчетГруппы AS Y,ОтчетГруппы AS Z, ОтчетГруппы AS U",
                 target_list: "*",
-                text: '((U[U.ИдК])' + 
+                query_body: '((U[U.ИдК])' + 
                     'EXCEPT(((X[X.ИдК=Y.ИдК AND X.Семестр<>Y.Семестр AND X.Гр=Y.Гр]Y)[X.ИдК=Z.ИдК AND Z.Семестр<>Y.Семестр AND X.Семестр<>Z.Семестр AND X.Гр=Y.Гр AND Z.Гр=Y.Гр]Z)[X.ИдК]))'
             });
 

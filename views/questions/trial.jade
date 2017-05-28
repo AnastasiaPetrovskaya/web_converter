@@ -17,17 +17,25 @@ block body
                                         h4.card-title.no-capitalize Ответ
                                     .col-md-8
                                         .float-xs-right
-                                            //button#help_btn.btn.btn-default.mr-1 Подсказка
+                                            //if (show_help)
+                                            button#help_btn.btn.btn-secondary.mr-1 Подсказка
                                             button#sql_right_answer_btn.btn.btn-secondary Правильный ответ
                             .card-body.collapse.in
                                 .card-block.card-dashboard
+                                    .bs-callout-info.callout-border-left.mb-1.p-1#help(style="display:none")
+                                        strong Подсказка!
+                                        p(style="white-space:pre-wrap")
+                                            if (question.help && question.help != "-")
+                                                = question.help
+                                            else
+                                                Для данного вопроса преподаватель не задал посказку
                                     p Составьте запрос к базе данных "#{question.database.title}" на 
                                         if (question.query_type == 'RA')
                                             strong реляционной алгебре:
                                         else if (question.query_type == 'TC')
                                             strong исчислении на кортежах:
-                                    p#description= question.text
-                                    #help(style="display:none")
+                                    p#description(style="white-space:pre-wrap")= question.text
+                                    //#help(style="display:none")
                                         label Подсказка:
                                         p= question.help
                                     hr

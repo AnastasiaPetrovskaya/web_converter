@@ -1,4 +1,10 @@
 $(document).ready(function() {
+    var options = {};
+
+    $(document).on('click', '#databases_table ul.pagination a.page-link', function(e) {
+        options.page = e.target.innerHTML;
+        getTable('/databases/table', options, '#databases_table');
+    });
 
 
     $('#databases_table').on('click', '#delete', function(event) {
@@ -50,7 +56,7 @@ $(document).ready(function() {
             size: 'large',
             buttons: {
                 cancel: {
-                    label: "Oтмена",
+                    label: "Закрыть",
                     className: "btn-default mr-1"
                 },
                 execute_sql: {
@@ -101,44 +107,6 @@ $(document).ready(function() {
  
                                     data: query_data,
                                     fields: fields,
-                                    controller: {
-                                        loadData : function(filter) {
-                                            return $.grep(table.data, function(td) {
-                                                var flag = true;
-                                                var type = "";
-
-                                                for (key in filter) {
-
-                                                    fields.some(function(el) {
-                                                        var res = false;
-
-                                                        if (el.name == key) {
-                                                            type = el.type;
-                                                            res = true;
-                                                        }
-
-                                                        return res;
-                                                    });
-
-                                                    if (filter[key] && type == "text" && typeof(td[key]) == "string" && 
-                                                        td[key].indexOf(filter[key]) == -1) {
-                                                            flag = false;
-                                                            break;
-                                                    } else if (filter[key] && type == "text" && typeof(td[key]) == "number" &&
-                                                        td[key] != filter[key]) {
-                                                            flag = false;
-                                                            break;
-                                                    } else if  (filter[key] && type == "date" &&
-                                                        moment(td[key]).format("YYYY-MM-DDTHH:mm:ss") != filter[key]) {
-                                                            flag = false;
-                                                            break;
-                                                    }
-                                                }
-
-                                                return flag;
-                                            });
-                                        }
-                                    }
                                 });
 
                             } else {

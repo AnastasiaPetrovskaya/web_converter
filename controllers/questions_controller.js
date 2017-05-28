@@ -1,5 +1,6 @@
 //var convert_algebra = require('../lib/re_al_to_sql').convert_algebra_to_sql;
 var AlgebraAnswer = require('../lib/RelationalAlgebraAnswer');
+var count_pages = ApplicationHelper.count_pages;
 
 var get = {
     '/': function (req, res) {
@@ -41,14 +42,17 @@ var get = {
     },
 
     '/table': function (req, res) {
-        var limit = 20,
+        console.log('req.query', req.query);
+        var options = {},
             skip = 0,
-            options = {};
+            limit = 15,
+            page = Number(req.query.page) || 1;
+
+        if (page > 1)
+            skip = limit * (page - 1);
 
         if (req.query.db_id)
             options.db_id = req.query.db_id;
-
-        console.log('options', options);
 
         app.Question.findAndCountAll({
                 where: options,
@@ -59,6 +63,17 @@ var get = {
                 offset: skip
             }).then(function(questions) {
                 //console.log('questions', questions.rows);
+                var pages =  count_pages(questions.count, limit),
+                    pages_min = (page - 3 < 1) ? 1 : page - 3,
+                    pages_max = (pages_min + 6 > pages) ? pages : pages_min + 6;
+
+                res.render('questions/table', { 
+                    questions: questions.rows,
+                    page: page,
+                    pages: pages,
+                    pages_min: pages_min,
+                    pages_max: pages_max
+                });
                 res.render('questions/table', { questions: questions.rows });
             }).catch(function(err) {
                 console.log('err', err);

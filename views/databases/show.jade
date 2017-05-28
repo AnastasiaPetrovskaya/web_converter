@@ -39,7 +39,7 @@ block body
                                                       td Примечание:
                                                       td 
                                                           if (db.note)
-                                                              #{db.note}
+                                                              =db.note
                                                           else
                                                               | -
                                                     tr
@@ -92,6 +92,24 @@ block body
                                     .row
                                         #questions_table.col-md-12
                                             //include ./../parts/pagination
+
+
+                .row
+                    .col-sm-6
+                        .card#sql_card
+                            .card-header
+                                .row
+                                    .col-md-8
+                                        h4.card-title SQL запрос к базе данных
+                                    .col-md-4
+                                        button#sql.btn-in-table.btn.px-1.btn-info.float-xs-right(data-edit="disable" title="Редактировать")
+                                            |Выполнить SQL
+                            .card-body.collapse.in
+                                .card-block.card-dashboard
+                                     label(for="sql_query_text")
+                                     textarea#sql_query_text(style="width:100%; resize:both" rows="10" placeholder="SELECT DISTINCT * FROM ...;" )
+                                     .row.mt-2
+                                         .col-md-12#sql_query_data
 
 block append footer
     script.

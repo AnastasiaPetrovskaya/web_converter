@@ -12,6 +12,7 @@
 //var multiparty = require('multiparty');
 var multer  = require('multer')
 var upload = multer({ dest: 'mdb2postgres/' }).array('db', 12);
+var count_pages = ApplicationHelper.count_pages;
 
 var get = {
     '/': function (req, res) {
@@ -20,6 +21,7 @@ var get = {
     },
 
     '/tables_data/:id': function(req, res) {
+
         app.DataBase.tables_data(req.params.id)
             .then(function(result) {
                 //console.log('result in controller tables_data', result);
@@ -34,10 +36,31 @@ var get = {
     },
 
     '/table': function (req, res) {
-        app.DataBase.findAll()
-            .then(function(dbs) {
+        var options = {},
+            skip = 0,
+            limit = 15,
+            page = Number(req.query.page) || 1;
+
+        if (page > 1)
+            skip = limit * (page - 1);
+
+         app.DataBase.findAndCountAll({
+                where: options,
+                limit: limit,
+                offset: skip
+            }).then(function(dbs) {
                 //console.log('dbs', dbs);
-                res.render('databases/table', { dbs: dbs });
+                var pages =  count_pages(dbs.count, limit),
+                    pages_min = (page - 3 < 1) ? 1 : page - 3,
+                    pages_max = (pages_min + 6 > pages) ? pages : pages_min + 6;
+
+                res.render('databases/table', { 
+                    dbs: dbs.rows,
+                    page: page,
+                    pages: pages,
+                    pages_min: pages_min,
+                    pages_max: pages_max
+                });
             }).catch(function(err) {
                 console.log('err', err);
                 res.error('Error', err);

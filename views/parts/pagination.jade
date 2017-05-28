@@ -1,0 +1,20 @@
+if (pages_max > 1)
+    .text-xs-center.mb-11
+        if (pages_min > 1)
+            ul.pagination.pagination-separate
+                li.page-item
+                    a.dark-text.page-link=1
+        ul.pagination
+            - var n = pages_min
+            while n < pages_max + 1
+                if (n === page)
+                    li.page-item.active
+                        a.bg-teal.border-teal.page-link= n
+                else
+                    li.page-item
+                        a.dark-text.page-link= n
+                - n++
+        if (pages > pages_max)
+            ul.pagination.pagination-separate
+                li.page-item
+                    a.dark-text.page-link= pages

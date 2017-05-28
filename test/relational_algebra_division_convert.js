@@ -4,21 +4,30 @@ var RelationalAlgebraQuery = require('../lib/RelationalAlgebraQuery.js');
 var assert = require('assert');
 
 describe('Algebra full convertion', function() {
-    describe('union queries', function() {
+    describe('division queries', function() {
         it('test1', function(done) {
             var query = new RelationalAlgebraQuery({
                 title: "test",
-                alias: "Студент AS X, Студент AS Y",
-                target_list: "X.*",
-                query_body: '((X)UNION(Y))'
+                alias: "Кинотеатры AS X, КиноСеансФильм AS Y, Фильмы AS Z, Фильмы AS M",
+                target_list: "X.НазвКинотеатра",
+                query_body: '(((X[X.ИдКинотеатра=Y.ИдКинотеатра]Y)[Y.ИдФильма=Z.ИдФильма]Z)[Z.Название:M.Название](M[M.Название="Люси"ORM.Название="Форсаж 1"]))'
             });
 
             query.convert()
                 .then(function(res) {
-                    //console.log("res", res);
-                    //console.log('query', query);
+                    console.log("res", res);
+                    console.log('query', query);
 
-                    assert.equal(query.sql.replace(/\s/g,''), '(SELECT DISTINCT * FROM СтудентAS X) UNION (SELECT DISTINCT * FROM СтудентAS Y);'.replace(/\s/g,''));
+                    assert.equal(query.sql.replace(/\s/g,''), ("SELECT DISTINCT X.НазвКинотеатра " +
+                        "FROM Кинотеатры AS X, КиноСеансФильм AS Y, Фильмы AS Z " +
+                        "WHERE X.ИдКинотеатра=Y.ИдКинотеатра AND Y.ИдФильма=Z.ИдФильма AND NOT EXISTS " +
+                        "(SELECT DISTINCT * " +
+                        "FROM Фильмы AS M " +
+                        "WHERE (M.Название='Люси' OR M.Название='Форсаж 1') AND NOT EXISTS " +
+                        "(SELECT DISTINCT * " +
+                        "FROM Кинотеатры AS X1, КиноСеансФильм AS Y1, Фильмы AS Z1 " +
+                        "WHERE X1.ИдКинотеатра=Y1.ИдКинотеатра AND Y1.ИдФильма=Z1.ИдФильма AND X.НазвКинотеатра = X1.НазвКинотеатра AND " +
+                        "Z1.Название = M.Название));").replace(/\s/g,''));
                     done();
                 }).catch(function(err) {
                     done(err);
@@ -26,7 +35,7 @@ describe('Algebra full convertion', function() {
                 });
         });
 
-        it('test2', function(done) {
+        /*it('test2', function(done) {
             var query = new RelationalAlgebraQuery({
                 title: "test",
                 alias: "Студент AS X, Студент AS Y",
@@ -39,8 +48,8 @@ describe('Algebra full convertion', function() {
                     //console.log("res", res);
                     //console.log('query', query);
 
-                    assert.equal(query.sql.replace(/\s/g,''), ("(SELECT DISTINCT * FROM Студент AS X WHERE X.Nгр='224')" + 
-                            " UNION (SELECT DISTINCT * FROM СтудентAS Y WHERE Y.Nгр='223');").replace(/\s/g,''));
+                    assert.equal(query.sql.replace(/\s/g,''), ('(SELECT DISTINCT * FROM Студент AS X WHERE X.Nгр="224")' + 
+                            ' UNION (SELECT DISTINCT * FROM СтудентAS Y WHERE Y.Nгр="223");').replace(/\s/g,''));
                     done();
                 }).catch(function(err) {
                     done(err);
@@ -62,9 +71,9 @@ describe('Algebra full convertion', function() {
                     //console.log('query', query);
 
                     assert.equal(query.sql.replace(/\s/g,''), ('(SELECT DISTINCT * FROM Студент AS X, Успеваемость AS M ' +
-                                "WHERE M.ВидОтч='Экзамен' AND M.Оцн='неуд' AND X.Nгр='224' AND X.Nз=M.Np) UNION (" + 
+                                'WHERE M.ВидОтч="Экзамен" AND M.Оцн="неуд" AND X.Nгр="224" AND X.Nз=M.Np) UNION (' + 
                                 'SELECT DISTINCT * FROM Студент AS Y, Успеваемость AS N' + 
-                                "WHERE N.ВидОтч='Экзамен' AND N.Оцн='неуд' AND Y.Nгр='223' AND Y.Nз=N.Np);").replace(/\s/g,''));
+                                'WHERE N.ВидОтч="Экзамен" AND N.Оцн="неуд" AND Y.Nгр="223" AND Y.Nз=N.Np);').replace(/\s/g,''));
                     done();
                 }).catch(function(err) {
                     done(err);
@@ -91,15 +100,15 @@ describe('Algebra full convertion', function() {
 
                     assert.equal(query.sql.replace(/\s/g,''), ('( SELECT DISTINCT A.Игра  ,  B.Клуб  ,  B.Игрок ' +
                         'FROM Календарь AS A  ,  ИгрокиКлубов AS B ' +
-                        "WHERE A.Хозяин  =  'ЦСКА'  AND  A.Статус  =  1  AND  A.Хозяин  =  B.Клуб ) UNION " +
+                        'WHERE A.Хозяин  =  "ЦСКА"  AND  A.Статус  =  1  AND  A.Хозяин  =  B.Клуб ) UNION ' +
                         '( SELECT DISTINCT C.Игра  ,  D.Клуб  ,  D.Игрок ' +
                         'FROM Календарь AS C  ,  ИгрокиКлубов AS D ' +
-                        "WHERE C.Гость  =  'ЦСКА'  AND  C.Статус  =  1  AND  C.Гость  =  D.Клуб );").replace(/\s/g,''));
+                        'WHERE C.Гость  =  "ЦСКА"  AND  C.Статус  =  1  AND  C.Гость  =  D.Клуб );').replace(/\s/g,''));
                     done();
                 }).catch(function(err) {
                     done(err);
                     //console.log('err', err);
                 });
-        });
+        });*/
     });
 });
