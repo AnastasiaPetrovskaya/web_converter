@@ -15,10 +15,10 @@ else
                 tr(data-id=question.id)
                     td= question.title
                     td
-                        if (question.type === "RA")
-                            span.label.label-primary Общий доступ
-                        else if (question.type === "TC")
-                            span.label.label-info Персональный доступ
+                        if (question.query_type === "RA")
+                            span.label.label-primary Реляционная алгебра
+                        else if (question.query_type === "TC")
+                            span.label.label-info Исчисление на кортежах
                         else
                             span.label.label-danger Не задан
                     td
@@ -37,9 +37,9 @@ else
                         else if (question.db_type === "private")
                             .tag.tag-danger Персональный доступ
                         else if (question.db_type === "test")
-                            .tag.tag-primary Тестовая база
+                            .tag.tag-primary База для контрольных мероприятий
                         else if (question.db_type === "prepare")
-                            .tag.tag.bg-info.bg-darken-2 База для контрольных мероприятий
+                            .tag.tag.bg-info.bg-darken-2 Обучающая база данных
                         else
                             | Не задан
                     td
