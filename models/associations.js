@@ -6,9 +6,10 @@ module.exports = function (models) {
         CheckPoint = models.CheckPoint,
         DataBase = models.DataBase,
         Question = models.Question,
+        Group = models.Group,
+        Student = models.Student,
         Table = models.Table;
 
-    Role.hasMany(Token, {foreignKey: {name: 'role_id', allowNull: false}});
 
     //Sms.belongsTo(Partner, {foreignKey: {name: 'partner_id', allowNull: false}});
 
@@ -32,13 +33,9 @@ module.exports = function (models) {
     //TerminalSession.hasMany(GameBet, {foreignKey: {name: 'terminal_session_id', allowNull: false}});
 
     //Token.belongsTo(Application, {foreignKey: 'application_id', allowNull: false});
-    Token.belongsTo(User, {foreignKey: {name: 'user_id', allowNull: false}});
-    Token.belongsTo(Role, {foreignKey: {name: 'role_id', allowNull: false}});
 
     //User.belongsTo(Partner, {foreignKey: {name: 'partner_id', allowNull: false}});
     //User.belongsTo(User, {foreignKey: {name: 'parent_id'}});
-    User.belongsTo(Role, {foreignKey: {name: 'role_id', allowNull: false}});
-    User.hasMany(Token, {foreignKey: {name: 'user_id', allowNull: false}});
     //User.hasMany(UserLog, {foreignKey: {name: 'user_id', allowNull: false}});
 
    // UserLog.belongsTo(User, {foreignKey: {name: 'user_id', allowNull: false}});
@@ -83,11 +80,26 @@ module.exports = function (models) {
     DataBase.hasMany(Table, {as: 'tables', onDelete: 'CASCADE',  foreignKey: {name: 'db_id', allowNull: false}});
     DataBase.hasMany(Question, {as: 'questions', onDelete: 'CASCADE',  foreignKey: {name: 'db_id', allowNull: false}});
 
+    Group.hasMany(Student, {as: 'students', onDelete: 'CASCADE',  foreignKey: {name: 'group_id', allowNull: false}});
+
+    Role.hasMany(Token, {foreignKey: {name: 'role_id', allowNull: false}});
+
+    Student.belongsTo(Group, {foreignKey: {name: 'group_id', allowNull: false}});
+    Student.hasOne(User, {as: 'user', onDelete: 'CASCADE', foreignKey: {name: 'student_id', allowNull: true}});
+
     Table.belongsTo(DataBase, {foreignKey: {name: 'db_id', allowNull: false}});
-    
+
+    Token.belongsTo(User, {foreignKey: {name: 'user_id', allowNull: false}});
+    Token.belongsTo(Role, {foreignKey: {name: 'role_id', allowNull: false}});
+
     Question.belongsTo(DataBase, {onDelete: 'CASCADE', foreignKey: {name: 'db_id'}});
     Question.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
-    
+
     User.hasMany(DataBase, {foreignKey: {name: 'owner_id', allowNull: false}});
     User.hasMany(Question, {foreignKey: {name: 'owner_id', allowNull: false}});
+    User.belongsTo(Role, {foreignKey: {name: 'role_id', allowNull: false}});
+    User.hasMany(Token, {foreignKey: {name: 'user_id', allowNull: false}});
+
+    User.hasMany(Token, {foreignKey: {name: 'user_id', allowNull: false}});
+    User.belongsTo(Student, {foreignKey: {name: 'student_id', allowNull: true}});
 };

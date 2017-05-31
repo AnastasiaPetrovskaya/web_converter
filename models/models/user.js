@@ -1,10 +1,11 @@
 var User = sequelize.define(
     'user',
     {
+        name: Sequelize.STRING,
         email: Sequelize.STRING,
+        phone: Sequelize.STRING,
         login: {type: Sequelize.STRING, allowNull: false, unique: true},
         password: {type: Sequelize.STRING, allowNull: false},
-        phone: Sequelize.STRING,
     },
     {
         tableName: 'users',

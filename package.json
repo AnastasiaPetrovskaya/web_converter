@@ -37,6 +37,7 @@
     "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
     "sequelize": "^3.30.2",
+    "umzug": "^2.0.1",
     "validators": "^0.3.1"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 var fs = require("fs"),
-   // Umzug = require("umzug"),
+    Umzug = require("umzug"),
     path = require("path"),
     utils = require("./utils"),
     options = {};
@@ -41,6 +41,8 @@ module.exports = function (app) {
         CheckPoint: require('./models/check_point'),
         DataBase: require('./models/database.js'),
         Table: require('./models/table.js'),
+        Group: require('./models/group.js'),
+        Student: require('./models/student.js'),
         Question: require('./models/question.js')
     };
 
@@ -95,7 +97,7 @@ module.exports = function (app) {
     return sequelize.sync({force: force_sync}).then(function () {
 
         //запуск миграций это сделано для тестов
-/*        if((process.node_env == 'test') || process.env.MIGRATION) {
+        if(process.env.MIGRATION) {
 
             var umzug = new Umzug({
                 migrations: {
@@ -123,7 +125,7 @@ module.exports = function (app) {
                 }).catch(function(err) {
                     console.log("error migrating DB: " + err);
                 });
-        }*/
+        }
 
     /*    if(process.node_env == 'test' && process.send) {
             process.send('finish');
