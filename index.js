@@ -26,11 +26,12 @@ http.set('view engine', 'jade');
 
 require('./lib/application_helper');
 http.require_controller('auth');
-http.require_controller('banks');
-http.require_controller('clients');
-http.require_controller('money_transactions');
+//http.require_controller('banks');
+//http.require_controller('clients');
+//http.require_controller('money_transactions');
 http.require_controller('databases');
 http.require_controller('questions');
+http.require_controller('groups');
 http.require_controller('main', {is_root: true});
 //require('./lib/models.js')(app);
 require('./models')(app);

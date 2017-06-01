@@ -6,7 +6,7 @@
 module.exports = {
     up: function (queryInterface, Sequelize) {
         return queryInterface.createTable(
-            'groups',
+            'group',
             {
                 id: {
                     type: Sequelize.INTEGER,
@@ -26,6 +26,6 @@ module.exports = {
     },
 
     down: function (queryInterface, Sequelize) {
-        return queryInterface.dropTable('groups');
+        return queryInterface.dropTable('group');
     }
 };

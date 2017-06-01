@@ -11,7 +11,7 @@ var Question = sequelize.define(
         db_type: {type: Sequelize.ENUM('test', 'prepare', 'common', 'private'), allowNull: false}
     },
     {
-        tableName: 'question',
+        tableName: 'questions',
         //paranoid: true,
         timestamps: true,
         createdAt: 'created',

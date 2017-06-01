@@ -74,7 +74,7 @@ var get = {
                     pages_min: pages_min,
                     pages_max: pages_max
                 });
-                res.render('questions/table', { questions: questions.rows });
+                //res.render('questions/table', { questions: questions.rows });
             }).catch(function(err) {
                 console.log('err', err);
                 res.error('Error', err);

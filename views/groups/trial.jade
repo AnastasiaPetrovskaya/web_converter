@@ -1,0 +1,214 @@
+extends ../head2
+
+block body
+    div.robust-content.content.container-fluid
+      div.content-wrapper
+        div.content-header.row
+          div(class="content-header-left col-md-6 col-xs-12")
+            h3(class="content-header-title mb-0") Контрольный вопрос "#{question.title}"
+          div(class="content-header-lead col-xs-12 mt-1")
+        .content-body
+                .row
+                    .col-sm-6
+                        .card
+                            .card-header
+                                .row
+                                    .col-md-4
+                                        h4.card-title.no-capitalize Ответ
+                                    .col-md-8
+                                        .float-xs-right
+                                            //if (show_help)
+                                            button#help_btn.btn.btn-secondary.mr-1 Подсказка
+                                            button#sql_right_answer_btn.btn.btn-secondary Правильный ответ
+                            .card-body.collapse.in
+                                .card-block.card-dashboard
+                                    .bs-callout-info.callout-border-left.mb-1.p-1#help(style="display:none")
+                                        strong Подсказка!
+                                        p(style="white-space:pre-wrap")
+                                            if (question.help && question.help != "-")
+                                                = question.help
+                                            else
+                                                Для данного вопроса преподаватель не задал посказку
+                                    p Составьте запрос к базе данных "#{question.database.title}" на 
+                                        if (question.query_type == 'RA')
+                                            strong реляционной алгебре:
+                                        else if (question.query_type == 'TC')
+                                            strong исчислении на кортежах:
+                                    p#description(style="white-space:pre-wrap")= question.text
+                                    //#help(style="display:none")
+                                        label Подсказка:
+                                        p= question.help
+                                    hr
+
+                                    //p.card-text.font-medium-1
+                                        | тут необходимо расписать справку
+                                    form.form-horizontal#answer(novalidate data-backdrop="static")
+                                        .form-body
+                                            .form-group
+                                                label(for="alias") Переобозначения таблиц
+                                                input.form-control#alias(type="text" required name="alias" aria-invalid="false" data-validation-required-message="Необходимо ввести алиасы таблиц")
+                                                .help-block
+                                            .form-group
+                                                label(for="target_list") Целевой список
+                                                input.form-control#target_list(type="text" name="target_list")
+                                            .form-group
+                                                label(for="text") Запрос к базе данных на 
+                                                    if (question.query_type == 'RA')
+                                                        | реляционной алгебре:
+                                                    else if (question.query_type == 'TC')
+                                                        | исчислении на кортежах:
+                                                textarea.courier_new#text.form-control(rows="5" name="text" placeholder="" required aria-invalid="false" data-validation-required-message="Данное поле обязательно для заполнения")
+                                                .help-block
+                                        .form-actions
+                                            //button.btn.btn-default.float-xs-right(type="button")
+                                                //i.icon-cross2
+                                                | Отмена
+                                            button.btn.btn-success.float-xs-right(type="submit")
+                                                //i.icon-check2
+                                                | Ответ готов
+                                            .input-group(style="width:auto")
+                                                input#help_table_title.float-xs-right.form-control(type="text" required data-validation-required-message="Для добавления промежуточной таблице необходимо задать для нее имя" placeholder="Название таблицы" name="target_list")
+                                                span.input-group-btn
+                                                    button#add_table.btn.btn-info.mr-1.float-xs-right(type="button")
+                                                        //i.icon-check2
+                                                        | Добавить вспомогательную таблицу
+                                            .help-block
+
+                                    #help_tables.hidden-xs-up
+                                        hr
+                                        h4.card-title Вспомогательные таблицы
+                                        #help_tables_container
+
+
+
+                    .col-sm-6
+                        .card
+                            .card-header
+                                 h4.card-title.no-capitalize Схема базы данных
+                                 .heading-elements
+                                     ul.list-inline.mb-0
+                                         li
+                                             a.btn-in-table.btn.px-1.btn-secondary.float-xs-right( data-action="expand" title="Развернуть" style="padding-top:0.2rem; padding-bottom:0.2rem")
+                                                 i.icon-expand2(style="color:#373a3c; margin-right:0.5rem")
+                                                 | Развернуть
+                                             //a(data-action="expand")
+                                                 i.icon-expand2
+                            .card-body.collapse.in
+                                .card-block.card-dashboard
+                                    #db_schema_description
+                                        p= question.database.description
+                                    #db_schema_div.text-xs-center
+                                        i.fa.fa-spin.fa-spinner
+                                        &nbsp; Подождите...
+
+
+                        .card#sql_right_answer_card(style="display:none")
+                            .card-header
+                                h4.card-title.no-capitalize Правильный ответ, заданный на языке SQL
+                                //.heading-elements
+                                    ul.list-inline.mb-0
+                                        li
+                                            a(data-action="expand")
+                                                i.icon-expand2
+                            .card-body.collapse.in
+                                .card-block.card-dashboard
+                                    #sql_right_answer
+                                        //label Ответ на языке SQL:
+                                        p.courier_new#sql_right_answer_text(style="white-space:pre-line")= question.sql_answer
+                                    #sql_right_answer_data
+                                        .text-xs-center
+                                            i.fa.fa-spin.fa-spinner
+                                            &nbsp; Подождите...
+
+                        .card#sql_answer_card(style="display:none")
+                            .card-header
+                                h4.card-title.no-capitalize Результат конвертации вашего ответа на язык SQL
+                                //.heading-elements
+                                    ul.list-inline.mb-0
+                                        li
+                                            a(data-action="expand")
+                                                i.icon-expand2
+                            .card-body.collapse.in
+                                .card-block.card-dashboard
+                                    div
+                                        p.courier_new#sql_answer_text(style="white-space:pre-line")
+                                    #sql_answer_data
+                                        .text-xs-center
+                                            i.fa.fa-spin.fa-spinner
+                                            &nbsp; Подождите...
+
+    #new_help_table.hidden-xs-up
+        form.form-horizontal(novalidate data-backdrop="static")
+            .form-body
+                .form-group
+                    label(name="title" for="delete_btn") 
+                        strong Название таблицы
+                    button#delete_help_table.btn.btn-danger.ml-1(type="button") Удалить таблицу 
+                    //button#delete_btn.btn.btn-default.ml-1(type="button") Посмортеть результат
+                .form-group
+                    label(for="alias") Описание запроса
+                    textarea.form-control(rows="2" type="text" required name="description" aria-invalid="false" data-validation-required-message="Необходимо ввести алиасы таблиц")
+                    .help-block
+                .form-group
+                    label(for="alias") Переобозначения таблиц
+                    input.form-control(type="text" required name="alias" aria-invalid="false" data-validation-required-message="Необходимо ввести алиасы таблиц")
+                    .help-block
+                .form-group
+                    label(for="target_list") Целевой список
+                    input.form-control(type="text" name="target_list")
+                .form-group
+                    label(for="text") Запрос к базе данных на 
+                        if (question.query_type == 'RA')
+                            | реляционной алгебре:
+                        else if (question.query_type == 'TC')
+                            | исчислении на кортежах:
+                    textarea.form-control(rows="5" name="text" placeholder="" required aria-invalid="false" data-validation-required-message="Данное поле обязательно для заполнения")
+                    .help-block
+                p.hidden-xs-up(name="sql")
+        hr.hidden-xs-up
+
+
+
+
+
+
+
+
+
+
+
+
+
+block append footer
+    script.
+        var question_id = "#{question.id}";
+        var sql_answer = !{JSON.stringify(question.sql_answer)};
+        var db_id = "#{question.database.id}";
+
+    script(src="/robust-assets/js/components/modal/components-modal.js" type="text/javascript")
+
+    script(src="/robust-assets/js/plugins/forms/spinner/jquery.bootstrap-touchspin.js" type="text/javascript")
+    script(src="/robust-assets/js/plugins/forms/validation/jqBootstrapValidation.js" type="text/javascript")
+    script(src="/robust-assets/js/plugins/forms/icheck/icheck.min.js" type="text/javascript")
+    script(src="/robust-assets/js/plugins/forms/toggle/bootstrap-switch.min.js" type="text/javascript")
+    script(src="/robust-assets/js/plugins/forms/toggle/switchery.min.js" type="text/javascript")
+
+    script(src="/robust-assets/js/components/forms/validation/form-validation.js" type="text/javascript")
+
+
+
+    script(src="/js/pages/questions/trial.js" type="text/javascript")
+    //script(src="/robust-assets/js/plugins/tables/jquery.dataTables.min.js" type="text/javascript")
+    //script(src="/robust-assets/js/plugins/tables/datatable/dataTables.bootstrap4.min.js" type="text/javascript")
+    //script(src="/robust-assets/js/plugins/tables/datatable/dataTables.buttons.min.js" type="text/javascript")
+    //script(src="/robust-assets/js/plugins/tables/datatable/buttons.bootstrap4.min.js" type="text/javascript")
+    //script(src="/robust-assets/js/plugins/tables/jszip.min.js" type="text/javascript")
+    //script(src="/robust-assets/js/plugins/tables/pdfmake.min.js" type="text/javascript")
+    //script(src="/robust-assets/js/plugins/tables/vfs_fonts.js" type="text/javascript")
+    //script(src="/robust-assets/js/plugins/tables/buttons.html5.min.js" type="text/javascript")
+    //script(src="/robust-assets/js/plugins/tables/buttons.print.min.js" type="text/javascript")
+    //script(src="/robust-assets/js/plugins/tables/buttons.colVis.min.js" type="text/javascript")
+
+    //script(src="/robust-assets/js/components/tables/datatables-extensions/datatable-button/datatable-button-basic.js" type="text/javascript")
+
+  

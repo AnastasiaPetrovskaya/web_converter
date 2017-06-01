@@ -4,7 +4,7 @@ var Table = sequelize.define(
         title: {type: Sequelize.STRING, allowNull: false}
     },
     {
-        tableName: 'table',
+        tableName: 'tables',
         //paranoid: true,
         timestamps: true,
         createdAt: 'created',

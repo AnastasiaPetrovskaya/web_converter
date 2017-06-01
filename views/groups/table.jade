@@ -1,0 +1,25 @@
+if (groups.length === 0)
+    p.text-muted.mt-2.text-xs-center Нет записей
+else
+    table.table.table-striped.table-bordered.zero-configuration
+        thead
+            tr
+                th Название
+                th Кафедра
+                th Количесвто студентов
+                th Управление
+        tbody
+            each group in groups
+                tr(data-id=group.id)
+                    td= group.title
+                    td= group.department
+                    td= group.students_count
+                    td
+                        .btn-toolbar.float-xs-right(role="toolbar")
+                            a.btn.btn-icon.btn-outline-info.btn-sm(style="min-width:3.5rem" href="/groups/" + group.id data-toggle="tooltip" title="Подробная информация")
+                                i.icon-info2
+                            button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удаление вопроса")
+                                i.icon-trash2
+
+
+    include ./../parts/pagination

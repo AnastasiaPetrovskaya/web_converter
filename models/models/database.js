@@ -7,7 +7,7 @@ var DataBase = sequelize.define(
         note: {type: Sequelize.STRING}
     },
     {
-        tableName: 'database',
+        tableName: 'databases',
         //paranoid: true,
         timestamps: true,
         createdAt: 'created',

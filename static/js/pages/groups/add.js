@@ -34,6 +34,8 @@ $(document).ready(function() {
         console.log("submit event");
 
         event.preventDefault();
+        console.log('1', $(this).serialize);
+        console.log('2', $(this).serializeArray);
         var data = $(this).serialize();
 
 
