@@ -32,6 +32,45 @@ http.require_controller('auth');
 http.require_controller('databases');
 http.require_controller('questions');
 http.require_controller('groups');
+http.require_controller('students');
 http.require_controller('main', {is_root: true});
 //require('./lib/models.js')(app);
 require('./models')(app);
+
+/* catch 404 and forward to error handler */
+http.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+
+/* middleware для обработки ошибок из api (т.к. ошибка содержится не в err.message, а err.error) */
+http.use(function(err, req, res, next) {
+    if (err.error === 'InvalidToken') {
+        /* Невалидный токен по каким-то неведомым причинам */
+        res.redirect('/logout');
+    } else if (err.error) {
+        /* если есть err.error значит ошибка из api */
+        var error = new Error(err.error);
+        error.status = err.status || 500;
+        next(error);
+    } else {
+        /* если нет - прокидываем ошибку дальше */
+        next(err);
+    }
+});
+
+http.use(function(err, req, res, next) {
+    /* Из-за этого middleware информация об ошибках не выводится в консоль,
+     * поэтому пришлось добавлять этот хак.
+     */
+    if (process.env.NODE_ENV === 'dev')
+        console.error(err.stack);
+
+    res.status(err.status || 500);
+    res.render('error', {
+        status: err.status,
+        message: err.message,
+        error: (process.env.NODE_ENV  === 'dev') ? err : {}
+    });
+});

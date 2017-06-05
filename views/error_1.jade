@@ -1,0 +1,43 @@
+doctype html
+html
+    head
+        title= title
+
+        meta(id="viewport" content="width=device-width, initial-scale=1.0" name="viewport")
+        meta(charset="UTF-8")
+
+        //Styles
+        link(href="http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet" type="text/css")
+        link(href="/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css")
+        link(href="/plugins/fontawesome/css/font-awesome.css" rel="stylesheet" type="text/css")
+        //Плагин для прогрессбаров
+        link(href="/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet" type="text/css")
+
+        //Theme styles
+        link(href="/css/modern.min.css" rel="stylesheet" type="text/css")
+
+    body.page-error
+        main.page-content
+            .page-inner
+                #main-wrapper
+                    .row
+                        .col-md-6.center
+                            h1.text-xxl.text-primary.text-center= status
+                            .details
+                                h3= message
+                                if (error.stack)
+                                    pre.text-left= error.stack
+                                a(href="/") Main page
+
+        //Javascripts
+        script(src="/plugins/jquery/jquery-2.2.0.min.js")
+        script(src="/plugins/bootstrap/js/bootstrap.min.js")
+        script(src="/plugins/jquery-ui/jquery-ui.min.js")
+        script(src="/plugins/jquery-blockui/jquery.blockui.js")
+        script(src="/plugins/jquery-slimscroll/jquery.slimscroll.min.js")
+        script(src="/plugins/waypoints/jquery.waypoints.min.js")
+        script(src="/plugins/counterup/jquery.counterup.min.js")
+        script(src="/plugins/classie/classie.js")
+        script(src="/plugins/pace-master/pace.min.js")
+        script(src="/plugins/waves/waves.min.js")
+        script(src="/js/modern.js")

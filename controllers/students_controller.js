@@ -2,13 +2,19 @@ var count_pages = ApplicationHelper.count_pages;
 
 var get = {
     '/': function (req, res) {
-        res.render('groups/index');
+
+        app.Group.findAll()
+            .then(function(groups) {
+                console.log(groups);
+                res.render('students/index', {groups: groups});
+            });
     },
 
 
     '/table': function (req, res) {
         //console.log('req.query', req.query);
         var options = {},
+            students_options = {},
             skip = 0,
             limit = 15,
             page = Number(req.query.page) || 1;
@@ -16,29 +22,32 @@ var get = {
         if (page > 1)
             skip = limit * (page - 1);
 
-        if (req.query.db_id)
-            options.db_id = req.query.db_id;
+        if (req.query.group_id)
+            students_options.group_id = req.query.group_id;
 
-        app.Group.findAndCountAll({
-                attributes: ['group.*',  [sequelize.fn('COUNT', sequelize.col('students.id')), 'students_count']],
+        options.student_id = {$ne: null};
+
+        //console.log('options', options);
+
+        app.User.findAndCountAll({
                 where: options,
                 include: [{
-                    model: app.Student, 
-                    as: 'students', 
-                    attributes: [], 
-                    duplicating: false}],
-                group: ['group.id'],
-                raw: true,
+                    model: app.Student,
+                    where: students_options,
+                    include: [{
+                        model: app.Group
+                    }]
+                }],
                 limit: limit,
                 offset: skip
-            }).then(function(groups) {
-                console.log('groups', groups);
-                var pages =  count_pages(groups.count.length, limit),
+            }).then(function(students) {
+                //console.log('students', students.rows);
+                var pages =  count_pages(students.count.length, limit),
                     pages_min = (page - 3 < 1) ? 1 : page - 3,
                     pages_max = (pages_min + 6 > pages) ? pages : pages_min + 6;
 
-                res.render('groups/table', { 
-                    groups: groups.rows,
+                res.render('students/table', { 
+                    students: students.rows,
                     page: page,
                     pages: pages,
                     pages_min: pages_min,
@@ -55,16 +64,21 @@ var get = {
         var id = Number(req.params.id);
         var ctx = {};
 
-        app.Group.find({
-                where : {id: id},
-                include: [{model: app.Student, as: 'students'}]
-            }).then(function (group) {
+        app.User.findOne({
+                where: {id: id},
+                include: [{
+                    model: app.Student,
+                    include: [{
+                        model: app.Group
+                    }]
+                }],
+            }).then(function (student) {
+                console.log('student', student);
 
-                if (!group) {
+                if (!student) {
                     throw {message: 'NotFound'};
                 } else {
-                    ctx.group = group;
-                    res.render('groups/show', { group: ctx.group });
+                    res.render('students/show', { student: student.dataValues });
                 }
             }).catch(function (err) {
                 console.log('err', err);
@@ -78,16 +92,18 @@ var post = {
 
     '/add': function (req, res) {
         var res_data = {};
-        var group_data = req.body;
-        console.log('group_data', group_data);
+        var student_data = req.body;
+        console.log('student_data', student_data);
 
-        app.Group.create(group_data)
-            .then(function(group) {
-                //console.log('group created', group);
-                res.success({
-                    id: group.dataValues.id, 
-                    title: group.dataValues.title
-                });
+        app.Student.make(student_data)
+            .then(function(result) {
+                console.log('student created', result);
+
+                res.success({});
+                //res.success({
+                //    id: student.dataValues.id, 
+                //    title: student.dataValues.title
+                //});
             }).catch(function(err) {
                 console.log('err', err);
                 res.error(err);
@@ -101,7 +117,7 @@ var _delete = {
    '/remove/:id':  function (req, res) {
         var id = Number(req.params.id);
 
-        app.Group.destroy({
+        app.User.destroy({
                 where: {id: id}
             }).then(function() {
                 res.success({});
@@ -113,7 +129,7 @@ var _delete = {
 
 var put = {
    '/:id':  function (req, res) {
-       console.log('in group put controller', req.body);
+       console.log('in student put controller', req.body);
         var id = Number(req.params.id);
         var data = {};
 
@@ -123,7 +139,7 @@ var put = {
             data = req.body;
 
         console.log('data', data);
-        app.Group.update(
+        app.Student.update(
                 data, 
                 {where: {id: id}}
             ).then(function() {
@@ -135,7 +151,7 @@ var put = {
 };
 
 module.exports = {
-    resource: 'Group',
+    resource: 'Student',
     methods: {
         get: get,
         post: post,

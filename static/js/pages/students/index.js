@@ -1,21 +1,34 @@
 $(document).ready(function() {
 
-    $("#create_group_from").submit(function(event){
+    $("#create_student_from").submit(function(event){
         //console.log("submit event");
 
         event.preventDefault();
 
-        var data = $(this).serialize();
+        //var data = $(this).serialize();
+        var data = {};
+        data.student_data = {
+            group_id: $(this).find('[name="group_id"]').val()
+        };
+        data.user_data = {
+            name: $(this).find('[name="name"]').val(),
+            phone: $(this).find('[name="phone"]').val(),
+            email: $(this).find('[name="email"]').val(),
+            login: $(this).find('[name="login"]').val(),
+            password: $(this).find('[name="password"]').val()
+        };
+
 
         $('.modal #btn_submit').prop('disabled', true);
         $('.modal #btn_submit').html('<i class="icon-spinner spinner"></i>');
 
         var res = $.ajax({
-            url: '/groups/add',
+            url: '/students/add',
             type: 'POST',
             data: data,
             async: false,
-            processData: false,
+            dataType: 'json'
+            //processData: false,
         }).responseText;
 
         res = JSON.parse(res);
@@ -25,7 +38,7 @@ $(document).ready(function() {
         if (res.success) {
             $("#create_group_modal").modal('hide');
             bootbox.alert({
-                message: "Новая группа успешно создана",
+                message: "Новый студент успешно добавлен.",
                 className: "slideInDown",
                 buttons: {
                     ok: {
@@ -36,7 +49,7 @@ $(document).ready(function() {
                 callback: function() { 
                     //location.reload(); 
                     var options = {};
-                    getTable('/groups/table', options, '#groups_table', function() {});
+                    getTable('/students/table', options, '#students_table', function() {});
                 }
             });
         } else {

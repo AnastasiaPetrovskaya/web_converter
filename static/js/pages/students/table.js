@@ -8,9 +8,9 @@ $(document).ready(function() {
         $("#copy_question").attr("href", "/questions/copy/" + question_id);
     });*/
 
-    $(document).on('click', '#groups_table ul.pagination a.page-link', function(e) {
+    $(document).on('click', '#students_table ul.pagination a.page-link', function(e) {
         options.page = e.target.innerHTML;
-        getTable('/groups/table', options, '#groups_table');
+        getTable('/students/table', options, '#students_table');
     });
 
 
@@ -22,15 +22,15 @@ $(document).ready(function() {
     });*/
 
 
-    getTable('/groups/table', options, '#groups_table', function() {});
+    getTable('/students/table', options, '#students_table', function() {});
 
-    $('#groups_table').on('click', '#delete', function(event) {
-        var group_id = $(this).parents('tr').attr('data-id');
+    $('#students_table').on('click', '#delete', function(event) {
+        var student_id = $(this).parents('tr').attr('data-id');
 
         event.preventDefault();
         bootbox.confirm({
-            title: '<i class="icon-trash2"></i> Вы уверены, что хотите удалить данную группу?',
-            message: 'После удаления группы для нее нельзя будет назначить контрольную работу.',
+            title: '<i class="icon-trash2"></i> Вы уверены, что хотите удалить данного студента?',
+            message: 'После удаления студента будут удалены результаты его выполнения контрольных работ.',
             className: "slideInDown custom-bootbox",
             buttons: {
                 confirm: {
@@ -44,14 +44,16 @@ $(document).ready(function() {
             },
             callback: function(result){
                 if (result) {
-                    $.ajax('/groups/remove/' + group_id, {method: 'DELETE'})
+                    $.ajax('/students/remove/' + student_id, {method: 'DELETE'})
                         .done(function(result) {
                             if (result.success){
                                 var options = {};
-                                getTable('/groups/table', options, '#groups_table', function() {});
+                                getTable('/students/table', options, '#students_table', function() {});
                             }
                         })
-                       .fail(function(result){});
+                       .fail(function(result) {
+                           console.log('result', result);
+                       });
                 }
             }
         });

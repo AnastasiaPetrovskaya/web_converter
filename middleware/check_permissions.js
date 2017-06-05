@@ -78,6 +78,10 @@ module.exports = function (req, res, next) {
         req.action = getDefaultAction(req.method.toLowerCase());
     }
 
+    //console.log('req.action', req.action);
+    //console.log('req.endpoint', req.endpoint);
+    //console.log('user.permissions', user.permissions);
+
     if (user.permissions[req.endpoint] && user.permissions[req.endpoint][req.action]) {
         accessDenied = false;
     };
@@ -86,42 +90,11 @@ module.exports = function (req, res, next) {
         accessDenied = false;
     };
 
-    /*
-    if(req.user.client &&
-      (req.method === 'GET' && req.route.path === '/clients/:id' && req.user.client.length > 0) ||
-      req.params.client_id) {
-    
-        accessDenied = true;
-
-        req.user.client.forEach(function (v, i, a) {
-        if (req.params.id === v.uid.toString()) {
-            accessDenied = false;
-        }
-        });
-
-    if(req.user.place &&
-        (req.method === 'GET' && req.route.path === '/places/:id' && req.user.place.length > 0) ||
-        req.params.place_id) {
-        
-        accessDenied = true;
-
-        req.user.place.forEach(function (v, i, a) {
-        if (req.params.id === v.uid.toString()) {
-            accessDenied = false;
-        }
-        });
-    }
-    
-    if (req.method === 'PUT') {
-        if (!checkCheckUpdateParams(req.body, req.token.permissions[endpoint][action])) {
-            accessDenied = true;
-            errMsg = 'UpdateRestrictedParamsError';
-        }
-    }
-    */
-
     if (accessDenied) {
-        res.error('AccessDenied', 403);
+        var err = new Error('AccessDenied');
+        err.status = 403;
+        throw err;
+        //res.error('AccessDenied', 403);
     } else {
         next();
     }

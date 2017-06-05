@@ -1,0 +1,27 @@
+if (students.length === 0)
+    p.text-muted.mt-2.text-xs-center Нет записей
+else
+    table.table.table-striped.table-bordered.zero-configuration
+        thead
+            tr
+                th ФИО
+                th Группа
+                th Кафедра
+                th Логин
+                th.text-xs-right Управление
+        tbody
+            each student in students
+                tr(data-id=student.id)
+                    td= student.name
+                    td= student.student.group.title
+                    td= student.student.group.department
+                    td= student.login
+                    td
+                        .btn-toolbar.float-xs-right(role="toolbar")
+                            a.btn.btn-icon.btn-outline-info.btn-sm(style="min-width:3.5rem" href="/students/" + student.id data-toggle="tooltip" title="Подробная информация")
+                                i.icon-info2
+                            button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удаление вопроса")
+                                i.icon-trash2
+
+
+    include ./../parts/pagination

@@ -48,8 +48,9 @@ else
                                 i.icon-info2
                             a.btn.btn-icon.btn-outline-success.btn-sm(style="min-width:3.5rem" href="/questions/trial/" + question.id data-toggle="tooltip" title="Пробное выполнение задания")
                                 i.icon-clipboard2
-                            button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удаление вопроса")
-                                i.icon-trash2
+                            if (profile.permissions.Question.create)
+                                button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удаление вопроса")
+                                    i.icon-trash2
 
 
     include ./../parts/pagination

@@ -24,6 +24,7 @@ var get = {
 
         app.DataBase.tables_data(req.params.id)
             .then(function(result) {
+
                 //console.log('result in controller tables_data', result);
                 res.render('databases/tables_data', {
                     tables: result.tables_data, 
@@ -40,6 +41,15 @@ var get = {
             skip = 0,
             limit = 15,
             page = Number(req.query.page) || 1;
+
+        if (req.user.role.role == 'student') {
+            options.type = { 
+                $or: [
+                    {$eq: 'common'}, 
+                    {$eq: 'prepare'}
+                ]
+            };
+        }
 
         if (page > 1)
             skip = limit * (page - 1);
@@ -78,11 +88,21 @@ var get = {
             });
     },
 
-    '/:id': function (req, res) {
-        var id = Number(req.params.id);
+    '/:id': function (req, res, next) {
+        var options = {};
+        options.id = Number(req.params.id);
+
+        if (req.user.role.role == 'student') {
+            options.type = { 
+                $or: [
+                    {$eq: 'common'}, 
+                    {$eq: 'prepare'}
+                ]
+            };
+        }
 
         app.DataBase.find({
-            where : {id: id},
+            where : options,
             include: [{as: 'tables', model: app.Table}]
             }).then(function (db) {
                 if (!db) {
@@ -93,7 +113,8 @@ var get = {
                 }
             }).catch(function (err) {
                 console.log('err', err);
-                res.error(err);
+                next(err);
+                //res.error(err);
             });
     }
 
@@ -158,7 +179,7 @@ var _delete = {
 
 
 module.exports = {
-    resource: 'Partner',
+    resource: 'Database',
     methods: {
         get: get,
         post: post,

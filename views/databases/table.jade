@@ -38,14 +38,16 @@ else
                                 //i.icon-database2
                                 //i.icon-file-text-o
                                 i.icon-table3
-                            button.btn#sql.btn-icon.btn-outline-warning.btn-sm(style="min-width:3.5rem"   data-toggle="tooltip" title="SQL запрос")
-                                //i.icon-trash-o
-                                i(style="font-weight:bold") SQL
-                                //span.avatar.avatar-online
-                                    img(src="img/sql.svg")
-                            button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удаление базы данных")
-                                //i.icon-trash-o
-                                i.icon-trash2
+                            if (profile.permissions.Database.sql)
+                                button.btn#sql.btn-icon.btn-outline-warning.btn-sm(style="min-width:3.5rem"   data-toggle="tooltip" title="SQL запрос")
+                                    //i.icon-trash-o
+                                    i(style="font-weight:bold") SQL
+                                    //span.avatar.avatar-online
+                                        img(src="img/sql.svg")
+                            if (profile.permissions.Database.delete)
+                                button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удаление базы данных")
+                                    //i.icon-trash-o
+                                    i.icon-trash2
 
 
     include ./../parts/pagination

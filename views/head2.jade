@@ -118,14 +118,16 @@ block vertical-menu
                //i(class="icon-edit")
                i(class="icon-file-text2")
                span(data-i18n="nav.dash.main" class="menu-title") Контрольные работы
-          li(class=" nav-item")
-             a(href="/groups")
-               i(class="icon-users3")
-               span(data-i18n="nav.dash.main" class="menu-title") Группы
-          li(class=" nav-item")
-             a(href="/questions")
-               i(class="icon-user4")
-               span(data-i18n="nav.dash.main" class="menu-title") Студенты
+          if (profile.permissions.Group.read)
+              li(class=" nav-item")
+                 a(href="/groups")
+                   i(class="icon-users3")
+                   span(data-i18n="nav.dash.main" class="menu-title") Группы
+          if (profile.permissions.Student.read)
+              li(class=" nav-item")
+                 a(href="/students")
+                   i(class="icon-user4")
+                   span(data-i18n="nav.dash.main" class="menu-title") Студенты
           //li(class=" nav-item")
             a(href="/")
               i(class="icon-chain")

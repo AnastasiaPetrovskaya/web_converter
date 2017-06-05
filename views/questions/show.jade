@@ -16,9 +16,10 @@ block body
                                     .col-md-8
                                         h4.card-title.no-capitalize Информация
                                     .col-md-4
-                                        button#edit.btn-in-table.btn.px-1.btn-secondary.float-xs-right(data-edit="disable" title="Редактировать")
-                                            i.btn-i-hack.icon-edit(style="margin-right:0.5rem")
-                                            |Редактировать
+                                        if (profile.permissions.Question.update)
+                                            button#edit.btn-in-table.btn.px-1.btn-secondary.float-xs-right(data-edit="disable" title="Редактировать")
+                                                i.btn-i-hack.icon-edit(style="margin-right:0.5rem")
+                                                |Редактировать
 
                                 //h4.card-title Информация
                             .card-body.collapse.in
@@ -61,9 +62,10 @@ block body
                                                         td Описание базы данных:
                                                         td #{question.database.description}
                                         .div
-                                            button#sql_right_answer_btn.btn.btn-info.mr-1.float-xs-right(type="button")
-                                                //i.icon-check2
-                                                | Выполнить SQL
+                                            if (profile.permissions.Database.sql)
+                                                button#sql_right_answer_btn.btn.btn-info.mr-1.float-xs-right(type="button")
+                                                    //i.icon-check2
+                                                    | Выполнить SQL
 
 
 

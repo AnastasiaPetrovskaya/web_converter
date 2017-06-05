@@ -1,115 +1,124 @@
 extends ../head2
 
 block body
-    div.robust-content.content.container-fluid
-      div.content-wrapper
-        div.content-header.row
-          div(class="content-header-left col-md-6 col-xs-12")
-            h3(class="content-header-title mb-0") База данных "#{db.title}"
-          div(class="content-header-lead col-xs-12 mt-1")
-        .content-body
-                .row
-                    .col-sm-6
-                        .card#info_card
-                            .card-header
-                                h4.card-title Информация
-                            .card-body.collapse.in
-                                .card-block.card-dashboard
+    .robust-content.content.container-fluid
+        .content-wrapper
+            .content-header.row
+                div(class="content-header-left col-md-6 col-xs-12")
+                    h3(class="content-header-title mb-0") База данных "#{db.title}"
+                div(class="content-header-lead col-xs-12 mt-1")
+            .content-body
+                    .row
+                        .col-sm-6
+                            .card#info_card
+                                .card-header
                                     .row
-                                        .table-responsive
-                                            table.table.table-borderless
-                                                tbody
-                                                    tr
-                                                      td Название:
-                                                      td #{db.title}
-                                                    tr
-                                                      td Тип базы данных:
-                                                      td 
-                                                          if (db.type === "common")
-                                                              .tag.tag-default Общий доступ
-                                                          else if (db.type === "private")
-                                                              .tag.tag-danger Персональный доступ
-                                                          else if (db.type === "test")
-                                                              .tag.tag-primary База для контрольных мероприятий
-                                                          else if (db.type === "prepare")
-                                                              .tag.tag.bg-info.bg-darken-2 Обучающая база данных для самостоятельной подготовки
-                                                          else
-                                                              | Не задан
-                                                    tr
-                                                      td Примечание:
-                                                      td 
-                                                          if (db.note)
-                                                              =db.note
-                                                          else
-                                                              | -
-                                                    tr
-                                                      td Описание:
-                                                      td #{db.description}
+                                        .col-md-8
+                                            h4.card-title Информация
+                                        .col-md-4
+                                            if (profile.permissions.Database.update)
+                                                button#edit.btn-in-table.btn.px-1.btn-secondary.float-xs-right(data-edit="disable" title="Редактировать")
+                                                    i.btn-i-hack.icon-edit(style="margin-right:0.5rem")
+                                                    |Редактировать
+                                .card-body.collapse.in
+                                    .card-block.card-dashboard
+                                        .row
+                                            .table-responsive
+                                                table.table.table-borderless
+                                                    tbody
+                                                        tr
+                                                          td Название:
+                                                          td #{db.title}
+                                                        tr
+                                                          td Тип базы данных:
+                                                          td 
+                                                              if (db.type === "common")
+                                                                  .tag.tag-default Общий доступ
+                                                              else if (db.type === "private")
+                                                                  .tag.tag-danger Персональный доступ
+                                                              else if (db.type === "test")
+                                                                  .tag.tag-primary База для контрольных мероприятий
+                                                              else if (db.type === "prepare")
+                                                                  .tag.tag.bg-info.bg-darken-2 Обучающая база данных для самостоятельной подготовки
+                                                              else
+                                                                  | Не задан
+                                                        tr
+                                                          td Примечание:
+                                                          td 
+                                                              if (db.note)
+                                                                  =db.note
+                                                              else
+                                                                  | -
+                                                        tr
+                                                          td Описание:
+                                                          td #{db.description}
 
 
-                    .col-sm-6
-                        .card#schema_card
-                            .card-header
-                                 h4.card-title.no-capitalize Схема базы данных
-
-                                 .heading-elements
-                                     ul.list-inline.mb-0
-                                         li
-                                             a(data-action="expand" title="Развернуть")
-                                                 i.icon-expand2(style="color:#373a3c")
-                            .card-body.collapse.in.text-xs-center#db_schema_div(style="height:80%")
-                                 i.fa.fa-spin.fa-spinner
-                                 &nbsp; Подождите...
-                                //.card-block.card-dashboard
-                                    #db_schema_div.text-xs-center
-                                        i.fa.fa-spin.fa-spinner
-                                        &nbsp; Подождите...
-
-
-                    .col-xs-12
-                        .card
-                            .card-header
-                                h4.card-title Список контрольных вопросов
-                            .card-body.collapse.in
-                                .card-block.card-dashboard
-                                    p.card-text.font-medium-1
-                                        | В данном списке представлены контрольные вопросы к данной базе данных.
-
-                                    .row
-                                        .col-md-6
-                                            fieldset
-                                                .input-group
-                                                    input(type="text" class="form-control" placeholder="Поиск по названию" aria-label="Amount")
-                                                    span.input-group-btn
-                                                        button.btn.btn-tumblr(type="button")
-                                                            i.icon-search5 
-                                                            | Поиск
-                                        .col-md-6
-                                            .form-group
-                                                a.btn.btn-tumblr.btn-mid-width.mr-1.mb-1(type="button" href="/questions/add") 
-                                                    i.icon-plus3 
-                                                    | Добавление нового вопроса
-                                    .row
-                                        #questions_table.col-md-12
-                                            //include ./../parts/pagination
+                        .col-sm-6
+                            .card#schema_card
+                                .card-header
+                                     h4.card-title.no-capitalize Схема базы данных
+                                     .heading-elements
+                                         ul.list-inline.mb-0
+                                             li
+                                                 a(data-action="expand" title="Развернуть")
+                                                     i.icon-expand2(style="color:#373a3c; margin-right:0.5rem")
+                                                     | Развернуть
+                                .card-body.collapse.in.text-xs-center#db_schema_div(style="height:80%")
+                                     i.fa.fa-spin.fa-spinner
+                                     &nbsp; Подождите...
+                                    //.card-block.card-dashboard
+                                        #db_schema_div.text-xs-center
+                                            i.fa.fa-spin.fa-spinner
+                                            &nbsp; Подождите...
 
 
-                .row
-                    .col-sm-6
-                        .card#sql_card
-                            .card-header
-                                .row
-                                    .col-md-8
-                                        h4.card-title SQL запрос к базе данных
-                                    .col-md-4
-                                        button#sql.btn-in-table.btn.px-1.btn-info.float-xs-right(data-edit="disable" title="Редактировать")
-                                            |Выполнить SQL
-                            .card-body.collapse.in
-                                .card-block.card-dashboard
-                                     label(for="sql_query_text")
-                                     textarea#sql_query_text(style="width:100%; resize:both" rows="10" placeholder="SELECT DISTINCT * FROM ...;" )
-                                     .row.mt-2
-                                         .col-md-12#sql_query_data
+                        .col-xs-12
+                            .card
+                                .card-header
+                                    h4.card-title Список контрольных вопросов
+                                .card-body.collapse.in
+                                    .card-block.card-dashboard
+                                        p.card-text.font-medium-1
+                                            | В данном списке представлены контрольные вопросы к данной базе данных.
+
+                                        .row
+                                            .col-md-6
+                                                fieldset
+                                                    .input-group
+                                                        input(type="text" class="form-control" placeholder="Поиск по названию" aria-label="Amount")
+                                                        span.input-group-btn
+                                                            button.btn.btn-tumblr(type="button")
+                                                                i.icon-search5 
+                                                                | Поиск
+                                            .col-md-6
+                                                if (profile.permissions.Question.create)
+                                                    .form-group
+                                                        a.btn.btn-tumblr.btn-mid-width.mr-1.mb-1(type="button" href="/questions/add") 
+                                                            i.icon-plus3 
+                                                            | Добавление нового вопроса
+                                        .row.mt-2
+                                            #questions_table.col-md-12
+                                                //include ./../parts/pagination
+
+
+                    if (profile.permissions.Database.sql)
+                        .row
+                            .col-sm-6
+                                .card#sql_card
+                                    .card-header
+                                        .row
+                                            .col-md-8
+                                                h4.card-title SQL запрос к базе данных
+                                            .col-md-4
+                                                button#sql.btn-in-table.btn.px-1.btn-info.float-xs-right(data-edit="disable" title="Редактировать")
+                                                    |Выполнить SQL
+                                    .card-body.collapse.in
+                                        .card-block.card-dashboard
+                                             label(for="sql_query_text")
+                                             textarea#sql_query_text(style="width:100%; resize:both" rows="10" placeholder="SELECT DISTINCT * FROM ...;" )
+                                             .row.mt-2
+                                                 .col-md-12#sql_query_data
 
 block append footer
     script.

@@ -54,6 +54,15 @@ var get = {
         if (req.query.db_id)
             options.db_id = req.query.db_id;
 
+        if (req.user.role.role == 'student') {
+            options.db_type = { 
+                $or: [
+                    {$eq: 'common'}, 
+                    {$eq: 'prepare'}
+                ]
+            };
+        }
+
         app.Question.findAndCountAll({
                 where: options,
                 include: [
@@ -96,11 +105,22 @@ var get = {
     },
 
     '/:id': function (req, res) {
-        var id = Number(req.params.id);
+        var options = {};
+        options.id = Number(req.params.id);
+
+        if (req.user.role.role == 'student') {
+            options.db_type = { 
+                $or: [
+                    {$eq: 'common'}, 
+                    {$eq: 'prepare'}
+                ]
+            };
+        }
+
         var ctx = {};
 
         app.Question.find({
-                where : {id: id},
+                where : options,
                 include: [{model: app.DataBase}]
             }).then(function (question) {
 
@@ -243,7 +263,7 @@ var put = {
 };
 
 module.exports = {
-    resource: 'Partner',
+    resource: 'Question',
     methods: {
         get: get,
         post: post,
