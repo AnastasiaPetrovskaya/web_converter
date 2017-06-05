@@ -43,7 +43,8 @@ module.exports = function (app) {
         Table: require('./models/table.js'),
         Group: require('./models/group.js'),
         Student: require('./models/student.js'),
-        Question: require('./models/question.js')
+        Question: require('./models/question.js'),
+        QuestionAnswer: require('./models/question_answer.js')
     };
 
 

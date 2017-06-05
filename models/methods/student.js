@@ -13,11 +13,11 @@ module.exports = function (models) {
     Student.make = function(data) {
         var ctx = {};
 
-        return sequelize.transaction(function(t) {
+        //return sequelize.transaction(function(t) {
 
             return Role.findOne({
                     where: {role: 'student'},
-                    transaction: t
+                    //transaction: t
                 }).then(function(role) {
 
                     data.user_data.role_id = role.id;
@@ -29,7 +29,7 @@ module.exports = function (models) {
                 }).then(function() {
                     return ctx.user.hash_password();
                 }).then(function() {
-                    return ctx.user.save({transaction: t});
+                    return ctx.user.save();
                 }).then(function(user) {
                     data.student_data.user_id = user.id;
 
@@ -38,7 +38,7 @@ module.exports = function (models) {
                     console.log('student', student.dataValues);
                     ctx.student = student.dataValues;
                     ctx.user.student_id = ctx.student.id;
-                    return ctx.user.save({transaction: t});
+                    return ctx.user.save();
                 }).then(function(user) {
                     ctx.user = user.dataValues;
 
@@ -47,7 +47,7 @@ module.exports = function (models) {
                     console.log('make db method err', err);
                     throw err;
                 });
-        });
+        //});
     }
 
 };

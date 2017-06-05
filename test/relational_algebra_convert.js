@@ -153,6 +153,7 @@ describe('Algebra full convertion', function() {
         });
 
         it('test6', function(done) {
+            this.timeout(5000);
             var query = new RelationalAlgebraQuery({
                 title: "test",
                 alias: "Расписание_Среда_5сем AS X,Расписание_Среда_5сем AS Y,Расписание_Среда_5сем AS Z,Расписание_Среда_5сем AS W",

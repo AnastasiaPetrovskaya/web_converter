@@ -7,7 +7,7 @@ $(document).ready(function() {
         ajaxOptions: { type:'PUT' },
         type: 'text',
         mode: 'inline',
-        url: '/groups/' + group_id,
+        url: '/users/' + user_id,
         pk: 1, //иначе не уходит ajax
         emptytext: 'Не задано',
         params: function(params) {
@@ -54,10 +54,10 @@ $(document).ready(function() {
     });
 
 
-    var options = {};
-    if (window.group_id) {
-        options.group_id = window.group_id;
-    }
+    //var options = {};
+    //if (window.group_id) {
+    //    options.group_id = window.group_id;
+    //}
 
     //getTable('/students/table', options, '#students_table', function() {});
 

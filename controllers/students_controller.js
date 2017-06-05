@@ -73,7 +73,7 @@ var get = {
                     }]
                 }],
             }).then(function (student) {
-                console.log('student', student);
+                //console.log('student', student);
 
                 if (!student) {
                     throw {message: 'NotFound'};
@@ -93,7 +93,7 @@ var post = {
     '/add': function (req, res) {
         var res_data = {};
         var student_data = req.body;
-        console.log('student_data', student_data);
+        //console.log('student_data', student_data);
 
         app.Student.make(student_data)
             .then(function(result) {

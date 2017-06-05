@@ -110,6 +110,7 @@ $(document).ready(function() {
                 show_sql_res(res.right_answer_sql, '#sql_right_answer_text', res.right_answer_data, '#sql_right_answer_data');
             }
 
+            $('body').scrollTo('#sql_answer_card');
 
             if (res.mark > 0) {
                 bootbox.dialog({

@@ -1,0 +1,59 @@
+if (answers.length === 0)
+    p.text-muted.mt-2.text-xs-center Нет записей
+else
+    table.table.table-striped.table-bordered.zero-configuration
+        thead
+            tr
+                th Вопрос
+                th Тип вопроса
+                th База данных
+                th Тип базы данных
+                th Оценка
+                th Дата
+                th Управление
+        tbody
+            each answer in answers
+                tr(data-id=answer.id)
+                    td
+                        a(href="/questions/" + answer.question.id)= answer.question.title
+                    td
+                        if (answer.question.query_type === "RA")
+                            span.label.label-primary Реляционная алгебра
+                        else if (answer.question.query_type === "TC")
+                            span.label.label-info Исчисление на кортежах
+                        else
+                            span.label.label-danger Не задан
+                    td
+                        if (answer.question.database.id && answer.question.database.title)
+                            a(href="/databases/" + answer.question.database.id)= answer.question.database.title
+                        else
+                            | -
+                    td
+                        if (answer.question.db_type === "common")
+                            .tag.tag-default Общий доступ
+                        else if (answer.question.db_type === "private")
+                            .tag.tag-danger Персональный доступ
+                        else if (answer.question.db_type === "test")
+                            .tag.tag-primary База для контрольных мероприятий
+                        else if (answer.question.db_type === "prepare")
+                            .tag.tag.bg-info.bg-darken-2 Обучающая база данных
+                        else
+                            | Не задан
+                    td.text-xs-center
+                        if (answer.mark > 0) 
+                            .tag.tag-success
+                                i.icon-check.font-medium-2
+                        else
+                            .tag.tag-danger
+                                i.icon-remove.font-medium-2
+                    td= moment(answer.created).format('DD.MM.YYYY')
+                    td
+                        .btn-toolbar.float-xs-right(role="toolbar")
+                            a.btn.btn-icon.btn-outline-info.btn-sm(style="min-width:3.5rem" href="/questions_answers/" + answer.id data-toggle="tooltip" title="Подробная информация")
+                                i.icon-info2
+                            if (profile.permissions.QuestionAnswer.delete)
+                                button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удаление вопроса")
+                                    i.icon-trash2
+
+
+    include ./../parts/pagination

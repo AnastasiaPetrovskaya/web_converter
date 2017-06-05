@@ -16,9 +16,12 @@ global.app = require('./lib/boot.js')({
     }
 });
 
+
 //console.log('app.config', app.config);
 
 var http = app.http;
+
+http.locals.moment = require('moment');
 
 http.set_static(path.join(__dirname, 'static')); /* node-common function */
 http.set('views', path.join(__dirname, 'views'));
@@ -31,6 +34,7 @@ http.require_controller('auth');
 //http.require_controller('money_transactions');
 http.require_controller('databases');
 http.require_controller('questions');
+http.require_controller('questions_answers');
 http.require_controller('groups');
 http.require_controller('students');
 http.require_controller('main', {is_root: true});

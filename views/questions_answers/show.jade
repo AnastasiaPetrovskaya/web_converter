@@ -1,0 +1,116 @@
+extends ../head2
+
+block body
+    div.robust-content.content.container-fluid
+      div.content-wrapper
+        div.content-header.row
+          div(class="content-header-left col-md-6 col-xs-12")
+            h3(class="content-header-title mb-0") Ответ студента
+          div(class="content-header-lead col-xs-12 mt-1")
+        .content-body
+                .row
+                    .col-sm-6
+                        .card#info_card
+                            .card-header
+                                .row
+                                    .col-md-8
+                                        h4.card-title.no-capitalize Информация о вопросе
+                                    //.col-md-4
+                                        if (profile.permissions.Question.update)
+                                            button#edit.btn-in-table.btn.px-1.btn-secondary.float-xs-right(data-edit="disable" title="Редактировать")
+                                                i.btn-i-hack.icon-edit(style="margin-right:0.5rem")
+                                                |Редактировать
+
+                            .card-body.collapse.in
+                                .card-block.card-dashboard
+                                    .row
+                                        .table-responsive
+                                            table.table.table-borderless
+                                                tbody
+                                                    tr
+                                                        td Название вопроса:
+                                                        td= answer.question.title
+                                                    tr
+                                                        td Тип:
+                                                        td
+                                                            if (answer.question.query_type == 'RA')
+                                                                | Реляционная алгебра
+                                                            else if (answer.question.query_type == 'TC')
+                                                                | Исчисление на кортежах
+                                                    tr
+                                                        td Запрос к базе данных на естественном языке:
+                                                        td= answer.question.text
+                                                    tr
+                                                        td База данных:
+                                                        td 
+                                                            a(href="/databases/" + answer.question.database.id)= answer.question.database.title
+                                        .div
+                                            a.btn.btn-info.mr-1.float-xs-right(href="questions/trial/"+"#{answer.question.id}" type="button")
+                                                //i.icon-check2
+                                                | Перейти на страницу выполнения задания
+
+                    .col-sm-6
+                        .card#schema_card
+                            .card-header
+                                 h4.card-title.no-capitalize Схема базы данных
+                                 .heading-elements
+                                     ul.list-inline.mb-0
+                                         li
+                                             a.btn-in-table.btn.px-1.btn-secondary.float-xs-right( data-action="expand" title="Развернуть" style="padding-top:0.2rem; padding-bottom:0.2rem")
+                                                 i.icon-expand2(style="color:#373a3c; margin-right:0.5rem")
+                                                 | Развернуть
+                            #db_schema_div.text-xs-center.card-body.collapse.in(style="height:80%")
+                                i.fa.fa-spin.fa-spinner
+                                &nbsp; Подождите...
+                .row
+                    .col-sm-6
+                        .card
+                            .card-header
+                                h4.card-title.no-capitalize Просмотр результата конвертации в SQL
+                            .card-body.collapse.in
+                                .card-block.card-dashboard
+                                    p.courier_new#sql_answer_text(style="white-space:pre-line")= answer.sql
+                                    #sql_answer_data
+                                        .text-xs-center
+                                            i.fa.fa-spin.fa-spinner
+                                            &nbsp; Подождите...
+
+                    .col-sm-6
+                        .card
+                            .card-header
+                                h4.card-title.no-capitalize Просмотр результата SQL
+                                //.heading-elements
+                                    ul.list-inline.mb-0
+                                        li
+                                            a(data-action="expand")
+                                                i.icon-expand2
+                            .card-body.collapse.in
+                                .card-block.card-dashboard
+                                    p.courier_new#sql_right_answer_text= answer.question.sql_answer
+                                    #sql_right_answer_data
+                                        .text-xs-center
+                                            i.fa.fa-spin.fa-spinner
+                                            &nbsp; Подождите...
+
+
+
+block append footer
+    script.
+        var question_id = '#{answer.question.id}';
+        var db_id = '#{answer.question.database.id}';
+        var right_answer_data = !{JSON.stringify(answer.right_answer_data)};
+        var answer_data = !{JSON.stringify(answer.data)};
+
+    script(src="/robust-assets/js/components/modal/components-modal.js" type="text/javascript")
+
+    script(src="/robust-assets/js/plugins/forms/spinner/jquery.bootstrap-touchspin.js" type="text/javascript")
+    script(src="/robust-assets/js/plugins/forms/validation/jqBootstrapValidation.js" type="text/javascript")
+    script(src="/robust-assets/js/plugins/forms/icheck/icheck.min.js" type="text/javascript")
+    script(src="/robust-assets/js/plugins/forms/toggle/bootstrap-switch.min.js" type="text/javascript")
+    script(src="/robust-assets/js/plugins/forms/toggle/switchery.min.js" type="text/javascript")
+
+    script(src="/robust-assets/js/components/forms/validation/form-validation.js" type="text/javascript")
+
+
+
+    script(src="/js/pages/questions_answers/show.js" type="text/javascript")

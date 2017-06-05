@@ -169,12 +169,12 @@ var post = {
     '/trial': function(req, res) {
         //console.log('question controller post trial', req.body);
         //console.log('queeries', JSON.parse(req.body.queries));
-        queries = JSON.parse(req.body.queries);
+        var queries = JSON.parse(req.body.queries);
         var question_id = req.body.question_id;
         var db_id = req.body.db_id;
         //console.log('el', queries[0].alias);
         //res.success({});
-        var algebra_answer = new AlgebraAnswer(queries);
+        var algebra_answer = new AlgebraAnswer(JSON.parse(req.body.queries));
         //console.log('algebra answer', algebra_answer);
 
         //convert_algebra()
@@ -199,17 +199,46 @@ var post = {
             }).then(function(sql_res) {
                 algebra_answer.right_answer_data = sql_res.result.rows;
                 ctx.right_answer_data = sql_res.result.rows;
-                var mark = algebra_answer.check();
-
-                //console.log('!!!!!!!!!!!!!!!!!!mark', mark);
-                console.log('!!!!!!!!!!!!!!!!!!ctx', ctx);
-                var result = Object.assign({}, mark, ctx)
-
                 //сверка результатов выполнения двух запросов
-                res.success(result);
+                var mark = algebra_answer.check();
+                console.log('!!!!!!!!!!!!!!!!!!mark', mark);
+                console.log('!!!!!!!!!!!!!!!!!!algebra_answer', algebra_answer);
+                ctx = Object.assign({}, mark, ctx)
+
+                if (req.user.role.role == 'student') {
+                    return app.QuestionAnswer.create({
+                        answer: queries,
+                        processed_answer: algebra_answer.queries,
+                        user_id: req.user.id,
+                        question_id: question_id,
+                        mark: mark.mark,
+                        error: mark.comment,
+                        sql: ctx.answer_sql
+                    });
+                } else {
+                    return new Promise(function(resolve, reject) {
+                        resolve();
+                    });
+                }
+                //console.log('!!!!!!!!!!!!!!!!!!ctx', ctx);
+            }).then(function(result) {
+                res.success(ctx);
             }).catch(function(err) {
                 console.log('post /trial err', err);
-                res.error(err);
+
+                return app.QuestionAnswer.create({
+                    answer: queries,
+                    processed_answer: algebra_answer.queries,
+                    user_id: req.user.id,
+                    question_id: question_id,
+                    mark: 0,
+                    error: err,
+                    sql: (ctx.answer_sql ? ctx.answer_sql : "Не удалось выполнить генерацию SQL.")
+                }).then(function(result) {
+                    res.error(err);
+                }).catch(function(err_saving_log) {
+                    res.error(err);
+                });
             });
     },
 
