@@ -2,25 +2,18 @@ var CheckPoint = sequelize.define(
     'check_point',
     {
         title: {type: Sequelize.STRING, allowNull: false},
-        type: {type: Sequelize.STRING, allowNull: false},
-        date_from: {type: Sequelize.DATE, allowNull: false, unique: true},
+        type:  {type: Sequelize.ENUM('test', 'exam', 'attestation'), allowNull: false},
+        date_from: {type: Sequelize.DATE, allowNull: false},
         date_to: {type: Sequelize.DATE, allowNull: false},
-        url: {type: Sequelize.STRING, allowNull: true}
+        description: {type: Sequelize.TEXT, allowNull: true},
+        test_config: {type: Sequelize.JSON, allowNull: true}
     },
     {
-        tableName: 'check_point',
-        //paranoid: true,
+        tableName: 'check_points',
         timestamps: true,
         createdAt: 'created',
         updatedAt: 'updated',
         deletedAt: 'deleted',
-       /* indexes: [
-            {
-               name: 'user_partnerid_index',
-                method: 'BTREE',
-                fields: ['partner_id']
-            }
-        ]*/
     }
 );
 

@@ -1,0 +1,56 @@
+if (check_points.length === 0)
+    p.text-muted.mt-2.text-xs-center Нет записей
+else
+    table.table.table-striped.table-bordered.zero-configuration
+        thead
+            tr
+                th Название
+                th Тип
+                th Тег
+                th База данных
+                th Тип базы данных
+                th Управление
+        tbody
+            each check_point in check_points
+                tr(data-id=check_point.id)
+                    td= check_point.title
+                    td
+                        if (check_point.query_type === "RA")
+                            span.label.label-primary Реляционная алгебра
+                        else if (check_point.query_type === "TC")
+                            span.label.label-info Исчисление на кортежах
+                        else
+                            span.label.label-danger Не задан
+                    td
+                        if (check_point.tag)
+                            =check_point.tag
+                        else
+                            | -
+                    td
+                        if (check_point.database.id && check_point.database.title)
+                            a(href="/databases/" + check_point.database.id)= check_point.database.title
+                        else
+                            | -
+                    td
+                        if (check_point.db_type === "common")
+                            .tag.tag-default Общий доступ
+                        else if (check_point.db_type === "private")
+                            .tag.tag-danger Персональный доступ
+                        else if (check_point.db_type === "test")
+                            .tag.tag-primary База для контрольных мероприятий
+                        else if (check_point.db_type === "prepare")
+                            .tag.tag.bg-info.bg-darken-2 Обучающая база данных
+                        else
+                            | Не задан
+                    td
+                        .btn-toolbar.float-xs-right(role="toolbar")
+                            a.btn.btn-icon.btn-outline-info.btn-sm(style="min-width:3.5rem" href="/check_points/" + check_point.id data-toggle="tooltip" title="Подробная информация")
+                                i.icon-info2
+                            a.btn.btn-icon.btn-outline-success.btn-sm(style="min-width:3.5rem" href="/check_points/trial/" + check_point.id data-toggle="tooltip" title="Пробное выполнение задания")
+                                i.icon-clipboard2
+                            if (profile.permissions.check_point.create)
+                                button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удаление вопроса")
+                                    i.icon-trash2
+
+
+    include ./../parts/pagination

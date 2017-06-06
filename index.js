@@ -29,9 +29,7 @@ http.set('view engine', 'jade');
 
 require('./lib/application_helper');
 http.require_controller('auth');
-//http.require_controller('banks');
-//http.require_controller('clients');
-//http.require_controller('money_transactions');
+http.require_controller('check_points');
 http.require_controller('databases');
 http.require_controller('questions');
 http.require_controller('questions_answers');

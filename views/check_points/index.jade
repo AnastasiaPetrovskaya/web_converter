@@ -1,0 +1,60 @@
+extends ../head2
+
+block body
+    div.robust-content.content.container-fluid
+      div.content-wrapper
+        div.content-header.row
+          div(class="content-header-left col-md-6 col-xs-12")
+            h3(class="content-header-title mb-0") Контрольные мероприятия
+          div(class="content-header-lead col-xs-12 mt-1")
+        .content-body
+            section
+                .row
+                    .col-xs-12
+                        .card
+                            .card-header
+                                h4.card-title Список контрольных мероприятий
+                            .card-body.collapse.in
+                                .card-block.card-dashboard
+                                    //p.card-text.font-medium-1
+                                        | В данном списке представлены все контрольные вопросы.
+                                        | Каждый контрольный вопрос имеет определенный тип: вопрос по реляционной алгебре или по исчислению на кортежах.
+                                        | Также каждый вопрос относится к определенной базе данных, название которой оторажается в таблице.
+
+                                    .row
+                                        .col-md-6
+                                            fieldset
+                                                .input-group
+                                                    input(type="text" class="form-control" placeholder="Поиск по названию" aria-label="Amount")
+                                                    span.input-group-btn
+                                                        button.btn.btn-tumblr(type="button")
+                                                            i.icon-search5 
+                                                            | Поиск
+                                        .col-md-6
+                                            .form-group
+                                                if (profile.permissions.CheckPoint.create)
+                                                    a.btn.btn-tumblr.btn-mid-width.mr-1.mb-1(type="button" href="/check_points/add") 
+                                                        i.icon-plus3 
+                                                        | Добавить новое меророятие
+                                                    a.btn.btn-tumblr.btn-mid-width.mr-1.mb-1#copy_check_point(type="button" href="") 
+                                                        i.icon-plus3 
+                                                        | Cкопировать мероприятие
+                                    .row.mt-2
+                                        #check_points_table.col-md-12
+                                            //include ./../parts/pagination
+
+
+block append footer
+
+    script(src="/robust-assets/js/components/modal/components-modal.js" type="text/javascript")
+
+    script(src="/robust-assets/js/plugins/forms/spinner/jquery.bootstrap-touchspin.js" type="text/javascript")
+    script(src="/robust-assets/js/plugins/forms/validation/jqBootstrapValidation.js" type="text/javascript")
+    script(src="/robust-assets/js/plugins/forms/icheck/icheck.min.js" type="text/javascript")
+    script(src="/robust-assets/js/plugins/forms/toggle/bootstrap-switch.min.js" type="text/javascript")
+    script(src="/robust-assets/js/plugins/forms/toggle/switchery.min.js" type="text/javascript")
+
+    script(src="/robust-assets/js/components/forms/validation/form-validation.js" type="text/javascript")
+
+    script(src="/js/pages/check_points/index.js" type="text/javascript")
+    script(src="/js/pages/check_points/table.js" type="text/javascript")
