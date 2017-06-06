@@ -89,7 +89,7 @@ $(document).ready(function() {
 
         var res = $.ajax({
             type: 'POST',
-            url: '/questions/trial',
+            url: '/questions_answers/add',
             //contentType: "application/json; charset=utf-8",
             //dataType: "json",
             data: data,

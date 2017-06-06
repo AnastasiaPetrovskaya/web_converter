@@ -108,25 +108,80 @@ var get = {
 var post = {
 
     '/add': function (req, res) {
-        var res_data = {};
-        var question_data = req.body;
-        console.log('question_data', question_data);
-        question_data.owner_id = req.user.id;
-        if (question_data.sql_answer) {
-            question_data.sql_answer = question_data.sql_answer.replace(/\"/g, "'");
-        }
+        //console.log('question controller post trial', req.body);
+        //console.log('queeries', JSON.parse(req.body.queries));
+        var queries = JSON.parse(req.body.queries);
+        var question_id = req.body.question_id;
+        var db_id = req.body.db_id;
+        //console.log('el', queries[0].alias);
+        //res.success({});
+        var algebra_answer = new AlgebraAnswer(JSON.parse(req.body.queries));
+        //console.log('algebra answer', algebra_answer);
 
-        app.Question.make(question_data)
-            .then(function(question) {
-                //console.log('question created', question);
-                res.success({
-                    id: question.dataValues.id, 
-                    title: question.dataValues.title
-                });
+        //convert_algebra()
+        var ctx = {};
+        algebra_answer.create_sql_script()
+            .then(function(result) {
+                ctx.answer_sql = result;
+                //console.log('result', result);
+
+                return app.DataBase.execute_sql(db_id, result);
+            }).then(function(sql_res) {
+                //console.log('query_res', sql_res.result.rows);
+                algebra_answer.answer_data = sql_res.result.rows;
+                ctx.answer_data = sql_res.result.rows;
+
+                return app.Question.findById(question_id);
+            }).then(function(question) {
+                //TODO проверка прав возвращать ли правильный ответ
+                ctx.right_answer_sql = question.sql_answer;
+
+                return app.DataBase.execute_sql(db_id, question.sql_answer);
+            }).then(function(sql_res) {
+                algebra_answer.right_answer_data = sql_res.result.rows;
+                ctx.right_answer_data = sql_res.result.rows;
+                //сверка результатов выполнения двух запросов
+                var mark = algebra_answer.check();
+                console.log('!!!!!!!!!!!!!!!!!!mark', mark);
+                console.log('!!!!!!!!!!!!!!!!!!algebra_answer', algebra_answer);
+                ctx = Object.assign({}, mark, ctx)
+
+                if (req.user.role.role == 'student') {
+                    return app.QuestionAnswer.create({
+                        answer: queries,
+                        processed_answer: algebra_answer.queries,
+                        user_id: req.user.id,
+                        question_id: question_id,
+                        mark: mark.mark,
+                        error: mark.comment,
+                        sql: ctx.answer_sql
+                    });
+                } else {
+                    return new Promise(function(resolve, reject) {
+                        resolve();
+                    });
+                }
+                //console.log('!!!!!!!!!!!!!!!!!!ctx', ctx);
+            }).then(function(result) {
+                res.success(ctx);
             }).catch(function(err) {
-                console.log('err', err);
-                res.error(err);
+                console.log('post /trial err', err);
+
+                return app.QuestionAnswer.create({
+                    answer: queries,
+                    processed_answer: algebra_answer.queries,
+                    user_id: req.user.id,
+                    question_id: question_id,
+                    mark: 0,
+                    error: err,
+                    sql: (ctx.answer_sql ? ctx.answer_sql : "Не удалось выполнить генерацию SQL.")
+                }).then(function(result) {
+                    res.error(err);
+                }).catch(function(err_saving_log) {
+                    res.error(err);
+                });
             });
+
     },
 
 };
@@ -179,7 +234,7 @@ var put = {
 };
 
 module.exports = {
-    resource: 'Question',
+    resource: 'QuestionAnswer',
     methods: {
         get: get,
         post: post,

@@ -11,7 +11,7 @@ block body
                 .row
                     .col-sm-6
                         .card#info_card
-                            .card-header
+                            .card-header.bg-blue.bg-lighten-4
                                 .row
                                     .col-md-8
                                         h4.card-title.no-capitalize Информация о вопросе
@@ -25,7 +25,7 @@ block body
                                 .card-block.card-dashboard
                                     .row
                                         .table-responsive
-                                            table.table.table-borderless
+                                            table.table.table-borderless.table-xs
                                                 tbody
                                                     tr
                                                         td Название вопроса:
@@ -44,14 +44,14 @@ block body
                                                         td База данных:
                                                         td 
                                                             a(href="/databases/" + answer.question.database.id)= answer.question.database.title
-                                        .div
-                                            a.btn.btn-info.mr-1.float-xs-right(href="questions/trial/"+"#{answer.question.id}" type="button")
+                                        .div.text-xs-center
+                                            a.btn.btn-info.mr-1(href="/questions/trial/"+"#{answer.question.id}")
                                                 //i.icon-check2
                                                 | Перейти на страницу выполнения задания
 
                     .col-sm-6
                         .card#schema_card
-                            .card-header
+                            .card-header.bg-teal.bg-lighten-4
                                  h4.card-title.no-capitalize Схема базы данных
                                  .heading-elements
                                      ul.list-inline.mb-0
@@ -63,13 +63,73 @@ block body
                                 i.fa.fa-spin.fa-spinner
                                 &nbsp; Подождите...
                 .row
+                    .col-lg-12
+                        .card
+                            .card-header
+                                h4.card-title.no-capitalize Запрос на 
+                                    if (answer.question.query_type == 'RA')
+                                        | реляционной алгебре
+                                    else if (answer.question.query_type == 'TC')
+                                        | исчислении на кортежах
+
+                            .card-body.collapse.in
+                                each query in answer.processed_answer
+                                    .card-block.card-dashboard
+                                        .table-responsive
+                                            table.table.table-xs.td-p-0.table-borderless
+                                                //thead
+                                                tbody
+                                                    tr
+                                                        if (query.title == 'result')
+                                                            th 
+                                                                u Итоговый запрос
+                                                        else
+                                                            th 
+                                                                u Промежуточная таблица "#{query.title}"
+                                                    if (query.title != 'result')
+                                                        tr
+                                                            td= query.description
+                                                    tr
+                                                        td Альтернативные имена таблиц:
+                                                        td
+                                                            pre.mb-0
+                                                              code.sql(style="white-space:pre-wrap")= query.alias
+                                                    tr
+                                                        td Целевой список:
+                                                        td
+                                                            pre.mb-0
+                                                              code.sql(style="white-space:pre-wrap")= query.target_list
+                                                    tr
+                                                        td Тело запроса:
+                                                        td
+                                                            pre.mb-0
+                                                              code.sql(style="white-space:pre-wrap")= query.query_body
+                                                    tr
+                                                        td Тело запроса после эквивалентных преобразований:
+                                                        td
+                                                            pre.mb-0
+                                                              code.ra(style="white-space:pre-wrap")= query.processed_query_body
+
+                                            
+                                        //p.courier_new#sql_answer_text(style="white-space:pre-line")= answer.sql
+                                        //pre.prettyprint=answer.sql
+                                        //pre
+                                        //  code.sql#sql_answer_text(style="white-space:pre-wrap")=answer.sql
+                                        //#sql_answer_data
+                                        //    .text-xs-center
+                                        //        i.fa.fa-spin.fa-spinner
+                                        //        &nbsp; Подождите...
+                .row
                     .col-sm-6
                         .card
                             .card-header
-                                h4.card-title.no-capitalize Просмотр результата конвертации в SQL
+                                h4.card-title.no-capitalize Конвертация ответа студента в SQL
                             .card-body.collapse.in
                                 .card-block.card-dashboard
-                                    p.courier_new#sql_answer_text(style="white-space:pre-line")= answer.sql
+                                    //p.courier_new#sql_answer_text(style="white-space:pre-line")= answer.sql
+                                    //pre.prettyprint=answer.sql
+                                    pre
+                                      code.sql#sql_answer_text(style="white-space:pre-wrap")=answer.sql
                                     #sql_answer_data
                                         .text-xs-center
                                             i.fa.fa-spin.fa-spinner
@@ -78,7 +138,7 @@ block body
                     .col-sm-6
                         .card
                             .card-header
-                                h4.card-title.no-capitalize Просмотр результата SQL
+                                h4.card-title.no-capitalize Ответ преподавателя
                                 //.heading-elements
                                     ul.list-inline.mb-0
                                         li
@@ -86,7 +146,9 @@ block body
                                                 i.icon-expand2
                             .card-body.collapse.in
                                 .card-block.card-dashboard
-                                    p.courier_new#sql_right_answer_text= answer.question.sql_answer
+                                    //p.courier_new#sql_right_answer_text= answer.question.sql_answer
+                                    pre
+                                      code#sql_right_answer_text.sql(style="white-space:pre-wrap")= answer.question.sql_answer
                                     #sql_right_answer_data
                                         .text-xs-center
                                             i.fa.fa-spin.fa-spinner

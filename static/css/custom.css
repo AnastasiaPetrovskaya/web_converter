@@ -108,9 +108,20 @@ div.bootbox.fail .modal-content {
 	font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace; 
 }
 
-#sql_answer_text,#sql_right_answer_text {
+/*#sql_answer_text,#sql_right_answer_text {
     white-space:pre-line;
     font-size:20px;
     font-weight:bold
+}*/
+
+pre {
+    font-size: 100% ! important;
+}
+
+.td-p-0 td {
+    padding: 0px !important;
+}
+.td-p-0 th {
+    padding-left: 0px !important;
 }
 
