@@ -1,6 +1,7 @@
 //var convert_algebra = require('../lib/re_al_to_sql').convert_algebra_to_sql;
 var AlgebraAnswer = require('../lib/RelationalAlgebraAnswer');
 var count_pages = ApplicationHelper.count_pages;
+var moment = require('moment');
 
 var get = {
     '/': function (req, res) {
@@ -122,25 +123,46 @@ var get = {
 var post = {
 
     '/add': function (req, res) {
-        var res_data = {};
-        var question_data = req.body;
-        console.log('question_data', question_data);
-        question_data.owner_id = req.user.id;
-        if (question_data.sql_answer) {
-            question_data.sql_answer = question_data.sql_answer.replace(/\"/g, "'");
-        }
 
-        app.Question.make(question_data)
-            .then(function(question) {
-                //console.log('question created', question);
-                res.success({
-                    id: question.dataValues.id, 
-                    title: question.dataValues.title
-                });
+        console.log('req.body', req.body);
+        var check_point_data = req.body.check_point_data,
+            test_cases = [];
+
+        check_point_data.data_from = moment(check_point_data.data_from).format("DD.MM.YYYY HH:mm");
+        check_point_data.data_to = moment(check_point_data.data_to).format("DD.MM.YYYY HH:mm");
+        //TODO попробовать сегенерировать варианты
+        //после генерации заполнить массив test_cases
+        var kostil = [{
+            title: 'Вариант1', 
+            questions: req.body.questions_set
+        }];
+
+        if (check_point_data.type == 'test') {
+            test_cases = kostil;
+        }
+        //TODO попробовать сегенерировать варианты
+
+        app.CheckPoint.make(check_point_data, test_cases)
+            .then(function(result) {
+
+                console.log('result add check point', result);
+                res.success(result);
             }).catch(function(err) {
-                console.log('err', err);
+                console.log('err add check point', err);
                 res.error(err);
             });
+        //res.success({});
+        //app.CheckPoint.make(question_data)
+        //    .then(function(question) {
+        //        //console.log('question created', question);
+        //        res.success({
+        //            id: question.dataValues.id, 
+        //            title: question.dataValues.title
+        //        });
+        //    }).catch(function(err) {
+        //        console.log('err', err);
+        //        res.error(err);
+        //    });
     },
 
     '/trial': function(req, res) {

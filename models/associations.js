@@ -4,6 +4,8 @@ module.exports = function (models) {
         TerminalKey = models.TerminalKey,
         User = models.User,
         CheckPoint = models.CheckPoint,
+        TestCase = models.TestCase,
+        TestCaseQuestion = models.TestCaseQuestion,
         DataBase = models.DataBase,
         Question = models.Question,
         QuestionAnswer = models.QuestionAnswer,
@@ -76,8 +78,9 @@ module.exports = function (models) {
 
 	//MoneyEncashment.belongsTo(Terminal, {foreignKey: {name: 'terminal_id', allowNull: false}});
     
-    CheckPoint.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
+    //CheckPoint.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
     CheckPoint.hasMany(QuestionAnswer, {as: 'answers', onDelete: 'CASCADE', foreignKey: {name: 'check_point_id', allowNull: true}});
+    CheckPoint.hasMany(TestCase, {as: 'test_cases', onDelete: 'CASCADE', foreignKey: {name: 'check_point_id', allowNull: true}});
 
     DataBase.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
     DataBase.hasMany(Table, {as: 'tables', onDelete: 'CASCADE',  foreignKey: {name: 'db_id', allowNull: false}});
@@ -95,9 +98,16 @@ module.exports = function (models) {
     Token.belongsTo(User, {foreignKey: {name: 'user_id', allowNull: false}});
     Token.belongsTo(Role, {foreignKey: {name: 'role_id', allowNull: false}});
 
+    TestCase.belongsTo(CheckPoint, {foreignKey: {name: 'check_point_id', allowNull: false}});
+    TestCase.hasMany(TestCaseQuestion, {as: 'questions', onDelete: 'CASCADE', foreignKey: {name: 'test_case_id', allowNull: true}});
+
+    TestCaseQuestion.belongsTo(TestCase, {foreignKey: {name: 'test_case_id', allowNull: false}});
+    TestCaseQuestion.belongsTo(Question, {foreignKey: {name: 'question_id', allowNull: false}});
+
     Question.belongsTo(DataBase, {onDelete: 'CASCADE', foreignKey: {name: 'db_id'}});
     Question.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
     Question.hasMany(QuestionAnswer, {as: 'answers', onDelete: 'CASCADE', foreignKey: {name: 'question_id', allowNull: false}});
+    Question.hasMany(TestCaseQuestion, {as: 'test_cases', onDelete: 'CASCADE', foreignKey: {name: 'question_id', allowNull: false}});
 
     QuestionAnswer.belongsTo(User, {foreignKey: {name: 'user_id', allowNull: false}});
     QuestionAnswer.belongsTo(Question, {foreignKey: {name: 'question_id', allowNull: false}});

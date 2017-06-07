@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    var date_from,
+        date_to;
 
     $dates = $('#date_from, #date_to');
     $dates.datetimepicker({
@@ -20,7 +22,18 @@ $(document).ready(function() {
     $('#date_from').data('DateTimePicker').date(moment().startOf('day').add(7, 'd'));
     $('#date_to').data('DateTimePicker').date(moment().startOf('day').add(8, 'd'));
 
-    $('#query_type').change(function(e) {
+    date_from = $('#date_from').data('DateTimePicker').date().unix();
+    date_to = $('#date_to').data('DateTimePicker').date().unix();
+
+    $('#date_from').on('dp.change', function(e) {
+        date_from = $('#date_from').data('DateTimePicker').date().unix();
+    });
+
+    $('#date_to').on('dp.change', function(e) {
+        date_to = $('#date_to').data('DateTimePicker').date().unix();
+    });
+
+    $('#type').change(function(e) {
 
         if ($(this).val() == 'test') {
 
@@ -93,6 +106,7 @@ $(document).ready(function() {
 
     var $form = $("#new_check_point");
 
+    //обработка копирования
     if (question) {
         $form.find('#title').val(question.title + '(копия)');
         $form.find('#tag').val(question.tag);
@@ -125,19 +139,46 @@ $(document).ready(function() {
 
     $form.submit(function(event){
         console.log("submit event");
+        var data = {};
+        var question_set = {};
 
         event.preventDefault();
-        var data = $(this).serialize();
+        var type = $(this).find('#type').val();
+
+        //var data = $(this).serialize();
+        //var data1 = $('#test_config').serializeArray();
+        //var data2 = JSON.stringify( $('#test_config').serializeArray() );
+        data.check_point_data = get_form_data($(this));
+        data.check_point_data.date_from = date_from;
+        data.check_point_data.date_to = date_to;
+
+        if (type == 'test') {
+            data.check_point_data.test_config = get_form_data($('#test_config'));
+
+            var questions_set = [];
+
+            $('#selected_questions_list li').each(function(index) {
+                var question = {};
+                question.id = $(this).data('id');
+                question.complexity = $(this).data('complexity');
+                questions_set.push(question);
+            });
+
+            data.questions_set = questions_set;
+        }
 
 
-        $('#mdb_submit').prop('disabled', true);
-        $('#mdb_submit').html('<i class="icon-spinner12"></i>');
+
+
+        $('#submit').prop('disabled', true);
+        $('#submit').html('<i class="icon-spinner12"></i>');
 
 
         var res = $.ajax({
             type: 'POST',
             url: '/check_points/add',
             data: data,
+            dataType: 'json',
             async: false
         }).responseText;
         res = JSON.parse(res);

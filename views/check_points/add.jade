@@ -27,22 +27,22 @@ block body
                                                     .col-md-6
                                                         .form-group
                                                             label(for="tag") Дата и время начала
-                                                            input.form-control#date_from
+                                                            input.form-control#date_from(name="date_from")
                                                     .col-md-6
                                                         .form-group
                                                             label(for="db_id") Дата и время окончания
-                                                            input.form-control#date_to
+                                                            input.form-control#date_to(name="date_to")
                                                             .help-block
                                                 .row
                                                     .col-md-6
                                                         .form-group
                                                             label(for="title") Название
-                                                            input.form-control#title(type="text" required name="title" aria-invalid="false" data-validation-required-message="Необходимо ввести название вопроса")
+                                                            input.form-control#title(type="text" required name="title" aria-invalid="false" data-validation-required-message="Необходимо ввести название")
                                                             .help-block
                                                     .col-md-6
                                                         .form-group
                                                             label(for="query_type") Тип
-                                                            select.form-control#query_type(name="query_type" required aria-invalid="false" data-validation-required-message="Необходимо выбрать тип вопроса")
+                                                            select.form-control#type(name="type" required aria-invalid="false" data-validation-required-message="Необходимо выбрать тип")
                                                                 option(value="")
                                                                 option(value="test") Контрольная работа
                                                                 option(value="exam") Экзамен
@@ -50,7 +50,7 @@ block body
                                                             .help-block
                                                 .form-group
                                                     label(for="text") Дополнительное описание
-                                                    textarea#description.form-control(rows="3" name="text" placeholder="" required aria-invalid="false" data-validation-required-message="Данное поле обязательно для заполнения")
+                                                    textarea#description.form-control(rows="3" name="text" placeholder=""  aria-invalid="false")
                                                     .help-block
                                             .form-actions
                                                 button#save.btn.btn-success.mr-1.float-xs-right(type="submit" )
@@ -68,26 +68,29 @@ block body
                                     h4.card-title.no-capitalize Настройки контрольной работы
                                 .card-body.collapse.in
                                     .card-block.card-dashboard
-                                        .form-group(style="display:inline-block;width:auto")
-                                            label(for='manual-time-set' style="margin-right: 10px;") Ограничение по времени
-                                            input#time_limit.switchery.pull-right.no-uniform(type="checkbox" data-size="xs" style="margin-right: 10px;")
-                                            input#minutes_amount.form-control(disabled style="width:auto;display:inline-block;margin-right:10px;margin-left: 10px;")
-                                            label(for='minutes_amount' style="margin-right: 10px;") минут
-                                        hr.mt-0
-                                        p
-                                            b Генерация вариантов для контрольной работы
-                                        .form-group.row
-                                            label.col-md-4(for="db_id") Количество вариантов
-                                            input.col-md-8.form-control#test_cases_amount(style="width:auto;display:inline-block;")
-                                            .help-block
-                                        .form-group.row
-                                            label.col-md-4(for="db_id") Количество вопросов в одном варианте
-                                            input.col-md-8.form-control#questions_amount(style="width:auto;display:inline-block;")
-                                            .help-block
-                                        //.form-group.row
-                                            label.col-md-4(for="db_id") Выберете способ генерации вариантов
-                                            input.col-md-8.form-control#questions_amount(style="width:auto;display:inline-block;")
-                                            .help-block
+                                        form.form-horizontal#test_config(novalidate data-backdrop="static")
+                                            .form-body
+                                                .form-group(style="display:inline-block;width:auto")
+                                                    label(for='manual-time-set' style="margin-right: 10px;") Ограничение по времени
+                                                    input#time_limit.switchery.pull-right.no-uniform.form-control(name="time_limit" type="checkbox" data-size="xs"  style="margin-right: 10px;")
+                                                .form-group(style="display:inline-block;width:auto")
+                                                    input#minutes_amount.form-control(name="minutes_amount" disabled value="60" style="width:auto;display:inline-block;margin-right:10px;margin-left: 10px;")
+                                                    label(for='minutes_amount' style="margin-right: 10px;") минут
+                                                hr.mt-0
+                                                p
+                                                    b Генерация вариантов для контрольной работы
+                                                .form-group.row
+                                                    label.col-md-4(for="db_id") Количество вариантов
+                                                    input.col-md-8.form-control#test_cases_amount(name="test_cases_amount" value="10" style="width:auto;display:inline-block;")
+                                                    .help-block
+                                                .form-group.row
+                                                    label.col-md-4(for="db_id") Количество вопросов в одном варианте
+                                                    input.col-md-8.form-control#questions_amount(name="questions_amount" value="5" style="width:auto;display:inline-block;")
+                                                    .help-block
+                                                .form-group.row
+                                                    label.col-md-4(for="db_id") Средняя сложность
+                                                    input.col-md-8.form-control#questions_amount(name="mean_complexity" value="3" style="width:auto;display:inline-block;")
+                                                    .help-block
 
                     .row
                         .col-md-12.col-lg-8
@@ -122,7 +125,7 @@ block body
                                         p.card-text.font-medium-1
                                             | В данном блоке отображены контрольные вопросы, отобранные для формирования вариантов для данной контрольной работы.
                                         #selected_questions_list_block
-                                            ul.list-group.list#selected_questions_list
+                                            ul#selected_questions_list.list-group.list
 
 
 
@@ -137,8 +140,9 @@ block append footer
     //script(src="/robust-assets/js/components/modal/components-modal.js" type="text/javascript")
 
     //script(src="/robust-assets/js/plugins/forms/spinner/jquery.bootstrap-touchspin.js" type="text/javascript")
-    //script(src="/robust-assets/js/plugins/forms/validation/jqBootstrapValidation.js" type="text/javascript")
-    ////script(src="/robust-assets/js/plugins/forms/icheck/icheck.min.js" type="text/javascript")
+    script(src="/robust-assets/js/plugins/forms/validation/jqBootstrapValidation.js" type="text/javascript")
+    script(src="/robust-assets/js/plugins/forms/icheck/icheck.min.js" type="text/javascript")
+    script(src="/robust-assets/js/plugins/forms/spinner/jquery.bootstrap-touchspin.js" type="text/javascript")
     ////script(src="/robust-assets/js/plugins/forms/toggle/bootstrap-switch.min.js" type="text/javascript")
     //script(src="/robust-assets/js/plugins/forms/toggle/switchery.min.js" type="text/javascript")
 
@@ -147,7 +151,7 @@ block append footer
     //script( src="/robust-assets/js/plugins/tables/jsgrid/griddata.js" type="text/javascript")
     //script( src="/robust-assets/js/plugins/tables/jsgrid/jquery.validate.min.js" type="text/javascript")
 
-    //script(src="/robust-assets/js/components/forms/validation/form-validation.js" type="text/javascript")
+    script(src="/robust-assets/js/components/forms/validation/form-validation.js" type="text/javascript")
 
     script(src="/js/pages/check_points/add.js" type="text/javascript")
 

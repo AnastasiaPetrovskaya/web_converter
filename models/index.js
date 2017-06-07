@@ -38,7 +38,11 @@ module.exports = function (app) {
         Token: require('./models/user_session_token'),
         Role: require('./models/role'),
         User: require('./models/user'),
+
         CheckPoint: require('./models/check_point'),
+        TestCase: require('./models/test_case'),
+        TestCaseQuestion: require('./models/test_case_question'),
+
         DataBase: require('./models/database.js'),
         Table: require('./models/table.js'),
         Group: require('./models/group.js'),
