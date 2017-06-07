@@ -1,56 +1,67 @@
 if (questions.length === 0)
     p.text-muted.mt-2.text-xs-center Нет записей
 else
-    table.table.table-striped.table-bordered.zero-configuration
-        thead
-            tr
-                th Название
-                th Тип
-                th Тег
-                th База данных
-                th Тип базы данных
-                th Управление
-        tbody
-            each question in questions
-                tr(data-id=question.id)
-                    td= question.title
-                    td
-                        if (question.query_type === "RA")
-                            span.label.label-primary Реляционная алгебра
-                        else if (question.query_type === "TC")
-                            span.label.label-info Исчисление на кортежах
-                        else
-                            span.label.label-danger Не задан
-                    td
-                        if (question.tag)
-                            =question.tag
-                        else
-                            | -
-                    td
-                        if (question.database.id && question.database.title)
-                            a(href="/databases/" + question.database.id)= question.database.title
-                        else
-                            | -
-                    td
-                        if (question.db_type === "common")
-                            .tag.tag-default Общий доступ
-                        else if (question.db_type === "private")
-                            .tag.tag-danger Персональный доступ
-                        else if (question.db_type === "test")
-                            .tag.tag-primary База для контрольных мероприятий
-                        else if (question.db_type === "prepare")
-                            .tag.tag.bg-info.bg-darken-2 Обучающая база данных
-                        else
-                            | Не задан
-                    td
-                        .btn-toolbar.float-xs-right(role="toolbar")
-                            a.btn.btn-icon.btn-outline-info.btn-sm(style="min-width:3.5rem" href="/questions/" + question.id data-toggle="tooltip" title="Подробная информация")
-                                i.icon-info2
-                            a.btn.btn-icon.btn-outline-success.btn-sm(style="min-width:3.5rem" href="/questions/trial/" + question.id data-toggle="tooltip" title="Пробное выполнение задания")
-                                i.icon-clipboard2
-                            if (profile.permissions.Question.create)
-                                button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удаление вопроса")
-                                    i.icon-trash2
+
+    .table-responsive
+        table.table.custom-table.table-striped
+            //table.table.table-striped.table-bordered.zero-configuration
+            thead
+                tr
+                    th Название
+                    th Тип
+                    th Тег
+                    th Сложность
+                    th База данных
+                    th Тип базы данных
+                    if (control_col==true)
+                        th Управление
+            tbody
+                each question in questions
+                    tr(data-id=question.id  data-title=question.title data-complexity=question.complexity)
+                        td= question.title
+                        td
+                            if (question.query_type === "RA")
+                                span.label.label-primary Реляционная алгебра
+                            else if (question.query_type === "TC")
+                                span.label.label-info Исчисление на кортежах
+                            else
+                                span.label.label-danger Не задан
+                        td
+                            if (question.tag)
+                                =question.tag
+                            else
+                                | -
+                        td
+                            if (question.complexity)
+                                =question.complexity
+                            else
+                                | -
+                        td
+                            if (question.database.id && question.database.title)
+                                a(href="/databases/" + question.database.id)= question.database.title
+                            else
+                                | -
+                        td
+                            if (question.db_type === "common")
+                                .tag.tag-default Универсальная
+                            else if (question.db_type === "private")
+                                .tag.tag-danger Персональная
+                            else if (question.db_type === "test")
+                                .tag.tag-primary Контрольная
+                            else if (question.db_type === "prepare")
+                                .tag.tag.bg-info.bg-darken-2 Обучающая
+                            else
+                                | Не задан
+                        if (control_col == true)
+                            td
+                                .btn-toolbar.float-xs-right(role="toolbar")
+                                    a.btn.btn-icon.btn-outline-info.btn-sm(style="min-width:3.5rem" href="/questions/" + question.id data-toggle="tooltip" title="Подробная информация")
+                                        i.icon-info2
+                                    a.btn.btn-icon.btn-outline-success.btn-sm(style="min-width:3.5rem" href="/questions/trial/" + question.id data-toggle="tooltip" title="Пробное выполнение задания")
+                                        i.icon-clipboard2
+                                    if (profile.permissions.Question.create)
+                                        button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удаление вопроса")
+                                            i.icon-trash2
 
 
     include ./../parts/pagination

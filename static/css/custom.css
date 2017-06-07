@@ -128,3 +128,41 @@ pre {
 .switchery {
     margin-top: 0px;
 }
+
+
+.custom-table  th {
+    border-bottom: 1px solid #ddd !important;
+    border-right: 0px solid #ddd !important;
+    border-left: 0px solid #ddd !important;
+}
+
+.custom-table {
+    border-bottom: 1px solid #ddd !important;
+    border-top: 0px !important;
+    border-right: 1px solid #ddd !important;
+    border-left: 1px solid #ddd !important;
+} 
+
+.custom-table tr {
+    border-bottom: 1px solid #ddd !important;
+    border-top: 0px !important;
+} 
+
+.custom-table td {
+    border-bottom: 1px solid #ddd !important;
+    border-top: 0px !important;
+} 
+
+.custom-table td a.partner-href {
+    color: #373a3c !important;
+} 
+
+.btn-in-table {
+    padding: 0.2rem;
+    min-width: 35px;
+    min-height: 26px;
+}
+
+.list-group-item.py-0 {
+    line-height: 2.2;
+}

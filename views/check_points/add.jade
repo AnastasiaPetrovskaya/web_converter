@@ -53,16 +53,12 @@ block body
                                                     textarea#description.form-control(rows="3" name="text" placeholder="" required aria-invalid="false" data-validation-required-message="Данное поле обязательно для заполнения")
                                                     .help-block
                                             .form-actions
-                                                button.btn.btn-default.float-xs-right(type="button")
-                                                    //i.icon-cross2
-                                                    | Отмена
-                                                button.btn.btn-success.mr-1.float-xs-right(type="submit")
+                                                button#save.btn.btn-success.mr-1.float-xs-right(type="submit" )
                                                     //i.icon-check2
                                                     | Сохранить
-                                                button#sql_answer_btn.btn.btn-info.mr-1.float-xs-right(type="button")
+                                                button#gen_test_cases_and_save.btn.btn-success.mr-1.float-xs-right(type="submit" style="display:none")
                                                     //i.icon-check2
-                                                    | Выполнить SQL
-
+                                                    | Сгенерировать варианты и сохранить
 
 
 
@@ -72,12 +68,12 @@ block body
                                     h4.card-title.no-capitalize Настройки контрольной работы
                                 .card-body.collapse.in
                                     .card-block.card-dashboard
-                                        .form-group.ml-1(style="display:inline-block;width:auto")
+                                        .form-group(style="display:inline-block;width:auto")
                                             label(for='manual-time-set' style="margin-right: 10px;") Ограничение по времени
                                             input#time_limit.switchery.pull-right.no-uniform(type="checkbox" data-size="xs" style="margin-right: 10px;")
                                             input#minutes_amount.form-control(disabled style="width:auto;display:inline-block;margin-right:10px;margin-left: 10px;")
                                             label(for='minutes_amount' style="margin-right: 10px;") минут
-                                        hr
+                                        hr.mt-0
                                         p
                                             b Генерация вариантов для контрольной работы
                                         .form-group.row
@@ -88,7 +84,7 @@ block body
                                             label.col-md-4(for="db_id") Количество вопросов в одном варианте
                                             input.col-md-8.form-control#questions_amount(style="width:auto;display:inline-block;")
                                             .help-block
-                                        .form-group.row
+                                        //.form-group.row
                                             label.col-md-4(for="db_id") Выберете способ генерации вариантов
                                             input.col-md-8.form-control#questions_amount(style="width:auto;display:inline-block;")
                                             .help-block
@@ -100,6 +96,35 @@ block body
                                     h4.card-title.no-capitalize Выбор контрольных вопросов
                                 .card-body.collapse.in
                                     .card-block.card-dashboard
+                                        p.card-text.font-medium-1
+                                            | В данном списке представлены все контрольные вопросы.
+                                            | Каждый контрольный вопрос имеет определенный тип: вопрос по реляционной алгебре или по исчислению на кортежах.
+                                            | Также каждый вопрос относится к определенной базе данных, название которой оторажается в таблице.
+
+                                        .row
+                                            .col-md-10
+                                                fieldset
+                                                    .input-group
+                                                        input(type="text" class="form-control" placeholder="Поиск по названию" aria-label="Amount")
+                                                        span.input-group-btn
+                                                            button.btn.btn-tumblr(type="button")
+                                                                i.icon-search5 
+                                                                | Поиск
+                                        .row.mt-2
+                                            #questions_table.col-md-12
+                                                //include ./../parts/pagination
+                        .col-md-12.col-lg-4
+                            .card#selected_questions_card(style="display:none")
+                                .card-header
+                                    h4.card-title.no-capitalize Отобранные контрольные вопросы
+                                .card-body.collapse.in
+                                    .card-block.card-dashboard
+                                        p.card-text.font-medium-1
+                                            | В данном блоке отображены контрольные вопросы, отобранные для формирования вариантов для данной контрольной работы.
+                                        #selected_questions_list_block
+                                            ul.list-group.list#selected_questions_list
+
+
 
 block append footer
     if (question)

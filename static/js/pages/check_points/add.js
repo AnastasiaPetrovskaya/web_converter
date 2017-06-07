@@ -20,29 +20,32 @@ $(document).ready(function() {
     $('#date_from').data('DateTimePicker').date(moment().startOf('day').add(7, 'd'));
     $('#date_to').data('DateTimePicker').date(moment().startOf('day').add(8, 'd'));
 
-    //options.start = $start_date.data('DateTimePicker').date().unix();
-    //options.end = $end_date.data('DateTimePicker').date().unix();
-
-    //$start_date.on('dp.change', function(e) {
-    //    options.start = $start_date.data('DateTimePicker').date().unix();
-    //});
-
-    //$end_date.on('dp.change', function(e) {
-    //    options.end = $end_date.data('DateTimePicker').date().unix();
-    //});
-
-    //$dates.on('dp.change', function(e) {
-    //    showData(options);
-    //});
-    //
-
     $('#query_type').change(function(e) {
+
         if ($(this).val() == 'test') {
+
+            var options = {};
+            options.db_type = { 
+                $or: [
+                    {$eq: 'common'}, 
+                    {$eq: 'test'}
+                ]
+            };
+            options.control_col = false;
+
+            getTable('/questions/table', options, '#questions_table');
+
             $('#settings_card').show();
             $('#select_questions_card').show();
+            $('#selected_questions_card').show();
+            $('#gen_test_cases_and_save').show();
+            $('#save').hide();
         } else {
             $('#settings_card').hide();
             $('#select_questions_card').hide();
+            $('#selected_questions_card').hide();
+            $('#gen_test_cases_and_save').hide();
+            $('#save').show();
         }
     });
 
@@ -57,9 +60,31 @@ $(document).ready(function() {
         }
     });
 
+    $(document).on('click', '#check_points_table ul.pagination a.page-link', function(e) {
+        options.page = e.target.innerHTML;
+        getTable('/check_points/table', options, '#check_points_table');
+    });
 
 
+    $(document).on('click', '#questions_table table tbody tr', function(e) {
+        //$(this).addClass('selected').siblings().removeClass('selected');
+        $(this).addClass('selected');
+        question_id = $(this).data('id');
+        question_complexity = $(this).data('complexity');
+        question_title = $(this).data('title');
 
+        $('#selected_questions_list').append('<li class="list-group-item py-0 pr-0" data-id="' + question_id + 
+            '" data-complexity="' + question_complexity + '" data-title="' + question_title + '">' + 
+            question_title + ' (Сложность: '+ question_complexity + ')' + 
+            '<a class="float-xs-right bg-danger" data-action="remove-from-selected"><i class=" mx-1 white icon-cross2"></i></a>' + '</li>');
+    });
+
+
+    $(document).on('click', 'a[data-action="remove-from-selected"]', function(e) {
+        //$(this).addClass('selected').siblings().removeClass('selected');
+        //TODO зазвыделять строки в таблице, если нужно
+        $(this).parent().remove();
+    });
 
 
 

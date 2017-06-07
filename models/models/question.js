@@ -4,6 +4,7 @@ var Question = sequelize.define(
         title: {type: Sequelize.STRING, allowNull: false},
         tag: {type: Sequelize.STRING, allowNull: true},
         query_type: {type: Sequelize.ENUM('RA', 'TC'), allowNull: false},
+        complexity: {type: Sequelize.INTEGER, allowNull: false},
         text: {type: Sequelize.TEXT, allowNull: false},
         sql_answer: {type: Sequelize.TEXT, allowNull: false},
         help: {type: Sequelize.STRING, allowNull: true},
