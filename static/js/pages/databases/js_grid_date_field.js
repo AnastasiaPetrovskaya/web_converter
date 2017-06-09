@@ -97,7 +97,7 @@ MyDateField.prototype = new jsGrid.Field({
     filterValue: function() {
         if (this._filterPicker.data('DateTimePicker').date()) {
             date_from_picker = new Date(this._filterPicker.data('DateTimePicker').date());
-            return moment(date_from_picker).format("YYYY-MM-DDTHH:mm:ss");
+            return moment(date_from_picker).format("YYYY-MM-DD HH:mm:ss");
         } else {
             return "";
         }
@@ -105,12 +105,12 @@ MyDateField.prototype = new jsGrid.Field({
  
     insertValue: function() {
         date_from_picker = new Date(this._insertPicker.data('DateTimePicker').date());
-        return moment(date_from_picker).format("YYYY-MM-DDTHH:mm:ss")
+        return moment(date_from_picker).format("YYYY-MM-DD HH:mm:ss")
     },
  
     editValue: function() {
         date_from_picker = new Date(this._editPicker.data('DateTimePicker').date());
-        return moment(date_from_picker).format("YYYY-MM-DDTHH:mm:ss")
+        return moment(date_from_picker).format("YYYY-MM-DD HH:mm:ss")
     }
 });
  

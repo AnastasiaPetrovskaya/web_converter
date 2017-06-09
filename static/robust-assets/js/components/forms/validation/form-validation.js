@@ -12,7 +12,7 @@
 	'use strict';
 
 	// Input, Select, Textarea validations except submit button
-	$("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
+	$("input,select,textarea").not("[type=submit]").not(".select2").jqBootstrapValidation();
 
 	// Square Checkbox & Radio
     $('.skin-square input').iCheck({
@@ -31,13 +31,13 @@
 		var elems = Array.prototype.slice.call(document.querySelectorAll('.switchery'));
 
 		elems.forEach(function (html) {
-			var switchery = new Switchery(html);
+			//var switchery = new Switchery(html);
 		});
 	} else {
 		var elems1 = document.querySelectorAll('.switchery');
 
 		for (i = 0; i < elems1.length; i++) {
-			var switchery = new Switchery(elems1[i]);
+			//var switchery = new Switchery(elems1[i]);
 		}
 	}
 })(window, document, jQuery);

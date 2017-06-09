@@ -24,11 +24,12 @@ block body
                                         form.form-horizontal#new_question(novalidate data-backdrop="static")
                                             .form-body
                                                 .row
-                                                    .col-md-6
+                                                    .col-md-12
                                                         .form-group
                                                             label(for="title") Название вопроса
                                                             input.form-control#title(type="text" required name="title" aria-invalid="false" data-validation-required-message="Необходимо ввести название вопроса")
                                                             .help-block
+                                                .row
                                                     .col-md-6
                                                         .form-group
                                                             label(for="query_type") Тип вопроса
@@ -37,11 +38,6 @@ block body
                                                                 option(value="RA") Реляционная алгебра
                                                                 option(value="TC") Исчисление на кортежах
                                                             .help-block
-                                                .row
-                                                    .col-md-6
-                                                        .form-group
-                                                            label(for="tag") Теги вопроса (Опциональное поле)
-                                                            input.form-control#tag(type="text" name="tag")
                                                     .col-md-6
                                                         .form-group
                                                             label(for="db_id") База данных
@@ -59,6 +55,16 @@ block body
                                                                         else if (db.type == "private")
                                                                             | Персональная
                                                             .help-block
+                                                .row
+                                                    .col-md-6
+                                                        .form-group
+                                                            label(for="tag") Теги вопроса (Опциональное поле)
+                                                            input.form-control#tag(type="text" name="tag")
+                                                    .col-md-6
+                                                        .form-group
+                                                            label(for="complexity") Сложность вопроса
+                                                            .input-group
+                                                                input.touchspin.form-control#complexity(type="text" value="3" data-bts-min="1" data-bts-max="5" name="complexity")
                                                 .form-group
                                                     label(for="text") Запрос к базе данных на естественном языке
                                                     textarea#text.form-control(rows="3" name="text" placeholder="" required aria-invalid="false" data-validation-required-message="Данное поле обязательно для заполнения")

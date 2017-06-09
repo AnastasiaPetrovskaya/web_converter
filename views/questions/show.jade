@@ -55,6 +55,9 @@ block body
                                                             else
                                                                 a.editable.edit_textarea(href="#" data-name="help")
                                                     tr
+                                                        td Сложность вопроса:
+                                                        td #{question.complexity}
+                                                    tr
                                                         td База данных:
                                                         td 
                                                             a(href="/databases/" + question.database.id)= question.database.title

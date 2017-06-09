@@ -71,7 +71,7 @@ module.exports = function(options) {
                     reset_session(req);
                     redirect(req, res, next);
                 } else {
-                    //console.log("here 4");
+                    //console.log("find token user data in req", data);
                     req.user = data;
                     res.locals.profile = data;
                     next();

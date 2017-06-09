@@ -3,8 +3,8 @@ var CheckPoint = sequelize.define(
     {
         title: {type: Sequelize.STRING, allowNull: false},
         type:  {type: Sequelize.ENUM('test', 'exam', 'attestation'), allowNull: false},
-        date_from: {type: Sequelize.DATE, allowNull: false},
-        date_to: {type: Sequelize.DATE, allowNull: false},
+        start: {type: Sequelize.DATE, allowNull: false},
+        end: {type: Sequelize.DATE, allowNull: false},
         description: {type: Sequelize.TEXT, allowNull: true},
         test_config: {type: Sequelize.JSON, allowNull: true}
     },

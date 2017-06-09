@@ -27,11 +27,11 @@ block body
                                                     .col-md-6
                                                         .form-group
                                                             label(for="tag") Дата и время начала
-                                                            input.form-control#date_from(name="date_from")
+                                                            input.form-control#start(name="start")
                                                     .col-md-6
                                                         .form-group
                                                             label(for="db_id") Дата и время окончания
-                                                            input.form-control#date_to(name="date_to")
+                                                            input.form-control#end(name="end")
                                                             .help-block
                                                 .row
                                                     .col-md-6
@@ -48,6 +48,14 @@ block body
                                                                 option(value="exam") Экзамен
                                                                 option(value="attestation") Зачет (Аттестация разделов)
                                                             .help-block
+                                                .form-group
+                                                    label Выберете группы
+                                                    select#terminalSelect.select2.form-control(name="groups" required tabindex="-1" multiple="multiple" )
+                                                      option(value="")
+                                                      each group in groups
+                                                          option(value="#{group.id}")= group.title
+
+
                                                 .form-group
                                                     label(for="text") Дополнительное описание
                                                     textarea#description.form-control(rows="3" name="text" placeholder=""  aria-invalid="false")
@@ -71,7 +79,7 @@ block body
                                         form.form-horizontal#test_config(novalidate data-backdrop="static")
                                             .form-body
                                                 .form-group(style="display:inline-block;width:auto")
-                                                    label(for='manual-time-set' style="margin-right: 10px;") Ограничение по времени
+                                                    label(for='time_limit' style="margin-right: 10px;") Ограничение по времени
                                                     input#time_limit.switchery.pull-right.no-uniform.form-control(name="time_limit" type="checkbox" data-size="xs"  style="margin-right: 10px;")
                                                 .form-group(style="display:inline-block;width:auto")
                                                     input#minutes_amount.form-control(name="minutes_amount" disabled value="60" style="width:auto;display:inline-block;margin-right:10px;margin-left: 10px;")
@@ -91,6 +99,9 @@ block body
                                                     label.col-md-4(for="db_id") Средняя сложность
                                                     input.col-md-8.form-control#questions_amount(name="mean_complexity" value="3" style="width:auto;display:inline-block;")
                                                     .help-block
+                                                .form-group(style="display:inline-block;width:auto")
+                                                    label(for='manual-time-set' style="margin-right: 10px;") Вырианты без повторений вопросов
+                                                    input#unique_questions.switchery.pull-right.no-uniform.form-control(name="unique_questions" type="checkbox" data-size="xs"  style="margin-right: 10px;")
 
                     .row
                         .col-md-12.col-lg-8
@@ -140,9 +151,6 @@ block append footer
     //script(src="/robust-assets/js/components/modal/components-modal.js" type="text/javascript")
 
     //script(src="/robust-assets/js/plugins/forms/spinner/jquery.bootstrap-touchspin.js" type="text/javascript")
-    script(src="/robust-assets/js/plugins/forms/validation/jqBootstrapValidation.js" type="text/javascript")
-    script(src="/robust-assets/js/plugins/forms/icheck/icheck.min.js" type="text/javascript")
-    script(src="/robust-assets/js/plugins/forms/spinner/jquery.bootstrap-touchspin.js" type="text/javascript")
     ////script(src="/robust-assets/js/plugins/forms/toggle/bootstrap-switch.min.js" type="text/javascript")
     //script(src="/robust-assets/js/plugins/forms/toggle/switchery.min.js" type="text/javascript")
 
@@ -151,7 +159,6 @@ block append footer
     //script( src="/robust-assets/js/plugins/tables/jsgrid/griddata.js" type="text/javascript")
     //script( src="/robust-assets/js/plugins/tables/jsgrid/jquery.validate.min.js" type="text/javascript")
 
-    script(src="/robust-assets/js/components/forms/validation/form-validation.js" type="text/javascript")
 
     script(src="/js/pages/check_points/add.js" type="text/javascript")
 

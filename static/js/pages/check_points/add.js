@@ -1,8 +1,8 @@
 $(document).ready(function() {
-    var date_from,
-        date_to;
+    var start,
+        end;
 
-    $dates = $('#date_from, #date_to');
+    $dates = $('#start, #end');
     $dates.datetimepicker({
         format: 'DD.MM.YYYY HH:mm',
         locale: 'ru',
@@ -19,18 +19,35 @@ $(document).ready(function() {
         }
     });
 
-    $('#date_from').data('DateTimePicker').date(moment().startOf('day').add(7, 'd'));
-    $('#date_to').data('DateTimePicker').date(moment().startOf('day').add(8, 'd'));
-
-    date_from = $('#date_from').data('DateTimePicker').date().unix();
-    date_to = $('#date_to').data('DateTimePicker').date().unix();
-
-    $('#date_from').on('dp.change', function(e) {
-        date_from = $('#date_from').data('DateTimePicker').date().unix();
+    $('.select2').select2({
+        containerCssClass: 'select',
+        language: {
+            maximumSelected: function() {
+                return "Вы не можете выбрать более одного элемента";
+            },
+            noResult: function() {
+                return "Нет данных для выбранных фильтров";
+            }
+        },
     });
 
-    $('#date_to').on('dp.change', function(e) {
-        date_to = $('#date_to').data('DateTimePicker').date().unix();
+
+    $('#start').data('DateTimePicker').date(moment().startOf('day').add(7, 'd'));
+    $('#end').data('DateTimePicker').date(moment().startOf('day').add(8, 'd'));
+
+
+        //start_picker = new Date(this._editPicker.data('DateTimePicker').date());
+        //return moment(start_picker).format("YYYY-MM-DDTHH:mm:ss")
+
+    start = moment($('#start').data('DateTimePicker').date()).format("YYYY-MM-DD HH:mm:ss");
+    end = moment($('#end').data('DateTimePicker').date()).format("YYYY-MM-DD HH:mm:ss");
+
+    $('#start').on('dp.change', function(e) {
+        start = moment(new Date($('#start').data('DateTimePicker').date())).format("YYYY-MM-DD HH:mm:ss");
+    });
+
+    $('#end').on('dp.change', function(e) {
+        end = moment(new Date ($('#end').data('DateTimePicker').date())).format("YYYY-MM-DD HH:mm:ss");
     });
 
     $('#type').change(function(e) {
@@ -148,9 +165,10 @@ $(document).ready(function() {
         //var data = $(this).serialize();
         //var data1 = $('#test_config').serializeArray();
         //var data2 = JSON.stringify( $('#test_config').serializeArray() );
+        data.groups_set = $('.select2').val();
         data.check_point_data = get_form_data($(this));
-        data.check_point_data.date_from = date_from;
-        data.check_point_data.date_to = date_to;
+        data.check_point_data.start = start;
+        data.check_point_data.end = end;
 
         if (type == 'test') {
             data.check_point_data.test_config = get_form_data($('#test_config'));

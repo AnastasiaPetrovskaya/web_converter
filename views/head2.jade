@@ -95,7 +95,7 @@ block vertical-menu
 
 
     div(id="main-menu" data-scroll-to-active="true" class="main-menu menu-dark menu-fixed menu-shadow menu-accordion")
-      div(class="main-menu-header")
+      //div(class="main-menu-header")
         input(type="text" placeholder="Поиск" class="menu-search form-control round")
       div.main-menu-content
         ul(id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main")
@@ -117,12 +117,12 @@ block vertical-menu
                //i(class="icon-compose")
                //i(class="icon-edit")
                i(class="icon-file-text2")
-               span(data-i18n="nav.dash.main" class="menu-title") Контрольные работы
+               span(data-i18n="nav.dash.main" class="menu-title") Контрольные вопросы
           if (profile.permissions.Group.read)
               li(class=" nav-item")
                  a(href="/groups")
                    i(class="icon-users3")
-                   span(data-i18n="nav.dash.main" class="menu-title") Группы
+                   span.float-xs-center(data-i18n="nav.dash.main" class="menu-title") Группы
           if (profile.permissions.Student.read)
               li(class=" nav-item")
                  a(href="/students")

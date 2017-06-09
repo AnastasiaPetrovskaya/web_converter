@@ -7,6 +7,10 @@ var mongo_config =require('./config/mongo.json');
 var postgres_config =require('./config/postgres.json')[process.env.NODE_ENV];
 //console.log('var', postgres_config);
 
+
+
+
+
 global.app = require('./lib/boot.js')({
     root_dir: __dirname,
     config: {

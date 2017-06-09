@@ -26,7 +26,7 @@ module.exports = function (app) {
             },
             transactionType: Sequelize.Transaction.TYPES.DEFERRED,
             /* isolationLevel, возможно, стоит изменить на что попроще */
-            isolationLevel: 'SERIALIZABLE',
+            isolationLevel: 'READ COMMITTED',
             timezone: '+03:00',
             logging: false
         }
@@ -40,6 +40,7 @@ module.exports = function (app) {
         User: require('./models/user'),
 
         CheckPoint: require('./models/check_point'),
+        CheckPointGroup: require('./models/check_point_group'),
         TestCase: require('./models/test_case'),
         TestCaseQuestion: require('./models/test_case_question'),
 

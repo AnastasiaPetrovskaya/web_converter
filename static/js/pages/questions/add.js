@@ -1,4 +1,12 @@
 $(document).ready(function() {
+    //$("#complexity").TouchSpin({
+    //    min: 1,
+    //    max: 5,
+    //    step: 0.5,
+    //    boostat: 5,
+    //    maxboostedstep: 10,
+    //});
+
     var $form = $("#new_question");
     if (question) {
         $form.find('#title').val(question.title + '(копия)');
@@ -8,6 +16,7 @@ $(document).ready(function() {
         $form.find('#help').val(question.help);
         $form.find('#query_type').val(question.query_type);
         $form.find('#db_id').val(question.db_id);
+        $form.find('#complexity').val(question.complexity);
         //console.log(question);
 
         $('#db_schema_div').html('<div id="db_schema_div" class="text-xs-center"><i class="fa fa-spin fa-spinner"></i> Подождите...</div>');

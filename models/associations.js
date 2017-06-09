@@ -4,6 +4,7 @@ module.exports = function (models) {
         TerminalKey = models.TerminalKey,
         User = models.User,
         CheckPoint = models.CheckPoint,
+        CheckPointGroup = models.CheckPointGroup,
         TestCase = models.TestCase,
         TestCaseQuestion = models.TestCaseQuestion,
         DataBase = models.DataBase,
@@ -78,15 +79,20 @@ module.exports = function (models) {
 
 	//MoneyEncashment.belongsTo(Terminal, {foreignKey: {name: 'terminal_id', allowNull: false}});
     
-    //CheckPoint.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
+    CheckPoint.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
     CheckPoint.hasMany(QuestionAnswer, {as: 'answers', onDelete: 'CASCADE', foreignKey: {name: 'check_point_id', allowNull: true}});
     CheckPoint.hasMany(TestCase, {as: 'test_cases', onDelete: 'CASCADE', foreignKey: {name: 'check_point_id', allowNull: true}});
+    CheckPoint.hasMany(CheckPointGroup, {as: 'groups', onDelete: 'CASCADE', foreignKey: {name: 'check_point_id', allowNull: true}});
+    
+    CheckPointGroup.belongsTo(CheckPoint, {foreignKey: {name: 'check_point_id', allowNull: false}});
+    CheckPointGroup.belongsTo(Group, {foreignKey: {name: 'group_id', allowNull: false}});
 
     DataBase.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
     DataBase.hasMany(Table, {as: 'tables', onDelete: 'CASCADE',  foreignKey: {name: 'db_id', allowNull: false}});
     DataBase.hasMany(Question, {as: 'questions', onDelete: 'CASCADE',  foreignKey: {name: 'db_id', allowNull: false}});
 
     Group.hasMany(Student, {as: 'students', onDelete: 'CASCADE',  foreignKey: {name: 'group_id', allowNull: false}});
+    Group.hasMany(CheckPointGroup, {as: 'check_points', onDelete: 'CASCADE',  foreignKey: {name: 'group_id', allowNull: false}});
 
     Role.hasMany(Token, {foreignKey: {name: 'role_id', allowNull: false}});
 

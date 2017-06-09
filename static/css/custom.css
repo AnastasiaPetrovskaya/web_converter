@@ -166,3 +166,69 @@ pre {
 .list-group-item.py-0 {
     line-height: 2.2;
 }
+
+.select2 input {
+    border-color: initial !important;
+    box-shadow: none !important;
+}
+
+.fc-today {
+    background-color: #def6da !important;
+    color: #373a3c !important;
+}
+
+#main-menu-navigation > li > a > i {
+    display: block;
+    text-align: center;
+    width: 100%;
+    font-size: 1.65rem !important;
+    margin: 0.2rem 0 0.8rem 0;
+}
+
+
+#main-menu-navigation > li > a  {
+    text-align: center !important;
+}
+
+body.vertical-layout.vertical-menu.menu-expanded .main-menu .navigation > li > a > i:before {
+     font-size: 1.65rem;
+}
+
+#main-menu-navigation > li > a span  {
+    float: none !important;
+    white-space: pre-wrap;
+}
+
+
+.event-demo {
+    padding: 5px;
+    margin: 10px 5px;
+    color: #fff;
+    font-weight: bold !important;
+    border-radius: 3px;
+    display: inline-block;
+    width: 200px;
+}
+
+.exam {
+    background-color: rgb(237, 85, 100);
+    border-color: rgb(237, 85, 100);
+}
+
+.test {
+    background-color: rgb(108, 91, 123);;
+    border-color: rgb(108, 91, 123);
+}
+
+.attestation {
+    background-color: rgb(62, 172, 171);
+    border-color: rgb(62, 172, 171);
+}
+
+.demo_container {
+    display: inline-block;
+    padding: 0 5px;
+    border: 1px solid #A2B8CD;
+    background: #F3F3F3;
+    text-align: left;
+}

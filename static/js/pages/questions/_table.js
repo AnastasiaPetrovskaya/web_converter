@@ -1,8 +1,8 @@
 $(document).ready(function() {
 
-    //var options = {};
-    var options = {
-        db_id: window.db_id ? window.db_id : null
+    var options = {};
+    if (window.db_id){
+        db_id: window.db_id;
     };
     var question_id = 0;
 

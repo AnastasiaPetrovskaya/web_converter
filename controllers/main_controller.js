@@ -5,8 +5,29 @@ var User = app.User,
 
 var get = {
     '/': function(req, res, next) {
-        console.log('here');
-        res.render('main/index', { current_page: 'main' });
+        var options = {},
+            groups_options = {};
+
+        if (req.user.role.role == 'student') {
+            groups_options = { id: req.user.student.group.id };
+        }
+
+        app.CheckPoint.findAll({
+                where: options,
+                include: [{
+                    model: app.CheckPointGroup, 
+                    as: 'groups',
+                    where: groups_options
+                }]
+            }).then(function(check_points) {
+                console.log('check_points', check_points);
+                res.render('main/index', {
+                    check_points: check_points, 
+                    current_page: 'main' 
+                });
+            }).catch(function(err) {
+                res.error(err);
+            });
     },
 
     '/login': function(req, res, next) {

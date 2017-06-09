@@ -27175,7 +27175,7 @@ input[type="button"].btn-block {
 }
 
 .fc-unthemed .fc-content, .fc-unthemed .fc-divider, .fc-unthemed .fc-popover, .fc-unthemed .fc-row, .fc-unthemed tbody, .fc-unthemed td, .fc-unthemed th, .fc-unthemed thead {
-  border-color: #efebfa;
+  /*border-color: #efebfa;ну прям очень не читабельно с этим цветом*/
 }
 
 th.fc-widget-header, .fc-basic-view td.fc-day-number, .fc-basic-view td.fc-week-number span {

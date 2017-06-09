@@ -9,8 +9,10 @@ var get = {
     },
 
     '/add': function (req, res) {
-
-        res.render('check_points/add');
+        app.Group.findAll()
+            .then(function(groups) {
+                res.render('check_points/add', {groups: groups});
+            });
     },
 
     '/copy/:id': function (req, res) {
@@ -30,6 +32,7 @@ var get = {
     '/table': function (req, res) {
         console.log('req.query', req.query);
         var options = {},
+            groups_options = {},
             skip = 0,
             limit = 15,
             page = Number(req.query.page) || 1;
@@ -40,17 +43,18 @@ var get = {
         if (req.query.db_id)
             options.db_id = req.query.db_id;
 
+
         if (req.user.role.role == 'student') {
-            options.db_type = { 
-                $or: [
-                    {$eq: 'common'}, 
-                    {$eq: 'prepare'}
-                ]
-            };
+            groups_options = { id: req.user.student.group.id };
         }
 
         app.CheckPoint.findAndCountAll({
                 where: options,
+                include: [{
+                    model: app.CheckPointGroup, 
+                    as: 'groups',
+                    where: groups_options
+                }],
                 limit: limit,
                 offset: skip
             }).then(function(check_points) {
@@ -126,10 +130,15 @@ var post = {
 
         console.log('req.body', req.body);
         var check_point_data = req.body.check_point_data,
-            test_cases = [];
+            test_cases = [],
+            groups = [];
 
-        check_point_data.data_from = moment(check_point_data.data_from).format("DD.MM.YYYY HH:mm");
-        check_point_data.data_to = moment(check_point_data.data_to).format("DD.MM.YYYY HH:mm");
+        groups = req.body.groups_set;
+
+        check_point_data.owner_id = req.user.id;
+
+        //check_point_data.data_from = moment(check_point_data.data_from).format("DD.MM.YYYY HH:mm");
+        //check_point_data.data_to = moment(check_point_data.data_to).format("DD.MM.YYYY HH:mm");
         //TODO попробовать сегенерировать варианты
         //после генерации заполнить массив test_cases
         var kostil = [{
@@ -141,8 +150,9 @@ var post = {
             test_cases = kostil;
         }
         //TODO попробовать сегенерировать варианты
+        console.log('check_point_data', check_point_data);
 
-        app.CheckPoint.make(check_point_data, test_cases)
+        app.CheckPoint.make(check_point_data, groups, test_cases)
             .then(function(result) {
 
                 console.log('result add check point', result);
