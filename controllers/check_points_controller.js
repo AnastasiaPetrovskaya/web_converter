@@ -1,5 +1,6 @@
 //var convert_algebra = require('../lib/re_al_to_sql').convert_algebra_to_sql;
 var AlgebraAnswer = require('../lib/RelationalAlgebraAnswer');
+var TestCases = require('../lib/TestCases');
 var count_pages = ApplicationHelper.count_pages;
 var moment = require('moment');
 
@@ -107,14 +108,33 @@ var get = {
         var ctx = {};
 
         app.CheckPoint.find({
-                where : options
+                where : options,
+                include: [{
+                        model: app.CheckPointGroup,
+                        as: 'groups',
+                        include: [app.Group]
+                    },{
+                        model: app.TestCase,
+                        as: 'test_cases',
+                        include: [{
+                            model: app.TestCaseQuestion, 
+                            as: 'questions',
+                            include: [app.Question]
+                        }]
+                    }]
             }).then(function (check_point) {
+
+                console.log('check_point', check_point.dataValues);
+                console.log('check_point.groups[0]', check_point.dataValues.groups[0]);
+                console.log('check_point.test_cases', check_point.dataValues.test_cases);
+                console.log('check_point.test_cases[0]', check_point.dataValues.test_cases[0]);
+                console.log('check_point.test_cases[0].questions', check_point.dataValues.test_cases[0].questions);
 
                 if (!check_point) {
                     throw {message: 'NotFound'};
                 }
 
-                ctx.check_point = check_point;
+                ctx.check_point = check_point.dataValues;
                 res.render('check_points/show', { check_point: ctx.check_point });
             }).catch(function (err) {
                 console.log('err', err);
@@ -130,7 +150,7 @@ var post = {
 
         console.log('req.body', req.body);
         var check_point_data = req.body.check_point_data,
-            test_cases = [],
+            test_cases_arr = [],
             groups = [];
 
         groups = req.body.groups_set;
@@ -141,18 +161,21 @@ var post = {
         //check_point_data.data_to = moment(check_point_data.data_to).format("DD.MM.YYYY HH:mm");
         //TODO попробовать сегенерировать варианты
         //после генерации заполнить массив test_cases
-        var kostil = [{
-            title: 'Вариант1', 
-            questions: req.body.questions_set
-        }];
-
         if (check_point_data.type == 'test') {
-            test_cases = kostil;
-        }
-        //TODO попробовать сегенерировать варианты
-        console.log('check_point_data', check_point_data);
+            var kostil = [{
+                title: 'Вариант1', 
+                questions: req.body.questions_set
+            }];
+            test_cases_arr = kostil;
 
-        app.CheckPoint.make(check_point_data, groups, test_cases)
+            //TODO попробовать сегенерировать варианты
+            //var test_cases = new TestCases(req.body.questions_set, check_point_data.test_config);
+            //var test_cases_arr_tes = test_cases.generate();
+            //console.log('test_cases_arr_tes', 
+        }
+        //console.log('check_point_data', check_point_data);
+
+        app.CheckPoint.make(check_point_data, groups, req.body.questions_set)
             .then(function(result) {
 
                 console.log('result add check point', result);
@@ -161,18 +184,6 @@ var post = {
                 console.log('err add check point', err);
                 res.error(err);
             });
-        //res.success({});
-        //app.CheckPoint.make(question_data)
-        //    .then(function(question) {
-        //        //console.log('question created', question);
-        //        res.success({
-        //            id: question.dataValues.id, 
-        //            title: question.dataValues.title
-        //        });
-        //    }).catch(function(err) {
-        //        console.log('err', err);
-        //        res.error(err);
-        //    });
     },
 
     '/trial': function(req, res) {

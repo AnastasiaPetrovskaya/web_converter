@@ -155,16 +155,12 @@ $(document).ready(function() {
 
 
     $form.submit(function(event){
-        console.log("submit event");
         var data = {};
         var question_set = {};
 
         event.preventDefault();
         var type = $(this).find('#type').val();
 
-        //var data = $(this).serialize();
-        //var data1 = $('#test_config').serializeArray();
-        //var data2 = JSON.stringify( $('#test_config').serializeArray() );
         data.groups_set = $('.select2').val();
         data.check_point_data = get_form_data($(this));
         data.check_point_data.start = start;
@@ -185,12 +181,8 @@ $(document).ready(function() {
             data.questions_set = questions_set;
         }
 
-
-
-
         $('#submit').prop('disabled', true);
         $('#submit').html('<i class="icon-spinner12"></i>');
-
 
         var res = $.ajax({
             type: 'POST',
@@ -206,16 +198,16 @@ $(document).ready(function() {
         if (res.success) {
             bootbox.dialog({
                 className: 'slideInDown',
-                message: 'Вопрос' + '<a class="alert-link" href="/questions/' + res.id + '"> "' + res.title + '"</a> ' + ' добавлен' +
+                message: 'Контрольное мероприятие ' + '<a class="alert-link" href="/check_points/' + res.check_point.id + '"> "' + res.check_point.title + '"</a> ' + ' добавлено.' +
                 '<p>' + '</p>',
                 buttons: { 
                     'back_to_list': {
-                        label: 'Вернутся к списку вопросов',
+                        label: 'Вернутся к списку контрольных мероприятий',
                         className: 'btn-default mr-1',
-                        callback: function() { window.location.assign('/questions'); }
+                        callback: function() { window.location.assign('/check_points'); }
                     },
                     'create_new_one': {
-                        label: 'Создать еще один',
+                        label: 'Создать еще одно',
                         className: 'btn-success',
                         callback: function() {
                             bootbox.hideAll();

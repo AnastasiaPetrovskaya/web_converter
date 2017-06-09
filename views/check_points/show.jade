@@ -5,7 +5,7 @@ block body
       div.content-wrapper
         div.content-header.row
           div(class="content-header-left col-md-6 col-xs-12")
-            h3(class="content-header-title mb-0") Контрольный вопрос "#{question.title}"
+            h3(class="content-header-title mb-0") Контрольное мероприятие "#{check_point.title}"
           div(class="content-header-lead col-xs-12 mt-1")
         .content-body
                 .row
@@ -16,7 +16,7 @@ block body
                                     .col-md-8
                                         h4.card-title.no-capitalize Информация
                                     .col-md-4
-                                        if (profile.permissions.Question.update)
+                                        if (profile.permissions.CheckPoint.update)
                                             button#edit.btn-in-table.btn.px-1.btn-secondary.float-xs-right(data-edit="disable" title="Редактировать")
                                                 i.btn-i-hack.icon-edit(style="margin-right:0.5rem")
                                                 |Редактировать
@@ -31,110 +31,57 @@ block body
                                                     tr
                                                         td Название:
                                                         td 
-                                                            a.editable.edit_text(href="#" data-name="title")= question.title
+                                                            a.editable.edit_text(href="#" data-name="title")= check_point.title
                                                     tr
                                                         td Тип:
                                                         td
-                                                            if (question.query_type == 'RA')
-                                                                | Реляционная алгебра
-                                                            else if (question.query_type == 'TC')
-                                                                | Исчисление на кортежах
+                                                            if (check_point.type == 'test')
+                                                                | Контрольная работа
+                                                            else if (check_point.type == 'exam')
+                                                                | Экзамен
+                                                            else if (check_point.type == 'attestation')
+                                                                | Зачет (Аттестация разделов)
                                                     tr
-                                                        td Запрос к базе данных на естественном языке:
+                                                        td Дата начала:
+                                                        td= moment(check_point.start).format('DD.MM.YYYY HH:mm')
+                                                    tr
+                                                        td Дата окончания:
+                                                        td= moment(check_point.end).format('DD.MM.YYYY HH:mm')
+                                                    tr
+                                                        td Группы:
+                                                        td= check_point.groups.map(x => x.group.title).join(', ')
+                                                    tr
+                                                        td Описание:
                                                         td 
-                                                            a.editable.edit_textarea(href="#" data-name="text")= question.text
-                                                    tr
-                                                        td Ответ на языке SQL:
-                                                        td 
-                                                            a.editable.edit_textarea(href="#" data-name="sql_answer")= question.sql_answer
-                                                    tr
-                                                        td Подсказка:
-                                                        td 
-                                                            if (question.help) 
-                                                                a.editable.edit_textarea(href="#" data-name="help")= question.help
-                                                            else
-                                                                a.editable.edit_textarea(href="#" data-name="help")
-                                                    tr
-                                                        td База данных:
-                                                        td 
-                                                            a(href="/databases/" + question.database.id)= question.database.title
-                                                    tr
-                                                        td Описание базы данных:
-                                                        td #{question.database.description}
-                                        .div
-                                            if (profile.permissions.Database.sql)
-                                                button#sql_right_answer_btn.btn.btn-info.mr-1.float-xs-right(type="button")
-                                                    //i.icon-check2
-                                                    | Выполнить SQL
+                                                            a.editable.edit_text(href="#" data-name="title")= check_point.description
 
-
-
-
-                    .col-sm-6
+                .row
+                    .col-sm-8
                         .card
                             .card-header
-                                 h4.card-title.no-capitalize Схема базы данных
-                                 .heading-elements
-                                     ul.list-inline.mb-0
-                                         li
-                                             //a(data-action="expand" title="Развернуть")
-                                                 i.icon-expand2(style="color:#373a3c margin-right:0.5rem")
-                                             a.btn-in-table.btn.px-1.btn-secondary.float-xs-right( data-action="expand" title="Развернуть" style="padding-top:0.2rem; padding-bottom:0.2rem")
-                                                 i.icon-expand2(style="color:#373a3c; margin-right:0.5rem")
-                                                 | Развернуть
+                                .row
+                                    .col-md-8
+                                        h4.card-title.no-capitalize Варианты
                             .card-body.collapse.in
                                 .card-block.card-dashboard
-                                    #db_schema_div.text-xs-center
-                                        i.fa.fa-spin.fa-spinner
-                                        &nbsp; Подождите...
-                        .card
-                            .card-header
-                                h4.card-title.no-capitalize Просмотр результата SQL
-                                //.heading-elements
-                                    ul.list-inline.mb-0
-                                        li
-                                            a(data-action="expand")
-                                                i.icon-expand2
-                            .card-body.collapse.in
-                                .card-block.card-dashboard
-                                    p.courier_new#sql_right_answer_text(style="white-space:pre-line")= question.sql_answer
-                                    #sql_right_answer_data
-                                        .text-xs-center
-                                            i.fa.fa-spin.fa-spinner
-                                            &nbsp; Подождите...
+                                    .row#variants_drag_area
+                                        each tc in check_point.test_cases
+                                            if (tc.title != 'extra')
+                                                .col-lg-4.variant_container.m-1.p-1
+                                                    h5= tc.title
+                                                    ul.variant.list-group.list
+                                                        each q in tc.questions
+                                                            li.list-group-item(data-id=q.question.id)= q.question.title + " (С: " + q.question.complexity + ")"
+
+                                        .col-lg-4.variant_container.m-1.p-1
+                                            h5 Ji
+                                            ul.variant.list-group.list
+                                                li.list-group-item test
 
 
 
 block append footer
     script.
-        var question_id = '#{question.id}';
-        var db_id = '#{question.database.id}';
-        var right_answer_data = !{JSON.stringify(question.right_answer_data)};
+        var check_point_id = '#{check_point.id}';
 
-    script(src="/robust-assets/js/components/modal/components-modal.js" type="text/javascript")
-
-    script(src="/robust-assets/js/plugins/forms/spinner/jquery.bootstrap-touchspin.js" type="text/javascript")
-    script(src="/robust-assets/js/plugins/forms/validation/jqBootstrapValidation.js" type="text/javascript")
-    script(src="/robust-assets/js/plugins/forms/icheck/icheck.min.js" type="text/javascript")
-    script(src="/robust-assets/js/plugins/forms/toggle/bootstrap-switch.min.js" type="text/javascript")
-    script(src="/robust-assets/js/plugins/forms/toggle/switchery.min.js" type="text/javascript")
-
-    script(src="/robust-assets/js/components/forms/validation/form-validation.js" type="text/javascript")
-
-
-
-    script(src="/js/pages/questions/show.js" type="text/javascript")
-    //script(src="/robust-assets/js/plugins/tables/jquery.dataTables.min.js" type="text/javascript")
-    //script(src="/robust-assets/js/plugins/tables/datatable/dataTables.bootstrap4.min.js" type="text/javascript")
-    //script(src="/robust-assets/js/plugins/tables/datatable/dataTables.buttons.min.js" type="text/javascript")
-    //script(src="/robust-assets/js/plugins/tables/datatable/buttons.bootstrap4.min.js" type="text/javascript")
-    //script(src="/robust-assets/js/plugins/tables/jszip.min.js" type="text/javascript")
-    //script(src="/robust-assets/js/plugins/tables/pdfmake.min.js" type="text/javascript")
-    //script(src="/robust-assets/js/plugins/tables/vfs_fonts.js" type="text/javascript")
-    //script(src="/robust-assets/js/plugins/tables/buttons.html5.min.js" type="text/javascript")
-    //script(src="/robust-assets/js/plugins/tables/buttons.print.min.js" type="text/javascript")
-    //script(src="/robust-assets/js/plugins/tables/buttons.colVis.min.js" type="text/javascript")
-
-    //script(src="/robust-assets/js/components/tables/datatables-extensions/datatable-button/datatable-button-basic.js" type="text/javascript")
-
-  
+    script(src="/js/pages/check_points/show.js" type="text/javascript")

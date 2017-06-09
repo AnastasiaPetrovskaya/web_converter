@@ -1,4 +1,5 @@
 'use strict'
+var TestCases = require('../../lib/TestCases');
 
 module.exports = function (models) {
     var CheckPoint = models.CheckPoint;
@@ -6,7 +7,7 @@ module.exports = function (models) {
     var TestCase = models.TestCase;
     var TestCaseQuestion = models.TestCaseQuestion;
 
-    CheckPoint.make = function (check_point_data, groups_arr, test_cases_arr) {
+    CheckPoint.make = function (check_point_data, groups_arr, questions_arr, test_cases_arr) {
 
         //console.log('groups_arr', groups_arr);
         //console.log('test_cases_arr', test_cases_arr);
@@ -64,6 +65,17 @@ module.exports = function (models) {
                     };
 
                     if (ctx.check_point.type == 'test') {
+                        var kostil = [{
+                            title: 'Вариант1', 
+                            questions: questions_arr
+                        }];
+                        test_cases_arr = kostil;
+
+                        //TODO попробовать сегенерировать варианты
+                        var test_cases = new TestCases(questions_arr, check_point_data.test_config);
+                        var test_cases_arr_tes = test_cases.generate();
+                        console.log('test_cases_arr_tes', test_cases_arr_tes);
+
                         return Promise.all(test_cases_arr.map(add_test_case));
                     } else {
                         return;

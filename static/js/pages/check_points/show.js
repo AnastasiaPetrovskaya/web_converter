@@ -1,33 +1,49 @@
 $(document).ready(function() {
     // TODO partner_id объявлен в шаблоне!
 
-    var $editable = $('.editable');
 
-    $editable.editable({
-        ajaxOptions: { type:'PUT' },
-        type: 'textarea',
-        mode: 'inline',
-        url: '/questions/' + question_id,
-        pk: 1, //иначе не уходит ajax
-        params: function(params) {
-            var obj = {};
+    //dragula([document.getElementById('variants_drag_area')]);
 
-            if (params.value === '') {
-                obj[params.name] = [''];
-            } else {
-                obj[params.name] = params.value;
-            }
+    $( ".variant" ).sortable({
+      connectWith: ".variant"
+    }).disableSelection();
 
-            return obj;
-        },
-        success: function(res) { window.location.reload(); },
-        error: function(res) { console.log(res); },
-        validate: function(value) {
-            if($.trim(value) == '') return 'Необходимо заполнить данное поле';
-        }
-    });
+    //$('#groups').editable({
+    //    inputclass: 'input-large',
+    //    mode: 'inline',
+    //    select2: {
+    //        tags: ['html', 'javascript', 'css', 'ajax'],
+    //        tokenSeparators: [",", " "]
+    //    }
+    //});  
 
-    $editable.editable('toggleDisabled');
+    //var $editable = $('.editable');
+
+    //$editable.editable({
+    //    ajaxOptions: { type:'PUT' },
+    //    type: 'textarea',
+    //    mode: 'inline',
+    //    url: '/questions/' + question_id,
+    //    pk: 1, //иначе не уходит ajax
+    //    params: function(params) {
+    //        var obj = {};
+
+    //        if (params.value === '') {
+    //            obj[params.name] = [''];
+    //        } else {
+    //            obj[params.name] = params.value;
+    //        }
+
+    //        return obj;
+    //    },
+    //    success: function(res) { window.location.reload(); },
+    //    error: function(res) { console.log(res); },
+    //    validate: function(value) {
+    //        if($.trim(value) == '') return 'Необходимо заполнить данное поле';
+    //    }
+    //});
+
+    //$editable.editable('toggleDisabled');
     //$balance.editable('toggleDisabled');
 
     $('#edit').click(function() {
@@ -47,24 +63,6 @@ $(document).ready(function() {
         //$balance.editable('toggleDisabled');
 
     });
-
-
-    $.get('/databases/schema/' + db_id, function(res) {
-        $('#db_schema_div').html('<img src="/db_schema/' + res.file +
-             '" style="max-height: 100%;max-width: 100%;" alt="">');
-    }).fail(function(err) {
-        bootbox.alert({
-            message: 'err' + err.message,
-            className: "slideInDown",
-            buttons: {
-                ok: {
-                    label: "OK",
-                    className: "btn-success"
-                }
-            }
-        });
-    });
-
 
 
     if (window.right_answer_data) {
