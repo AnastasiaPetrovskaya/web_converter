@@ -46,8 +46,10 @@ var get = {
 
 
         if (req.user.role.role == 'student') {
-            groups_options = { id: req.user.student.group.id };
+            groups_options = { group_id: req.user.student.group.id };
         }
+
+        console.log('groups options', groups_options);
 
         app.CheckPoint.findAndCountAll({
                 where: options,
@@ -78,32 +80,87 @@ var get = {
             });
     },
 
-    //'/trial/:id': function (req, res) {
-    //    var id = Number(req.params.id);
+    '/start_test/:id': function (req, res) {
+        var id = Number(req.params.id);
 
-    //    app.Question.find({
-    //            where : {id: id},
-    //            include: [{model: app.DataBase}]
-    //        }).then(function(question) {
-    //            res.render('questions/trial', { question: question });
-    //        }).catch(function(err) {
-    //            console.log('err', err);
-    //            res.error('Error', err);
-    //        });
-    //},
+        app.TestAnswer.make(id, req.user.id)
+            .then(function(questions) {
+                console.log('question', questions[0]);
+                res.render('questions/answer', { question: questions[0], check_point_id : id });
+            }).catch(function(err) {
+                console.log('err', err);
+                res.error('Error', err);
+            });
+    },
+
+    '/next_question/:id': function (req, res) {
+        console.log('here');
+        var id = Number(req.params.id);
+
+        //найти следующий вопрос или закончить тестирование
+        app.TestAnswer.next_question(id, req.user.id)
+            .then(function(questions) {
+                console.log('next questions', questions);
+
+                //TODO если следующий вопрос не нашелся, то нужно завершить тестирование
+                if (questions.length > 0) {
+                    res.render('questions/answer', { question: questions[0], check_point_id : id });
+                } else {
+                    //сделать запись об окончании контрольной работы
+                    return app.TestAnswer.findOne({
+                            where: {
+                                check_point_id: id,
+                                user_id: req.user.id
+                            }
+                        }).then(function(test_answer) {
+                            if (!test_answer.end) {
+                                test_answer.end = new Date();
+                            }
+
+                            return test_answer.save();
+                        }).then(function (result) {
+                            return app.CheckPoint.find({
+                                where : {id: id},
+                                include: [{
+                                        model: app.TestAnswer,
+                                        as: 'tests_answers',
+                                        where: {user_id : req.user.id}
+                                    },{
+                                        model: app.TestCase,
+                                        as: 'test_cases',
+                                        include: [{
+                                            model: app.TestCaseQuestion, 
+                                            as: 'questions',
+                                            include: [{
+                                                model: app.Question,
+                                                include: [{
+                                                    model: app.QuestionAnswer,
+                                                    as: 'answers'
+                                                }]
+                                            }]
+                                        }]
+                                    }]
+                            });
+                        }).then(function (check_point) {
+                            console.log('check_point.test_cases', check_point.test_cases);
+                            console.log('check_point.tests_answers', check_point.tests_answers);
+                            res.render('check_points/tests_results/show', { check_point: check_point});
+                        }).catch(function(err) {
+                            //найти следующий вопрос или закончить тестирование
+                            console.log('err', err);
+                            res.error('Error', err);
+                        });
+                }
+            }).catch(function(err) {
+                //найти следующий вопрос или закончить тестирование
+                console.log('err', err);
+                res.error('Error', err);
+            });
+    },
 
     '/:id': function (req, res) {
         var options = {};
         options.id = Number(req.params.id);
-
-        if (req.user.role.role == 'student') {
-            options.db_type = { 
-                $or: [
-                    {$eq: 'common'}, 
-                    {$eq: 'prepare'}
-                ]
-            };
-        }
 
         var ctx = {};
 
@@ -124,11 +181,11 @@ var get = {
                     }]
             }).then(function (check_point) {
 
-                console.log('check_point', check_point.dataValues);
-                console.log('check_point.groups[0]', check_point.dataValues.groups[0]);
-                console.log('check_point.test_cases', check_point.dataValues.test_cases);
-                console.log('check_point.test_cases[0]', check_point.dataValues.test_cases[0]);
-                console.log('check_point.test_cases[0].questions', check_point.dataValues.test_cases[0].questions);
+                //console.log('check_point', check_point.dataValues);
+                //console.log('check_point.groups[0]', check_point.dataValues.groups[0]);
+                //console.log('check_point.test_cases', check_point.dataValues.test_cases);
+                //console.log('check_point.test_cases[0]', check_point.dataValues.test_cases[0]);
+                //console.log('check_point.test_cases[0].questions', check_point.dataValues.test_cases[0].questions);
 
                 if (!check_point) {
                     throw {message: 'NotFound'};

@@ -41,6 +41,7 @@ module.exports = function (app) {
 
         CheckPoint: require('./models/check_point'),
         CheckPointGroup: require('./models/check_point_group'),
+        TestAnswer: require('./models/test_answer'),
         TestCase: require('./models/test_case'),
         TestCaseQuestion: require('./models/test_case_question'),
 

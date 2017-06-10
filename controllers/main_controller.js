@@ -9,7 +9,7 @@ var get = {
             groups_options = {};
 
         if (req.user.role.role == 'student') {
-            groups_options = { id: req.user.student.group.id };
+            groups_options = { group_id: req.user.student.group.id };
         }
 
         app.CheckPoint.findAll({

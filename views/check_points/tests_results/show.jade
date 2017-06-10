@@ -1,11 +1,11 @@
-extends ../head2
+extends ../../head2
 
 block body
     div.robust-content.content.container-fluid
       div.content-wrapper
         div.content-header.row
           div(class="content-header-left col-md-6 col-xs-12")
-            h3(class="content-header-title mb-0") Контрольное мероприятие "#{check_point.title}"
+            h3(class="content-header-title mb-0") Результат контрольной работы "#{check_point.title}"
           div(class="content-header-lead col-xs-12 mt-1")
         .content-body
                 .row
@@ -15,11 +15,6 @@ block body
                                 .row
                                     .col-md-8
                                         h4.card-title.no-capitalize Информация
-                                    //.col-md-4
-                                        if (profile.permissions.CheckPoint.update)
-                                            button#edit.btn-in-table.btn.px-1.btn-secondary.float-xs-right(data-edit="disable" title="Редактировать")
-                                                i.btn-i-hack.icon-edit(style="margin-right:0.5rem")
-                                                |Редактировать
                             .card-body.collapse.in
                                 .card-block.card-dashboard
                                     .row
@@ -40,22 +35,18 @@ block body
                                                             else if (check_point.type == 'attestation')
                                                                 | Зачет (Аттестация разделов)
                                                     tr
-                                                        td Дата начала:
-                                                        td= moment(check_point.start).format('DD.MM.YYYY HH:mm')
+                                                        td Дата начала выполнения работы:
+                                                        td= moment(check_point.tests_answers[0].start).format('DD.MM.YYYY HH:mm')
                                                     tr
-                                                        td Дата окончания:
-                                                        td= moment(check_point.end).format('DD.MM.YYYY HH:mm')
+                                                        td Дата окончания выполнения работы:
+                                                        td= moment(check_point.tests_answers[0].end).format('DD.MM.YYYY HH:mm')
                                                     tr
-                                                        td Группы:
-                                                        td= check_point.groups.map(x => x.group.title).join(', ')
-                                                    tr
-                                                        td Описание:
+                                                        td Итоговая оценка:
                                                         td 
-                                                            a.editable.edit_text(href="#" data-name="title")= check_point.description
-                                    if (profile.role.role == 'student' && moment() >= moment(check_point.start) && moment() <= moment(check_point.end))
-                                        .text-xs-center
-                                            button#start_test.btn.btn-info.mr-1
-                                                | Приступить к выполнению контрольной работы
+                                                            if (check_point.tests_answers[0].total_mark)
+                                                                | #{check_point.tests_answers[0].total_mark}
+                                                            else 
+                                                                | -
 
 
                     if (check_point.type == 'test' && profile.permissions.CheckPoint.update)

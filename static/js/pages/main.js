@@ -10,13 +10,10 @@ $(document).ready(function() {
         var event_el = {};
 
         event_el.start = moment(el.start).format('YYYY-MM-DD HH:mm:ss');
-        event_el.end = el.end;
+        event_el.end = moment(el.end).format('YYYY-MM-DD HH:mm:ss');
         event_el.color = colors[el.type] || '#2d95bf';
         event_el.title = el.title;
-
-        if (el.type == 'test') {
-            //event_el.url = ''
-        }
+        event_el.url = '/check_points/' + el.id;
 
         events.push(event_el);
     });

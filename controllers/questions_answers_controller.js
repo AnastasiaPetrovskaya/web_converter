@@ -98,7 +98,7 @@ var get = {
 
                 res.render('questions_answers/show', { answer: ctx.answer });
             }).catch(function (err) {
-                console.log('err', err);
+                console.log('err question answer get /:id', err);
                 res.error(err);
             });
     }
@@ -106,6 +106,36 @@ var get = {
 };
 
 var post = {
+    '/make': function (req, res) {
+        console.log('post make question answer', req.body);
+        var check_point_id = req.body.check_point_id;
+        var queries = JSON.parse(req.body.queries);
+        var question_id = req.body.question_id;
+        var db_id = req.body.db_id;
+
+        //сохранить ответ на вопрос
+        app.QuestionAnswer.make(req.user.id, question_id, db_id, queries, check_point_id)
+            .then(function(result) {
+                console.log('result', result);
+
+                //нужно обновить общую оценку
+                return app.TestAnswer.update(
+                    {total_mark: sequalize.literal('total_mark +' + result.mark)},
+                    {where: {
+                        check_point_id: check_point_id,
+                        user_id: req.user.id
+                    }}
+                );
+            }).then(function(result) {
+                console.log('result', result);
+
+                res.success({});
+            }).catch(function(err) {
+                //найти следующий вопрос или закончить тестирование
+                console.log('err question answer make post', err);
+                res.error('Error', err);
+            });
+    },
 
     '/add': function (req, res) {
         //console.log('question controller post trial', req.body);

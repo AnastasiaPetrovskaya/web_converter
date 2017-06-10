@@ -1,6 +1,9 @@
 $(document).ready(function() {
     // TODO partner_id объявлен в шаблоне!
 
+    if ($('#config_card')) {
+        $('#config_card').innerHeight($('#info_card ').innerHeight());
+    }
 
     //dragula([document.getElementById('variants_drag_area')]);
 
@@ -99,6 +102,36 @@ $(document).ready(function() {
 
     $("#sql_right_answer_btn").click(function() {
         get_sql_res(db_id, $('[data-name="sql_answer"]').text(), '#sql_right_answer_data');
+    });
+
+    $("#start_test").click(function() {
+        bootbox.dialog({
+            className: 'slideInDown',
+            message: 'Внимание! Время выполнения может учитываться при выставлении оценки. ' + 
+                'Приступайте к работе только если вы выделели достаточное количество времени для ее выполнения.' + 
+                'Вы уверены, что готовы притупить к выполнению контрольной работы?'   ,
+            buttons: { 
+                'cancel': {
+                    label: 'Отложить',
+                    className: 'btn-default mr-1',
+                    callback: function() { 
+                        bootbox.hideAll();
+                        return false;
+                    }
+                },
+                'ok': {
+                    label: 'Приступить',
+                    className: 'btn-success',
+                    callback: function() {
+                        window.location.assign('/check_points/start_test/' + check_point_id);
+                        //$.get();
+                        //bootbox.hideAll();
+                        //return false;
+                        //window.location.reload(); 
+                    }
+                }
+            }
+        });
     });
 
 });

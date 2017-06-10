@@ -5,6 +5,7 @@ module.exports = function (models) {
         User = models.User,
         CheckPoint = models.CheckPoint,
         CheckPointGroup = models.CheckPointGroup,
+        TestAnswer = models.TestAnswer,
         TestCase = models.TestCase,
         TestCaseQuestion = models.TestCaseQuestion,
         DataBase = models.DataBase,
@@ -81,6 +82,7 @@ module.exports = function (models) {
     
     CheckPoint.belongsTo(User, {foreignKey: {name: 'owner_id', allowNull: false}});
     CheckPoint.hasMany(QuestionAnswer, {as: 'answers', onDelete: 'CASCADE', foreignKey: {name: 'check_point_id', allowNull: true}});
+    CheckPoint.hasMany(TestAnswer, {as: 'tests_answers', onDelete: 'CASCADE', foreignKey: {name: 'check_point_id', allowNull: true}});
     CheckPoint.hasMany(TestCase, {as: 'test_cases', onDelete: 'CASCADE', foreignKey: {name: 'check_point_id', allowNull: true}});
     CheckPoint.hasMany(CheckPointGroup, {as: 'groups', onDelete: 'CASCADE', foreignKey: {name: 'check_point_id', allowNull: true}});
     
@@ -104,8 +106,13 @@ module.exports = function (models) {
     Token.belongsTo(User, {foreignKey: {name: 'user_id', allowNull: false}});
     Token.belongsTo(Role, {foreignKey: {name: 'role_id', allowNull: false}});
 
+    TestAnswer.belongsTo(User, {foreignKey: {name: 'user_id', allowNull: false}});
+    TestAnswer.belongsTo(CheckPoint, {foreignKey: {name: 'check_point_id', allowNull: false}});
+    TestAnswer.belongsTo(TestCase, {foreignKey: {name: 'test_case_id', allowNull: false}});
+
     TestCase.belongsTo(CheckPoint, {foreignKey: {name: 'check_point_id', allowNull: false}});
     TestCase.hasMany(TestCaseQuestion, {as: 'questions', onDelete: 'CASCADE', foreignKey: {name: 'test_case_id', allowNull: true}});
+    TestCase.hasMany(TestAnswer, {as: 'tests_answers', onDelete: 'CASCADE', foreignKey: {name: 'test_case_id', allowNull: true}});
 
     TestCaseQuestion.belongsTo(TestCase, {foreignKey: {name: 'test_case_id', allowNull: false}});
     TestCaseQuestion.belongsTo(Question, {foreignKey: {name: 'question_id', allowNull: false}});
@@ -124,5 +131,6 @@ module.exports = function (models) {
     User.belongsTo(Role, {foreignKey: {name: 'role_id', allowNull: false}});
     User.hasMany(Token, {foreignKey: {name: 'user_id', allowNull: false}});
     User.hasMany(QuestionAnswer, {as: 'answers', onDelete: 'CASCADE', foreignKey: {name: 'user_id', allowNull: false}});
+    User.hasMany(TestAnswer, {as: 'tests_answers', onDelete: 'CASCADE', foreignKey: {name: 'user_id', allowNull: false}});
     User.belongsTo(Student, {foreignKey: {name: 'student_id', allowNull: true}});
 };

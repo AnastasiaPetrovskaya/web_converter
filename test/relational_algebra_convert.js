@@ -227,6 +227,31 @@ describe('Algebra full convertion', function() {
         });
 
 
+        //it('test9', function(done) {
+        //    var query = new RelationalAlgebraQuery({
+        //        title: "test",
+        //        alias: "Кинотеатры AS X, Фильмы AS Y, ФильмыКинотеатры AS Z",
+        //        target_list: "X.НазвКинотеатра, X.Метро, Y.Название, Z.ЦенаБилета",
+        //        query_body: "(((X[X.Метро='Университет'])[X.ИдКинотеатра=Z.ИдКинотеатраANDX.НомерСеанса=Z.НомерСеанса]Z)[Z.ИдФильма=Y.ИдФильма]Y)"
+        //    });
+
+        //    query.convert()
+        //        .then(function(res) {
+        //            //console.log("res", res);
+        //            //console.log('query', query);
+
+        //            assert.equal(query.sql.replace(/\s/g,''), ('SELECT DISTINCT A.Нз, A.ИдК, A.Семестр FROM Успеваемость AS A ' +  
+        //                    "WHERE A.Гр='К05-221' AND A.Оцн<>'неуд' AND A.ВидОтч='Экзамен' AND EXISTS (" + 
+        //                    'SELECT * FROM ОтчетГруппы AS B WHERE ' + 
+        //                    "B.ВидОтч='Экзамен' AND A.Гр=B.Гр AND A.ИдК=B.ИдК AND A.УчНед<B.УчНед);").replace(/\s/g,''));
+        //            done();
+        //        }).catch(function(err) {
+        //            done(err);
+        //            //console.log('err', err);
+        //        });
+        //});
+
+
     });
 
 
