@@ -48,7 +48,7 @@ module.exports = function (app) {
         DataBase: require('./models/database.js'),
         Table: require('./models/table.js'),
         Group: require('./models/group.js'),
-        Student: require('./models/student.js'),
+        //Student: require('./models/student.js'),
         Question: require('./models/question.js'),
         QuestionAnswer: require('./models/question_answer.js')
     };
@@ -78,7 +78,7 @@ module.exports = function (app) {
      */
     var force_sync = false;
 
-    if (process.env.PG_FORCE_SYNC && process.env.NODE_ENV == 'test') {
+    if (process.env.PG_FORCE_SYNC ) {
         console.log('force sync true');
         force_sync = true;
     }

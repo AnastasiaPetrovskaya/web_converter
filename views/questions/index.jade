@@ -3,7 +3,7 @@ extends ../head2
 block body
     div.robust-content.content.container-fluid
       div.content-wrapper
-        div.content-header.row
+        //div.content-header.row
           div(class="content-header-left col-md-6 col-xs-12")
             h3(class="content-header-title mb-0") Контрольные вопросы
           div(class="content-header-lead col-xs-12 mt-1")
@@ -16,7 +16,7 @@ block body
                                 h4.card-title Список контрольных вопросов
                             .card-body.collapse.in
                                 .card-block.card-dashboard
-                                    p.card-text.font-medium-1
+                                    //p.card-text.font-medium-1
                                         | В данном списке представлены все контрольные вопросы.
                                         | Каждый контрольный вопрос имеет определенный тип: вопрос по реляционной алгебре или по исчислению на кортежах.
                                         | Также каждый вопрос относится к определенной базе данных, название которой оторажается в таблице.
@@ -39,7 +39,7 @@ block body
                                                     a.btn.btn-tumblr.btn-mid-width.mr-1.mb-1#copy_question(type="button" href="") 
                                                         i.icon-plus3 
                                                         | Cкопировать вопрос
-                                    .row.mt-2
+                                    .row
                                         #questions_table.col-md-12
                                             //include ./../parts/pagination
 

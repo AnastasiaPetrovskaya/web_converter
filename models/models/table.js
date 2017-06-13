@@ -6,10 +6,10 @@ var Table = sequelize.define(
     {
         tableName: 'tables',
         //paranoid: true,
-        timestamps: true,
-        createdAt: 'created',
-        updatedAt: 'updated',
-        deletedAt: 'deleted',
+        timestamps: false
+        //createdAt: 'created',
+        //updatedAt: 'updated',
+        //deletedAt: 'deleted',
        /* indexes: [
             {
                name: 'user_partnerid_index',

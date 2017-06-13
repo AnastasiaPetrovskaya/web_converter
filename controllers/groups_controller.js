@@ -23,7 +23,7 @@ var get = {
                 attributes: ['group.*',  [sequelize.fn('COUNT', sequelize.col('students.id')), 'students_count']],
                 where: options,
                 include: [{
-                    model: app.Student, 
+                    model: app.User, 
                     as: 'students', 
                     attributes: [], 
                     duplicating: false}],
@@ -57,7 +57,7 @@ var get = {
 
         app.Group.find({
                 where : {id: id},
-                include: [{model: app.Student, as: 'students'}]
+                include: [{model: app.User, as: 'students'}]
             }).then(function (group) {
 
                 if (!group) {

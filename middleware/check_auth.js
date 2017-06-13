@@ -55,6 +55,7 @@ module.exports = function(options) {
 
         if(token) {
             var user = null;
+	    console.log('find userby token');
 
             /* Ищем пользователя по токену 
              */

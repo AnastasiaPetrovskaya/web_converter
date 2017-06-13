@@ -4,7 +4,7 @@ var uuid = require('node-uuid');
 module.exports = function (models) {
     var Token = models.Token,
         User = models.User,
-        Student = models.Student,
+        //Student = models.Student,
         Group = models.Group,
         Role = models.Role;
 
@@ -21,11 +21,7 @@ module.exports = function (models) {
                 include: [
                     {
                         model: User, 
-                        required: true,
-                        include: [{
-                            model: Student,
-                            include: [Group]
-                        }]
+                        required: true
                     },
                     {model: Role, required: true}
                 ],

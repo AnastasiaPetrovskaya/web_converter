@@ -3,10 +3,10 @@ var CheckPoint = sequelize.define(
     { },
     {
         tableName: 'test_cases_questions',
-        timestamps: true,
-        createdAt: 'created',
-        updatedAt: 'updated',
-        deletedAt: 'deleted',
+        timestamps: false
+        //createdAt: 'created',
+        //updatedAt: 'updated',
+        //deletedAt: 'deleted',
     }
 );
 

@@ -11,10 +11,10 @@ var Role = sequelize.define(
     {
         tableName: 'roles',
         //paranoid: false,
-        timestamps: true,
-        createdAt: 'created',
-        updatedAt: 'updated',
-        deletedAt: 'deleted',
+        timestamps: false
+        //createdAt: 'created',
+        //updatedAt: 'updated',
+        //deletedAt: 'deleted',
     }
 );
 

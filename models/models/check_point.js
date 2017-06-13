@@ -10,10 +10,10 @@ var CheckPoint = sequelize.define(
     },
     {
         tableName: 'check_points',
-        timestamps: true,
-        createdAt: 'created',
-        updatedAt: 'updated',
-        deletedAt: 'deleted',
+        timestamps: false
+        //createdAt: 'created',
+        //updatedAt: 'updated',
+        //deletedAt: 'deleted',
     }
 );
 
