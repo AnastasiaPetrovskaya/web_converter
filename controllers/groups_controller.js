@@ -100,11 +100,10 @@ var post = {
 var _delete = {
    '/remove/:id':  function (req, res) {
         var id = Number(req.params.id);
+        console.log('ывывывывыв', id);
 
-        app.Group.destroy({
-                where: {id: id}
-            }).then(function() {
-                res.success({});
+        app.Group.destroy({where: {id: id}}).then(function() {
+                res.success();
             }).catch(function(err) {
                 res.error('Error', err);
             });

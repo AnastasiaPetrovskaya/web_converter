@@ -8,7 +8,7 @@
     "test": {
         "host": "127.0.0.1",
         "database": "web_converter",
-        "user": "converter",
-        "password": "user"
+        "user": "postgres",
+        "password": "krafir"
     }
 }

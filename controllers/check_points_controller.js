@@ -9,12 +9,20 @@ var get = {
         res.render('check_points/index');
     },
 
-    '/add': function (req, res) {
-        app.Group.findAll()
-            .then(function(groups) {
-                res.render('check_points/add', {groups: groups});
-            });
+    '/add':  function (req, res) { 
+    var ctx = {};
+    
+    app.Group.findAll()
+        .then (function(groups){
+            ctx.group = groups;
+
+            return app.DataBase.findAll()
+        }).then (function (database){
+                res.render('check_points/add', {groups: ctx.group, databases:database});
+        });   
     },
+
+
 
     '/copy/:id': function (req, res) {
         var id = Number(req.params.id);
@@ -79,6 +87,7 @@ var get = {
                 res.error('Error', err);
             });
     },
+    
 
     '/start_test/:id': function (req, res) {
         var id = Number(req.params.id);
@@ -180,6 +189,7 @@ var get = {
                         }]
                     }]
             }).then(function (check_point) {
+                console.log('check_point', check_point);
 
                 //console.log('check_point', check_point.dataValues);
                 //console.log('check_point.groups[0]', check_point.dataValues.groups[0]);
@@ -192,6 +202,8 @@ var get = {
                 }
 
                 ctx.check_point = check_point.dataValues;
+
+                console.log('ctx.check_point', ctx.check_point);
                 res.render('check_points/show', { check_point: ctx.check_point });
             }).catch(function (err) {
                 console.log('err', err);
@@ -203,7 +215,7 @@ var get = {
 
 var post = {
 
-    '/add': function (req, res) {
+        '/add': function (req, res) {
 
         console.log('req.body', req.body);
         var check_point_data = req.body.check_point_data,
@@ -218,7 +230,7 @@ var post = {
         //check_point_data.data_to = moment(check_point_data.data_to).format("DD.MM.YYYY HH:mm");
         //TODO попробовать сегенерировать варианты
         //после генерации заполнить массив test_cases
-        if (check_point_data.type == 'test') {
+        if (check_point_data.type == 'test'|| check_point_data.type == 'RA'|| check_point_data.type == 'TC') {
             var kostil = [{
                 title: 'Вариант1', 
                 questions: req.body.questions_set
@@ -242,6 +254,7 @@ var post = {
                 res.error(err);
             });
     },
+
 
     '/trial': function(req, res) {
         //console.log('question controller post trial', req.body);
@@ -326,9 +339,9 @@ var _delete = {
    '/remove/:id':  function (req, res) {
         var id = Number(req.params.id);
 
-        app.Question.remove(id)
-            .then(function() {
-                res.success({});
+        app.CheckPoint.destroy({where: {id: id}})
+            .then(function () {
+                 res.success();
             }).catch(function(err) {
                 res.error('Error', err);
             });
@@ -377,3 +390,4 @@ module.exports = {
         delete: _delete
     }
 }
+

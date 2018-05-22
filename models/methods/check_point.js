@@ -64,7 +64,7 @@ module.exports = function (models) {
                             });
                     };
 
-                    if (ctx.check_point.type == 'test') {
+                    if (ctx.check_point.type == 'test'|| check_point_data.type == 'RA'|| check_point_data.type == 'TC') {
                         var kostil = [{
                             title: 'Вариант1', 
                             questions: questions_arr

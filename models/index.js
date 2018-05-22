@@ -10,6 +10,8 @@ var node_validator = require('node-validator');
 module.exports = function (app) {
     var pg_config = app.config.postgres,
         json_fields = {};
+    console.log('app.config', app.config);
+    console.log('pg_config', pg_config);
 
     global.Sequelize = require('sequelize');
     global.sequelize = new Sequelize(
