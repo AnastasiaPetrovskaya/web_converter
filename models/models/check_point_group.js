@@ -3,10 +3,10 @@ var CheckPointGroup = sequelize.define(
     { },
     {
         tableName: 'check_points_groups',
-        timestamps: true,
-        createdAt: 'created',
-        updatedAt: 'updated',
-        deletedAt: 'deleted',
+        timestamps: false
+        //createdAt: 'created',
+        //updatedAt: 'updated',
+        //deletedAt: 'deleted',
     }
 );
 

@@ -4,12 +4,24 @@ var User = app.User,
 
 
 var get = {
+    '/login': function(req, res, next) {
+        res.render('login');
+    },
+
+    '/logout': function(req, res, next) {
+        req.session.destroy();
+        res.clearCookie('session');
+        console.log('req.session after destroy', req.session);
+        console.log('res.cookie', req.cookie);
+        res.redirect('/login');
+    },
+
     '/': function(req, res, next) {
         var options = {},
             groups_options = {};
 
-        if (req.user.role.role == 'student') {
-            groups_options = { group_id: req.user.student.group.id };
+        if (req.user && req.user.role.role == 'student') {
+            groups_options = { group_id: req.user.group_id };
         }
 
         app.CheckPoint.findAll({
@@ -30,17 +42,8 @@ var get = {
             });
     },
 
-    '/login': function(req, res, next) {
-        res.render('login');
-    },
 
-    '/logout': function(req, res, next) {
-        req.session.destroy();
-        res.clearCookie('session');
-        console.log('req.session after destroy', req.session);
-        console.log('res.cookie', req.cookie);
-        res.redirect('/login');
-    },
+
 };
 
 

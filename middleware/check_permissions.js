@@ -78,9 +78,9 @@ module.exports = function (req, res, next) {
         req.action = getDefaultAction(req.method.toLowerCase());
     }
 
-    //console.log('req.action', req.action);
-    //console.log('req.endpoint', req.endpoint);
-    //console.log('user.permissions', user.permissions);
+    console.log('req.action', req.action);
+    console.log('req.endpoint', req.endpoint);
+    console.log('user.permissions', user.permissions);
 
     if (user.permissions[req.endpoint] && user.permissions[req.endpoint][req.action]) {
         accessDenied = false;

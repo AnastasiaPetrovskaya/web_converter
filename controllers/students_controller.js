@@ -22,26 +22,20 @@ var get = {
         if (page > 1)
             skip = limit * (page - 1);
 
+        options.group_id = {$ne: null};
         if (req.query.group_id)
-            students_options.group_id = req.query.group_id;
+            options.group_id = req.query.group_id;
 
-        options.student_id = {$ne: null};
 
         //console.log('options', options);
 
         app.User.findAndCountAll({
                 where: options,
-                include: [{
-                    model: app.Student,
-                    where: students_options,
-                    include: [{
-                        model: app.Group
-                    }]
-                }],
+                include: [app.Group],
                 limit: limit,
                 offset: skip
             }).then(function(students) {
-                //console.log('students', students.rows);
+                console.log('students', students.rows);
                 var pages =  count_pages(students.count.length, limit),
                     pages_min = (page - 3 < 1) ? 1 : page - 3,
                     pages_max = (pages_min + 6 > pages) ? pages : pages_min + 6;
@@ -67,10 +61,7 @@ var get = {
         app.User.findOne({
                 where: {id: id},
                 include: [{
-                    model: app.Student,
-                    include: [{
                         model: app.Group
-                    }]
                 }],
             }).then(function (student) {
                 //console.log('student', student);
@@ -95,7 +86,7 @@ var post = {
         var student_data = req.body;
         //console.log('student_data', student_data);
 
-        app.Student.make(student_data)
+        app.User.make_student(student_data)
             .then(function(result) {
                 console.log('student created', result);
 
@@ -139,7 +130,7 @@ var put = {
             data = req.body;
 
         console.log('data', data);
-        app.Student.update(
+        app.User.update(
                 data, 
                 {where: {id: id}}
             ).then(function() {

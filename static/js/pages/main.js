@@ -1,7 +1,8 @@
 $(document).ready(function() {
     //process check points list
     var colors = {
-        test : '#355C7D',
+        //test : '#355C7D',
+        test : '#6c5b7b',
         exam : '#ed5564',
         attestation: '#3eacab'
     };
@@ -26,7 +27,7 @@ $(document).ready(function() {
             center: 'title',
             right: 'prev,next'
         },
-        height: $(window).height() * 0.80,
+        height: $(window).height() * 0.70,
         fixedWeekCount: false,
         timeFormat: 'H:mm',
         monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],

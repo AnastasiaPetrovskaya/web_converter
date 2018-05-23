@@ -4,7 +4,7 @@ var Student = sequelize.define(
     },
     {
         tableName: 'students',
-        timestamps: true,
+        timestamps: false,
         createdAt: 'created',
         updatedAt: 'updated',
         deletedAt: 'deleted'

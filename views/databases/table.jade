@@ -19,13 +19,13 @@ else
                             | -
                     td
                         if (db.type === "common")
-                            .tag.tag-default Общий доступ
+                            .tag.tag-default Универсальная
                         else if (db.type === "private")
-                            .tag.tag-danger Персональный доступ
+                            .tag.tag-danger Персональная
                         else if (db.type === "test")
-                            .tag.tag-primary База для контрольных мероприятий
+                            .tag.tag-primary Контрольная
                         else if (db.type === "prepare")
-                            .tag.tag.bg-info.bg-darken-2 Обучающая база данных для самостоятельной подготовки
+                            .tag.tag.bg-info.bg-darken-2 Обучающая
                         else
                             | Не задан
                     td.text-xs-right

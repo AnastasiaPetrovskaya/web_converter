@@ -30,6 +30,7 @@ module.exports = function (models) {
 
                 return app.DataBase.execute_sql(db_id, question.sql_answer);
             }).then(function(sql_res) {
+                console.log('sql.res !!!!!!!!!!!!!!!!', sql_res.result.rows);
                 algebra_answer.right_answer_data = sql_res.result.rows;
                 ctx.right_answer_data = sql_res.result.rows;
                 //сверка результатов выполнения двух запросов
@@ -50,7 +51,8 @@ module.exports = function (models) {
                     sql: ctx.answer_sql
                 });
             }).then(function(result) {
-                return result;
+                //return result;
+                return ctx;
             }).catch(function(err) {
                 console.log('post /trial err', err);
 
@@ -66,10 +68,11 @@ module.exports = function (models) {
                     sql: (ctx.answer_sql ? ctx.answer_sql : "Не удалось выполнить генерацию SQL.")
                 }).then(function(result) {
                     console.log('result', result);
-                    throw err;
-                }).catch(function(err_saving_log) {
-                    console.log('error creating question answer if err!!!!!!!!!!!!!!!!!!!!!!!!!!!', err_saving_log);
-                    throw err;
+                    //throw err;
+                    return ctx;
+                }).catch(function(err) {
+                    console.log('error creating question answer if err!!!!!!!!!!!!!!!!!!!!!!!!!!!', err);
+                    throw err.message;
                 });
             }).catch(function(err) {
 

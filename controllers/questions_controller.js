@@ -173,79 +173,102 @@ var post = {
     },
 
     '/trial': function(req, res) {
-        //console.log('question controller post trial', req.body);
-        //console.log('queeries', JSON.parse(req.body.queries));
         var queries = JSON.parse(req.body.queries);
         var question_id = req.body.question_id;
         var db_id = req.body.db_id;
-        //console.log('el', queries[0].alias);
-        //res.success({});
-        var algebra_answer = new AlgebraAnswer(JSON.parse(req.body.queries));
-        //console.log('algebra answer', algebra_answer);
-
-        //convert_algebra()
-        var ctx = {};
-        algebra_answer.create_sql_script()
+        
+        var check_point_id = null;
+        //сохранить ответ на вопрос
+        app.QuestionAnswer.make(req.user.id, question_id, db_id, queries, check_point_id)
             .then(function(result) {
-                ctx.answer_sql = result;
-                //console.log('result', result);
+                console.log('result', result);
 
-                return app.DataBase.execute_sql(db_id, result);
-            }).then(function(sql_res) {
-                //console.log('query_res', sql_res.result.rows);
-                algebra_answer.answer_data = sql_res.result.rows;
-                ctx.answer_data = sql_res.result.rows;
-
-                return app.Question.findById(question_id);
-            }).then(function(question) {
-                //TODO проверка прав возвращать ли правильный ответ
-                ctx.right_answer_sql = question.sql_answer;
-
-                return app.DataBase.execute_sql(db_id, question.sql_answer);
-            }).then(function(sql_res) {
-                algebra_answer.right_answer_data = sql_res.result.rows;
-                ctx.right_answer_data = sql_res.result.rows;
-                //сверка результатов выполнения двух запросов
-                var mark = algebra_answer.check();
-                console.log('!!!!!!!!!!!!!!!!!!mark', mark);
-                console.log('!!!!!!!!!!!!!!!!!!algebra_answer', algebra_answer);
-                ctx = Object.assign({}, mark, ctx)
-
-                if (req.user.role.role == 'student') {
-                    return app.QuestionAnswer.create({
-                        answer: queries,
-                        processed_answer: algebra_answer.queries,
-                        user_id: req.user.id,
-                        question_id: question_id,
-                        mark: mark.mark,
-                        error: mark.comment,
-                        sql: ctx.answer_sql
-                    });
-                } else {
-                    return new Promise(function(resolve, reject) {
-                        resolve();
-                    });
-                }
-                //console.log('!!!!!!!!!!!!!!!!!!ctx', ctx);
+                //нужно обновить общую оценку
+                return app.TestAnswer.update(
+                    {total_mark: sequalize.literal('total_mark +' + result.mark)},
+                    {where: {
+                        check_point_id: check_point_id,
+                        user_id: req.user.id
+                    }}
+                );
             }).then(function(result) {
-                res.success(ctx);
-            }).catch(function(err) {
-                console.log('post /trial err', err);
+                console.log('result', result);
 
-                return app.QuestionAnswer.create({
-                    answer: queries,
-                    processed_answer: algebra_answer.queries,
-                    user_id: req.user.id,
-                    question_id: question_id,
-                    mark: 0,
-                    error: err,
-                    sql: (ctx.answer_sql ? ctx.answer_sql : "Не удалось выполнить генерацию SQL.")
-                }).then(function(result) {
-                    res.error(err);
-                }).catch(function(err_saving_log) {
-                    res.error(err);
-                });
+                res.success({});
+            }).catch(function(err) {
+                //найти следующий вопрос или закончить тестирование
+                console.log('err question answer make post', err);
+                res.error('Error', err);
             });
+       
+
+
+	//var algebra_answer = new AlgebraAnswer(JSON.parse(req.body.queries));
+        ////console.log('algebra answer', algebra_answer);
+
+        ////convert_algebra()
+        //var ctx = {};
+        //algebra_answer.create_sql_script()
+        //    .then(function(result) {
+        //        ctx.answer_sql = result;
+        //        //console.log('result', result);
+
+        //        return app.DataBase.execute_sql(db_id, result);
+        //    }).then(function(sql_res) {
+        //        //console.log('query_res', sql_res.result.rows);
+        //        algebra_answer.answer_data = sql_res.result.rows;
+        //        ctx.answer_data = sql_res.result.rows;
+
+        //        return app.Question.findById(question_id);
+        //    }).then(function(question) {
+        //        //TODO проверка прав возвращать ли правильный ответ
+        //        ctx.right_answer_sql = question.sql_answer;
+
+        //        return app.DataBase.execute_sql(db_id, question.sql_answer);
+        //    }).then(function(sql_res) {
+        //        algebra_answer.right_answer_data = sql_res.result.rows;
+        //        ctx.right_answer_data = sql_res.result.rows;
+        //        //сверка результатов выполнения двух запросов
+        //        var mark = algebra_answer.check();
+        //        console.log('!!!!!!!!!!!!!!!!!!mark', mark);
+        //        console.log('!!!!!!!!!!!!!!!!!!algebra_answer', algebra_answer);
+        //        ctx = Object.assign({}, mark, ctx)
+
+        //        if (req.user.role.role == 'student') {
+        //            return app.QuestionAnswer.create({
+        //                answer: queries,
+        //                processed_answer: algebra_answer.queries,
+        //                user_id: req.user.id,
+        //                question_id: question_id,
+        //                mark: mark.mark,
+        //                error: mark.comment,
+        //                sql: ctx.answer_sql
+        //            });
+        //        } else {
+        //            return new Promise(function(resolve, reject) {
+        //                resolve();
+        //            });
+        //        }
+        //        //console.log('!!!!!!!!!!!!!!!!!!ctx', ctx);
+        //    }).then(function(result) {
+        //        res.success(ctx);
+        //    }).catch(function(err) {
+        //        console.log('post /trial err', err);
+
+        //        return app.QuestionAnswer.create({
+        //            answer: queries,
+        //            processed_answer: algebra_answer.queries,
+        //            user_id: req.user.id,
+        //            question_id: question_id,
+        //            mark: 0,
+        //            error: err,
+        //            sql: (ctx.answer_sql ? ctx.answer_sql : "Не удалось выполнить генерацию SQL.")
+        //        }).then(function(result) {
+        //            res.error(err);
+        //        }).catch(function(err_saving_log) {
+        //            res.error(err);
+        //        });
+        //    });
     },
 
 };

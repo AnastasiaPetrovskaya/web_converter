@@ -8,7 +8,7 @@ var TestAnswer = sequelize.define(
     {
         tableName: 'tests_answers',
         //paranoid: true,
-        //timestamps: true,
+        timestamps: false
         //createdAt: 'created',
         //updatedAt: 'updated',
         //deletedAt: 'deleted'

@@ -13,8 +13,8 @@ else
             each student in students
                 tr(data-id=student.id)
                     td= student.name
-                    td= student.student.group.title
-                    td= student.student.group.department
+                    td= student.group.title
+                    td= student.group.department
                     td= student.login
                     td
                         .btn-toolbar.float-xs-right(role="toolbar")

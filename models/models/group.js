@@ -7,10 +7,10 @@ var Group = sequelize.define(
     },
     {
         tableName: 'groups',
-        timestamps: true,
-        createdAt: 'created',
-        updatedAt: 'updated',
-        deletedAt: 'deleted'
+        timestamps: false
+        //createdAt: 'created',
+        //updatedAt: 'updated',
+        //deletedAt: 'deleted'
     }
 );
 
