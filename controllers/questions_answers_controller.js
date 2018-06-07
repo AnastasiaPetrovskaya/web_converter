@@ -2,14 +2,19 @@
 var AlgebraAnswer = require('../lib/RelationalAlgebraAnswer');
 var TupleAnswer = require('../lib/TupleCalculusAnswer');
 var count_pages = ApplicationHelper.count_pages;
+var TestCases = require('../lib/TestCases');
+var moment = require('moment');
 
 var get = {
     '/': function (req, res) {
         res.render('questions/index');
     },
 
+
+
     '/table': function (req, res) {
         console.log('req.query', req.query);
+        console.log('%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%%^', req.query);
         var options = req.query || {},
             skip = 0,
             limit = 15,
@@ -39,7 +44,7 @@ var get = {
                 limit: limit,
                 offset: skip
             }).then(function(answers) {
-                console.log('answers', answers.rows);
+                // console.log('answers', answers.rows);
                 var pages =  count_pages(answers.count, limit),
                     pages_min = (page - 3 < 1) ? 1 : page - 3,
                     pages_max = (pages_min + 6 > pages) ? pages : pages_min + 6;
@@ -51,12 +56,17 @@ var get = {
                     pages_min: pages_min,
                     pages_max: pages_max
                 });
-                //res.render('answers/table', { answers: answers.rows });
+                // res.render('answers/table', { answers: answers.rows });
             }).catch(function(err) {
                 console.log('err', err);
                 res.error('Error', err);
             });
     },
+
+
+
+
+
 
     '/:id': function (req, res) {
         var options = {};
@@ -154,15 +164,12 @@ var post = {
             ctx.question = question;
             // console.log('smooooootrim na q', q);
             if(question.query_type == "RA"){
-                   console.log('RRRRRRAAAAA');
                     ctx.query_answer = new AlgebraAnswer(JSON.parse(req.body.queries));
-            } else {
-                   console.log('TTTTCCCCC');
+            }
+            else {
                     ctx.query_answer = new TupleAnswer(JSON.parse(req.body.queries));
             }
-                // return query_answer;
 
-            console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&', ctx.query_answer);
             return ctx.query_answer.create_sql_script();
         }).then(function(result) {
                 ctx.answer_sql = result;

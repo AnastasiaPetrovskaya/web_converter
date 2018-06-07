@@ -54,7 +54,6 @@ $(document).ready(function() {
 
 
     $('#type').change(function(e) {
- // || $(this).val() == 'RA'|| $(this).val() == 'TC'
         if ($(this).val() == 'test'|| $(this).val() == 'RA'|| $(this).val() == 'TC') {
 
             var options = {};
@@ -251,7 +250,6 @@ $(document).ready(function() {
         data.check_point_data.start = start;
         data.check_point_data.end = end;
         // data.check_point_data.
-// || type == 'RA' || type == 'TC'
 
         if (type == 'test' || type == 'RA' || type == 'TC') {
             data.check_point_data.test_config = get_form_data($('#test_config'));

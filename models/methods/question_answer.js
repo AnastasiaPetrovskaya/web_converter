@@ -1,5 +1,6 @@
 'use strict'
 var AlgebraAnswer = require('../../lib/RelationalAlgebraAnswer');
+var TupleAnswer = require('../../lib/TupleCalculusAnswer');
 
 module.exports = function (models) {
     var DataBase = models.DataBase;
@@ -8,11 +9,18 @@ module.exports = function (models) {
 
     QuestionAnswer.make = function (user_id, question_id, db_id, queries, check_point_id) {
         var ctx = {};
-        var algebra_answer = new AlgebraAnswer(queries);
+        ctx.question = question;
+
+        if (question.query_type == "RA") {
+                    ctx.query_answer = new AlgebraAnswer(queries);
+        }
+        else {
+                    ctx.query_answer = new TupleAnswer(queries);
+        }
 
         console.log('in question answer make check point id', check_point_id);
         var ctx = {};
-        return algebra_answer.create_sql_script()
+        return ctx.query_answer.create_sql_script()
             .then(function(result) {
                 ctx.answer_sql = result;
                 console.log('result', result);
@@ -20,7 +28,7 @@ module.exports = function (models) {
                 return app.DataBase.execute_sql(db_id, result);
             }).then(function(sql_res) {
                 console.log('query_res', sql_res.result.rows);
-                algebra_answer.answer_data = sql_res.result.rows;
+                ctx.query_answer.answer_data = sql_res.result.rows;
                 ctx.answer_data = sql_res.result.rows;
 
                 return app.Question.findById(question_id);
@@ -30,10 +38,10 @@ module.exports = function (models) {
 
                 return app.DataBase.execute_sql(db_id, question.sql_answer);
             }).then(function(sql_res) {
-                algebra_answer.right_answer_data = sql_res.result.rows;
+                ctx.query_answer.right_answer_data = sql_res.result.rows;
                 ctx.right_answer_data = sql_res.result.rows;
                 //сверка результатов выполнения двух запросов
-                var mark = algebra_answer.check();
+                var mark = ctx.query_answer.check();
                 ctx = Object.assign({}, mark, ctx)
 
 
@@ -41,7 +49,7 @@ module.exports = function (models) {
 
                 return app.QuestionAnswer.create({
                     answer: queries,
-                    processed_answer: algebra_answer.queries,
+                    processed_answer: ctx.query_answer.queries,
                     user_id: user_id,
                     question_id: question_id,
                     check_point_id: check_point_id,
@@ -57,7 +65,7 @@ module.exports = function (models) {
                 console.log('creating question answer if err!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                 app.QuestionAnswer.create({
                     answer: queries,
-                    processed_answer: algebra_answer.queries,
+                    processed_answer: ctx.query_answer.queries,
                     user_id: user_id,
                     question_id: question_id,
                     check_point_id: check_point_id,

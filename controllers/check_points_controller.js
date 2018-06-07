@@ -1,5 +1,6 @@
 //var convert_algebra = require('../lib/re_al_to_sql').convert_algebra_to_sql;
 var AlgebraAnswer = require('../lib/RelationalAlgebraAnswer');
+var TupleAnswer = require('../lib/TupleCalculusAnswer');
 var TestCases = require('../lib/TestCases');
 var count_pages = ApplicationHelper.count_pages;
 var moment = require('moment');
@@ -37,6 +38,7 @@ var get = {
                 res.error('Error', err);
             });
     },
+
 
     '/table': function (req, res) {
         console.log('req.query', req.query);
@@ -242,7 +244,9 @@ var post = {
             //var test_cases_arr_tes = test_cases.generate();
             //console.log('test_cases_arr_tes', 
         }
-        //console.log('check_point_data', check_point_data);
+        // console.log('check_point_data', check_point_data);
+
+        console.log(' req.body.questions_set!!!!!!!!!!!',  req.body.questions_set);
 
         app.CheckPoint.make(check_point_data, groups, req.body.questions_set)
             .then(function(result) {
@@ -264,12 +268,18 @@ var post = {
         var db_id = req.body.db_id;
         //console.log('el', queries[0].alias);
         //res.success({});
-        var algebra_answer = new AlgebraAnswer(JSON.parse(req.body.queries));
-        //console.log('algebra answer', algebra_answer);
+         var ctx = {};
+         ctx.question = question;
 
-        //convert_algebra()
-        var ctx = {};
-        algebra_answer.create_sql_script()
+            if(question.query_type == "RA"){
+                    ctx.query_answer = new AlgebraAnswer(JSON.parse(req.body.queries));
+            }
+            else {
+                    ctx.query_answer = new TupleAnswer(JSON.parse(req.body.queries));
+            }
+        var algebra_answer = new AlgebraAnswer(JSON.parse(req.body.queries));
+
+         ctx.query_answer.create_sql_script()
             .then(function(result) {
                 ctx.answer_sql = result;
                 //console.log('result', result);
@@ -277,7 +287,7 @@ var post = {
                 return app.DataBase.execute_sql(db_id, result);
             }).then(function(sql_res) {
                 //console.log('query_res', sql_res.result.rows);
-                algebra_answer.answer_data = sql_res.result.rows;
+                 ctx.query_answer.answer_data = sql_res.result.rows;
                 ctx.answer_data = sql_res.result.rows;
 
                 return app.Question.findById(question_id);
@@ -287,18 +297,18 @@ var post = {
 
                 return app.DataBase.execute_sql(db_id, question.sql_answer);
             }).then(function(sql_res) {
-                algebra_answer.right_answer_data = sql_res.result.rows;
+                 ctx.query_answer.right_answer_data = sql_res.result.rows;
                 ctx.right_answer_data = sql_res.result.rows;
                 //сверка результатов выполнения двух запросов
-                var mark = algebra_answer.check();
+                var mark =  ctx.query_answer.check();
                 console.log('!!!!!!!!!!!!!!!!!!mark', mark);
-                console.log('!!!!!!!!!!!!!!!!!!algebra_answer', algebra_answer);
+                console.log('!!!!!!!!!!!!!!!!!!answer',  ctx.query_answer);
                 ctx = Object.assign({}, mark, ctx)
 
                 if (req.user.role.role == 'student') {
                     return app.QuestionAnswer.create({
                         answer: queries,
-                        processed_answer: algebra_answer.queries,
+                        processed_answer:  ctx.query_answer.queries,
                         user_id: req.user.id,
                         question_id: question_id,
                         mark: mark.mark,
@@ -318,7 +328,7 @@ var post = {
 
                 return app.QuestionAnswer.create({
                     answer: queries,
-                    processed_answer: algebra_answer.queries,
+                    processed_answer:  ctx.query_answer.queries,
                     user_id: req.user.id,
                     question_id: question_id,
                     mark: 0,
