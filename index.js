@@ -4,11 +4,12 @@ var express = require('express'),
     path = require('path');
 var express_config =require('./config/express.json');
 var mongo_config =require('./config/mongo.json');
-var postgres_config =require('./config/postgres.json')[process.env.NODE_ENV];
+//var postgres_config =require('./config/postgres.json')[process.env.NODE_ENV];
+var postgres_config =require('./config/postgres.json')["test"];
 //console.log('var', postgres_config);
 
 
-
+process.env.NODE_ENV = 'test';
 
 
 global.app = require('./lib/boot.js')({
@@ -39,6 +40,7 @@ http.require_controller('questions');
 http.require_controller('questions_answers');
 http.require_controller('groups');
 http.require_controller('students');
+http.require_controller('materials');
 http.require_controller('main', {is_root: true});
 //require('./lib/models.js')(app);
 require('./models')(app);

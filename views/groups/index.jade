@@ -13,7 +13,7 @@ block body
                     .col-xs-12
                         .card
                             .card-header
-                                h4.card-title Список Учебных групп
+                                h4.card-title Список учебных групп
                             .card-body.collapse.in
                                 .card-block.card-dashboard
                                     //p.card-text.font-medium-1
@@ -50,19 +50,19 @@ block body
                     button(type="button" class="close" data-dismiss="modal" aria-label="Close")
                         span.white(aria-hidden="true") &times;
                     h4(class="modal-title" id="myModalLabel1") 
-                        i.icon-database2 
-                        | Добавление новой группы
+                        i.icon-users3
+                        |  Добавление новой группы
                 .modal-body
                     form#create_group_from.form-horizontal(novalidate data-backdrop="static")
                         .form-group
                             h6 Введите название группы
                             .controls
-                                input#title.form-control(type="text" name="title" required aria-invalid="false")
+                                input#title.form-control(type="text" name="title" required data-validation-required-message="Данное поле обязательно для заполнения" aria-invalid="false")
                                 .help-block
                         .form-group
                             h6 Введите название кафедры
                             .controls
-                                input#department.form-control(type="text" name="department" required aria-invalid="false")
+                                input#department.form-control(type="text" name="department" required data-validation-required-message="Данное поле обязательно для заполнения" aria-invalid="false")
                                 .help-block
                         .form-group
                             h6 Введите специальность (опционально)
