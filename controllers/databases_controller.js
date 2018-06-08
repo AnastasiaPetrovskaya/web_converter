@@ -125,6 +125,7 @@ var post = {
     '/add': function (req, res) {
         var res_data = {};
 
+        console.log('rwq.body', req.body);
         var db_data = req.body;
         db_data.owner_id = req.user.id;
 
@@ -163,7 +164,6 @@ var post = {
     },
 };
 
-
 var _delete = {
    '/remove/:id':  function (req, res) {
         var id = Number(req.params.id);
@@ -176,7 +176,6 @@ var _delete = {
             });
     }
 };
-
 
 module.exports = {
     resource: 'Database',

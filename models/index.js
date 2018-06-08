@@ -52,6 +52,7 @@ module.exports = function (app) {
         Group: require('./models/group.js'),
         Student: require('./models/student.js'),
         Question: require('./models/question.js'),
+        Material: require('./models/material.js'),
         QuestionAnswer: require('./models/question_answer.js')
     };
 

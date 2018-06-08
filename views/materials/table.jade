@@ -1,0 +1,33 @@
+if (materials.length === 0)
+    p.text-muted.mt-2.text-xs-center Нет записей
+else
+
+    .table-responsive
+        table.table.custom-table.table-striped
+            //table.table.table-striped.table-bordered.zero-configuration
+            thead
+                tr
+                    th Название
+                    th Тип
+                    th Комментарий
+                    th Название файла на сервере
+                    if (control_col==true)
+                        th Управление
+            tbody
+                each material in materials
+                    tr(data-id=material.id  data-title=material.title data-name=material.material_name)
+                        td= material.title
+                        td= material.material_type
+                        td= material.text
+                        td= material.material_name
+                        if (control_col == true)
+                            td
+                                .btn-toolbar.float-xs-right(role="toolbar")
+                                    button#download.btn.btn-icon.btn-outline-success.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Скачать")
+                                        i.icon-download
+                                    if (profile.permissions.Material.create)
+                                        button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удалить")
+                                            i.icon-trash2
+
+
+    include ./../parts/pagination

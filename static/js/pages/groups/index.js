@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     $("#create_group_from").submit(function(event){
         //console.log("submit event");
 
