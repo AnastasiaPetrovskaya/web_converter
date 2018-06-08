@@ -116,12 +116,15 @@ var post = {
 var _delete = {
    '/remove/:id':  function (req, res) {
         var id = Number(req.params.id);
+                console.log('hdhdhdhuuuuuu', id);
 
-        app.User.destroy({
-                where: {id: id}
-            }).then(function() {
-                res.success({});
-            }).catch(function(err) {
+        app.User.destroy({where: {id: id}})
+        .then(function() {
+                       console.log('jojojojojojojojojojo', id);
+
+                res.success();
+            }).catch(function(err) { 
+                     console.log('plplplplplplplpl', id);
                 res.error('Error', err);
             });
     }

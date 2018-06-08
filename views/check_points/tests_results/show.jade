@@ -30,6 +30,10 @@ block body
                                                         td
                                                             if (check_point.type == 'test')
                                                                 | Контрольная работа
+                                                             else if (check_point.type === "RA")
+                                                                | Контрольная работа (алгебра)                        
+                                                             else if (check_point.type === "TC")
+                                                                | Контрольная работа (кортежи) 
                                                             else if (check_point.type == 'exam')
                                                                 | Экзамен
                                                             else if (check_point.type == 'attestation')
@@ -49,7 +53,7 @@ block body
                                                                 | -
 
 
-                    if (check_point.type == 'test' && profile.permissions.CheckPoint.update)
+                    if ((check_point.type == 'test'|| check_point.type == 'RA'||check_point.type == 'TC' ) && profile.permissions.CheckPoint.update)
                         .col-lg-6.col-md-12
                             .card#config_card
                                 .card-header
@@ -91,7 +95,7 @@ block body
                                                                 else 
                                                                     | нет (в разных вариантах вопросы могут повторяться)
 
-                if (check_point.type == 'test' && profile.permissions.CheckPoint.update)
+                if ((check_point.type == 'test'|| check_point.type == 'RA'||check_point.type == 'TC' ) && profile.permissions.CheckPoint.update)
                     .row
                         .col-md-12
                             .card
@@ -129,3 +133,4 @@ block append footer
         var check_point_id = '#{check_point.id}';
 
     script(src="/js/pages/check_points/show.js" type="text/javascript")
+    

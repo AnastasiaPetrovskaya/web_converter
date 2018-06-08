@@ -1,5 +1,6 @@
 //var convert_algebra = require('../lib/re_al_to_sql').convert_algebra_to_sql;
 var AlgebraAnswer = require('../lib/RelationalAlgebraAnswer');
+var TupleAnswer = require('../lib/TupleCalculusAnswer');
 var TestCases = require('../lib/TestCases');
 var count_pages = ApplicationHelper.count_pages;
 var moment = require('moment');
@@ -9,12 +10,20 @@ var get = {
         res.render('check_points/index');
     },
 
-    '/add': function (req, res) {
-        app.Group.findAll()
-            .then(function(groups) {
-                res.render('check_points/add', {groups: groups});
-            });
+    '/add':  function (req, res) { 
+    var ctx = {};
+    
+    app.Group.findAll()
+        .then (function(groups){
+            ctx.group = groups;
+
+            return app.DataBase.findAll()
+        }).then (function (database){
+                res.render('check_points/add', {groups: ctx.group, databases:database});
+        });   
     },
+
+
 
     '/copy/:id': function (req, res) {
         var id = Number(req.params.id);
@@ -29,6 +38,7 @@ var get = {
                 res.error('Error', err);
             });
     },
+
 
     '/table': function (req, res) {
         console.log('req.query', req.query);
@@ -79,6 +89,7 @@ var get = {
                 res.error('Error', err);
             });
     },
+    
 
     '/start_test/:id': function (req, res) {
         var id = Number(req.params.id);
@@ -180,6 +191,7 @@ var get = {
                         }]
                     }]
             }).then(function (check_point) {
+                console.log('check_point', check_point);
 
                 //console.log('check_point', check_point.dataValues);
                 //console.log('check_point.groups[0]', check_point.dataValues.groups[0]);
@@ -192,6 +204,8 @@ var get = {
                 }
 
                 ctx.check_point = check_point.dataValues;
+
+                console.log('ctx.check_point', ctx.check_point);
                 res.render('check_points/show', { check_point: ctx.check_point });
             }).catch(function (err) {
                 console.log('err', err);
@@ -203,7 +217,7 @@ var get = {
 
 var post = {
 
-    '/add': function (req, res) {
+        '/add': function (req, res) {
 
         console.log('req.body', req.body);
         var check_point_data = req.body.check_point_data,
@@ -218,7 +232,7 @@ var post = {
         //check_point_data.data_to = moment(check_point_data.data_to).format("DD.MM.YYYY HH:mm");
         //TODO попробовать сегенерировать варианты
         //после генерации заполнить массив test_cases
-        if (check_point_data.type == 'test') {
+        if (check_point_data.type == 'test'|| check_point_data.type == 'RA'|| check_point_data.type == 'TC') {
             var kostil = [{
                 title: 'Вариант1', 
                 questions: req.body.questions_set
@@ -230,7 +244,9 @@ var post = {
             //var test_cases_arr_tes = test_cases.generate();
             //console.log('test_cases_arr_tes', 
         }
-        //console.log('check_point_data', check_point_data);
+        // console.log('check_point_data', check_point_data);
+
+        console.log(' req.body.questions_set!!!!!!!!!!!',  req.body.questions_set);
 
         app.CheckPoint.make(check_point_data, groups, req.body.questions_set)
             .then(function(result) {
@@ -243,6 +259,7 @@ var post = {
             });
     },
 
+
     '/trial': function(req, res) {
         //console.log('question controller post trial', req.body);
         //console.log('queeries', JSON.parse(req.body.queries));
@@ -251,12 +268,18 @@ var post = {
         var db_id = req.body.db_id;
         //console.log('el', queries[0].alias);
         //res.success({});
-        var algebra_answer = new AlgebraAnswer(JSON.parse(req.body.queries));
-        //console.log('algebra answer', algebra_answer);
+         var ctx = {};
+         ctx.question = question;
 
-        //convert_algebra()
-        var ctx = {};
-        algebra_answer.create_sql_script()
+            if(question.query_type == "RA"){
+                    ctx.query_answer = new AlgebraAnswer(JSON.parse(req.body.queries));
+            }
+            else {
+                    ctx.query_answer = new TupleAnswer(JSON.parse(req.body.queries));
+            }
+        var algebra_answer = new AlgebraAnswer(JSON.parse(req.body.queries));
+
+         ctx.query_answer.create_sql_script()
             .then(function(result) {
                 ctx.answer_sql = result;
                 //console.log('result', result);
@@ -264,7 +287,7 @@ var post = {
                 return app.DataBase.execute_sql(db_id, result);
             }).then(function(sql_res) {
                 //console.log('query_res', sql_res.result.rows);
-                algebra_answer.answer_data = sql_res.result.rows;
+                 ctx.query_answer.answer_data = sql_res.result.rows;
                 ctx.answer_data = sql_res.result.rows;
 
                 return app.Question.findById(question_id);
@@ -274,18 +297,18 @@ var post = {
 
                 return app.DataBase.execute_sql(db_id, question.sql_answer);
             }).then(function(sql_res) {
-                algebra_answer.right_answer_data = sql_res.result.rows;
+                 ctx.query_answer.right_answer_data = sql_res.result.rows;
                 ctx.right_answer_data = sql_res.result.rows;
                 //сверка результатов выполнения двух запросов
-                var mark = algebra_answer.check();
+                var mark =  ctx.query_answer.check();
                 console.log('!!!!!!!!!!!!!!!!!!mark', mark);
-                console.log('!!!!!!!!!!!!!!!!!!algebra_answer', algebra_answer);
+                console.log('!!!!!!!!!!!!!!!!!!answer',  ctx.query_answer);
                 ctx = Object.assign({}, mark, ctx)
 
                 if (req.user.role.role == 'student') {
                     return app.QuestionAnswer.create({
                         answer: queries,
-                        processed_answer: algebra_answer.queries,
+                        processed_answer:  ctx.query_answer.queries,
                         user_id: req.user.id,
                         question_id: question_id,
                         mark: mark.mark,
@@ -305,7 +328,7 @@ var post = {
 
                 return app.QuestionAnswer.create({
                     answer: queries,
-                    processed_answer: algebra_answer.queries,
+                    processed_answer:  ctx.query_answer.queries,
                     user_id: req.user.id,
                     question_id: question_id,
                     mark: 0,
@@ -326,9 +349,9 @@ var _delete = {
    '/remove/:id':  function (req, res) {
         var id = Number(req.params.id);
 
-        app.Question.remove(id)
-            .then(function() {
-                res.success({});
+        app.CheckPoint.destroy({where: {id: id}})
+            .then(function () {
+                 res.success();
             }).catch(function(err) {
                 res.error('Error', err);
             });
@@ -377,3 +400,4 @@ module.exports = {
         delete: _delete
     }
 }
+

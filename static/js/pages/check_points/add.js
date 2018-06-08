@@ -50,33 +50,117 @@ $(document).ready(function() {
         end = moment(new Date ($('#end').data('DateTimePicker').date())).format("YYYY-MM-DD HH:mm:ss");
     });
 
-    $('#type').change(function(e) {
 
-        if ($(this).val() == 'test') {
+
+
+    $('#type').change(function(e) {
+        if ($(this).val() == 'test'|| $(this).val() == 'RA'|| $(this).val() == 'TC') {
 
             var options = {};
             options.db_type = { 
                 $or: [
                     {$eq: 'common'}, 
                     {$eq: 'test'}
-                ]
+                ] 
             };
             options.control_col = false;
+
+            if ($(this).val() == 'RA'){
+
+                options.query_type = {$eq: 'RA'};
+            } 
+            else {
+
+              options.query_type = {$eq: 'TC'};  
+            }
+            
 
             getTable('/questions/table', options, '#questions_table');
 
             $('#settings_card').show();
+            $('#select_db_card').show();
             $('#select_questions_card').show();
             $('#selected_questions_card').show();
             $('#gen_test_cases_and_save').show();
             $('#save').hide();
-        } else {
+        } 
+        // else if ($(this).val() == 'RA'){
+        //       var options = {};
+        //     options.db_type = { 
+        //         $or: [
+        //             {$eq: 'common'}, 
+        //             {$eq: 'test'}
+        //         ]
+        //     };
+        //     options.control_col = false;
+        //     options.query_type = {$eq: 'RA'};
+        //     var  op = {};
+        //     op.db_type = { 
+        //         $or: [
+        //             {$eq: 'common'}, 
+        //             {$eq: 'test'}
+        //         ]
+        //     };
+        //     op.title = ;
+
+        //     // getTable('/databases/table', options, '#databases_table');
+        //     getTable('/questions/table', options, '#questions_table');
+
+        //     $('#settings_card').show();
+        //     $('#select_db_card').show();
+        //     $('#select_questions_card').show();
+        //     $('#selected_questions_card').show();
+        //     $('#gen_test_cases_and_save').show();
+        //     $('#save').hide();
+
+        // } else if ($(this).val() == 'TC'){
+        //       var options = {};
+        //     options.db_type = { 
+        //         $or: [
+        //             {$eq: 'common'}, 
+        //             {$eq: 'test'}
+        //         ]
+        //     };
+        //     options.control_col = false;
+        //     options.query_type = {$eq: 'TC'};
+
+        //     getTable('/questions/table', options, '#questions_table');
+
+
+        //     $('#settings_card').show();
+        //     $('#select_db_card').show();
+        //     $('#select_questions_card').show();
+        //     $('#selected_questions_card').show();
+        //     $('#gen_test_cases_and_save').show();
+        //     $('#save').hide();
+
+        // }
+       
+        else {
             $('#settings_card').hide();
+            $('#select_db_card').hide();
             $('#select_questions_card').hide();
             $('#selected_questions_card').hide();
             $('#gen_test_cases_and_save').hide();
             $('#save').show();
         }
+    });
+
+    $('#selectdb').change(function(){
+        var options = {};
+        var ctx = {};
+        // ctx.db_title = $(this).val();
+        options.db_id =$(this).val();
+        options.query_type =$(type).val();
+        getTable('/questions/table', options, '#questions_table');
+
+            // $('#settings_card').show();
+            // $('#select_db_card').show();
+            // $('#select_questions_card').show();
+            // $('#selected_questions_card').show();
+            // $('#gen_test_cases_and_save').show();
+            // $('#save').hide();
+
     });
 
     $('#time_limit').change(function() {
@@ -131,7 +215,7 @@ $(document).ready(function() {
         $form.find('#sql_answer').val(question.sql_answer);
         $form.find('#help').val(question.help);
         $form.find('#query_type').val(question.query_type);
-        $form.find('#db_id').val(question.db_id);
+        // $form.find('#db_id').val(question.db_id);
         //console.log(question);
 
         $('#db_schema_div').html('<div id="db_schema_div" class="text-xs-center"><i class="fa fa-spin fa-spinner"></i> Подождите...</div>');
@@ -165,13 +249,16 @@ $(document).ready(function() {
         data.check_point_data = get_form_data($(this));
         data.check_point_data.start = start;
         data.check_point_data.end = end;
+        // data.check_point_data.
 
-        if (type == 'test') {
+        if (type == 'test' || type == 'RA' || type == 'TC') {
             data.check_point_data.test_config = get_form_data($('#test_config'));
 
-            var questions_set = [];
+            // добавить про базу данных!!!!!!!!!!!!!!!!
 
-            $('#selected_questions_list li').each(function(index) {
+            var questions_set = [];
+// #selected_questions_list li
+            $('#questions_table table tbody tr').each(function(index) {
                 var question = {};
                 question.id = $(this).data('id');
                 question.complexity = $(this).data('complexity');

@@ -35,6 +35,10 @@ block body
                                                         td
                                                             if (check_point.type == 'test')
                                                                 | Контрольная работа
+                                                            else if (check_point.type == 'RA')
+                                                                | Контрольная работа (алгебра)
+                                                            else if (check_point.type == 'TC')
+                                                                | Контрольная работа (кортежи)
                                                             else if (check_point.type == 'exam')
                                                                 | Экзамен
                                                             else if (check_point.type == 'attestation')
@@ -58,7 +62,7 @@ block body
                                                 | Приступить к выполнению контрольной работы
 
 
-                    if (check_point.type == 'test' && profile.permissions.CheckPoint.update)
+                    if ((check_point.type == 'test'|| check_point.type == 'RA'||check_point.type == 'TC' ) && profile.permissions.CheckPoint.update )
                         .col-lg-6.col-md-12
                             .card#config_card
                                 .card-header
@@ -100,7 +104,7 @@ block body
                                                                 else 
                                                                     | нет (в разных вариантах вопросы могут повторяться)
 
-                if (check_point.type == 'test' && profile.permissions.CheckPoint.update)
+                if ((check_point.type == 'test'|| check_point.type == 'RA'||check_point.type == 'TC' ) && profile.permissions.CheckPoint.update)
                     .row
                         .col-md-12
                             .card
@@ -116,7 +120,7 @@ block body
                                                 ul.variant.list-group.list
                                                     each tc in check_point.test_cases
                                                         if (tc.title == 'extra')
-                                                            each q in tc.questions
+                                                            each q in tc.questions 
                                                                 li.list-group-item(data-id=q.question.id)= q.question.title + " (С: " + q.question.complexity + ")"
                                             each tc in check_point.test_cases
                                                 if (tc.title != 'extra')
