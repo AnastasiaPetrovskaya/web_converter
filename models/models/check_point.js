@@ -2,7 +2,7 @@ var CheckPoint = sequelize.define(
     'check_point',
     {
         title: {type: Sequelize.STRING, allowNull: false},
-        type:  {type: Sequelize.ENUM('test', 'exam', 'attestation'), allowNull: false},
+        type:  {type: Sequelize.ENUM('TC','RA','test', 'exam', 'attestation'), allowNull: false},
         start: {type: Sequelize.DATE, allowNull: false},
         end: {type: Sequelize.DATE, allowNull: false},
         description: {type: Sequelize.TEXT, allowNull: true},

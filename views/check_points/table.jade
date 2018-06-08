@@ -16,6 +16,10 @@ else
                     td
                         if (check_point.type === "test")
                             span.label.label-primary Контрольная работа
+                        else if (check_point.type === "RA")
+                            span.label.label-info Контрольная работа (алгебра)                        
+                        else if (check_point.type === "TC")
+                            span.label.label-info Контрольная работа (кортежи) 
                         else if (check_point.type === "exam")
                             span.label.label-info Экзамен
                         else if (check_point.type === "attestation")
@@ -29,7 +33,7 @@ else
                             a.btn.btn-icon.btn-outline-info.btn-sm(style="min-width:3.5rem" href="/check_points/" + check_point.id data-toggle="tooltip" title="Подробная информация")
                                 i.icon-info2
                             if (profile.permissions.CheckPoint.delete)
-                                button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удаление вопроса")
+                                button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удаление мероприятия")
                                     i.icon-trash2
 
 

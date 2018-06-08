@@ -6,9 +6,10 @@ module.exports = function (models) {
     var CheckPointGroup = models.CheckPointGroup;
     var TestCase = models.TestCase;
     var TestCaseQuestion = models.TestCaseQuestion;
-
-    CheckPoint.make = function (check_point_data, groups_arr, questions_arr, test_cases_arr) {
-
+// 
+    // CheckPoint.make = function (check_point_data, groups_arr, questions_arr, test_cases_arr) {
+    CheckPoint.make = function (check_point_data, groups_arr, questions_arr) {
+var test_cases_arr = [];
         //console.log('groups_arr', groups_arr);
         //console.log('test_cases_arr', test_cases_arr);
 
@@ -64,25 +65,22 @@ module.exports = function (models) {
                             });
                     };
 
-                    if (ctx.check_point.type == 'test') {
-                        var kostil = [{
-                            title: 'Вариант1', 
-                            questions: questions_arr
-                        }];
-                        test_cases_arr = kostil;
+                    if (ctx.check_point.type == 'test'|| check_point_data.type == 'RA'|| check_point_data.type == 'TC') {
 
                         //TODO попробовать сегенерировать варианты
+
                         var test_cases = new TestCases(questions_arr, check_point_data.test_config);
                         var test_cases_arr_tes = test_cases.generate();
-                        console.log('test_cases_arr_tes', test_cases_arr_tes);
 
-                        return Promise.all(test_cases_arr.map(add_test_case));
+
+                        return Promise.all(test_cases_arr_tes.map(add_test_case));
                     } else {
                         return;
                     }
                 }).then(function(test_cases) {
 
-                    console.log('test_cases', test_cases);
+                    console.log('test_cases конец', test_cases);
+
                     return ctx;
                 }).catch(function(err) {
                     console.log('make check point method err', err);

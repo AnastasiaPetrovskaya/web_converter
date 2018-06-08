@@ -3,9 +3,11 @@
 var express = require('express'),
     path = require('path');
 var express_config =require('./config/express.json');
-var mongo_config =require('./config/mongo.json');
-//var postgres_config =require('./config/postgres.json')[process.env.NODE_ENV];
-var postgres_config =require('./config/postgres.json')["test"];
+
+// var mongo_config =require('./config/mongo.json');
+
+var postgres_config =require('./config/postgres.json')[process.env.NODE_ENV];
+//var postgres_config =require('./config/postgres.json')["test"];
 //console.log('var', postgres_config);
 
 
@@ -15,7 +17,7 @@ process.env.NODE_ENV = 'test';
 global.app = require('./lib/boot.js')({
     root_dir: __dirname,
     config: {
-        mongo: mongo_config,
+        // mongo: mongo_config,
         postgres: postgres_config,
         express: express_config,
     }

@@ -4,7 +4,7 @@ var count_pages = ApplicationHelper.count_pages;
 
 var get = {
     '/': function (req, res) {
-        res.render('questions/index');
+        res.render('questions/index'); //страница со всеми запросами ко всем базам
     },
 
     '/add': function (req, res) {
@@ -23,7 +23,7 @@ var get = {
     '/copy/:id': function (req, res) {
         var id = Number(req.params.id);
 
-        var ctx = {};
+        var ctx = {}; // контекстн
         //получение списка всех учебных баз данных
         app.Question.find({
                 where : {id: id},
@@ -173,19 +173,19 @@ var post = {
     },
 
     '/trial': function(req, res) {
-        //console.log('question controller post trial', req.body);
-        //console.log('queeries', JSON.parse(req.body.queries));
-        var queries = JSON.parse(req.body.queries);
+        console.log('question controller post trial', req.body);
+        // console.log('queeries', JSON.parse(req.body.queries));
+        var queries = JSON.parse(req.body.queries);   //?????????????????????????????????
         var question_id = req.body.question_id;
         var db_id = req.body.db_id;
         //console.log('el', queries[0].alias);
         //res.success({});
-        var algebra_answer = new AlgebraAnswer(JSON.parse(req.body.queries));
-        //console.log('algebra answer', algebra_answer);
+        var algebra_answer = new AlgebraAnswer(JSON.parse(req.body.queries));   //?????????????????????????????????
+        console.log('algebra answer', algebra_answer);
 
         //convert_algebra()
         var ctx = {};
-        algebra_answer.create_sql_script()
+        algebra_answer.create_sql_script()         //Данный метод формирует последовательность SQL запросов — осуществляет необходимы замены на SELECT INTO
             .then(function(result) {
                 ctx.answer_sql = result;
                 //console.log('result', result);

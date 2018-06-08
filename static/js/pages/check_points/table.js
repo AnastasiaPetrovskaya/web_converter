@@ -33,7 +33,7 @@ $(document).ready(function() {
 
         event.preventDefault();
         bootbox.confirm({
-            title: '<i class="icon-trash2"></i> Вы уверены, что хотите удалить данный вопрос?',
+            title: '<i class="icon-trash2"></i> Вы уверены, что хотите удалить данное мероприятие?',
             message: 'Не рекомедуется удалять контрольные вопросы во время проведения контрольных работ и сразу после них',
             className: "slideInDown custom-bootbox",
             buttons: {
