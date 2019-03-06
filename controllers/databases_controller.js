@@ -152,8 +152,7 @@ var post = {
 
         var sql = req.body.sql;
         sql = sql.replace(/\"/g, "'");
-        var db = Number(req.params.id);;
-
+        var db = Number(req.params.id);
         app.DataBase.execute_sql(db, sql)
             .then(function(data) {
                 res.success({data: data});

@@ -3,9 +3,6 @@ extends ../head2
 block body
     .robust-content.content.container-fluid
         .content-wrapper
-            //.content-header.row
-              .content-header-left.col-md-6.col-xs-12
-                  h3.content-header-title.mb-0 Добавление нового контрольного мероприятия
             .content-body
                 section
                     .row
@@ -87,9 +84,15 @@ block body
                                                     input#minutes_amount.form-control(name="minutes_amount" disabled value="60" style="width:auto;display:inline-block;margin-right:10px;margin-left: 10px;")
                                                     label(for='minutes_amount' style="margin-right: 10px;") минут
                                                 hr.mt-0
-                                                p
-                                                    b Генерация вариантов для контрольной работы
                                                 .form-group.row
+                                                    .btn-group(role="group")
+                                                        .dropdown.mx-1
+                                                            button#dropTestConfig.btn.btn-secondary.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") Способы генерации вариантов
+                                                            .dropdown-menu(aria-labelledby="dropTestConfig")
+                                                                a.dropdown-item(value="DYN") Динамическая
+                                                                a.dropdown-item(value="RND") Случайная
+                                                                a.dropdown-item(value="HND") Ручная
+                                                .form-group.row#test_cases_amount_row
                                                     label.col-md-4(for="db_id") Количество вариантов
                                                     input.col-md-8.form-control#test_cases_amount(name="test_cases_amount" value="10" style="width:auto;display:inline-block;")
                                                     .help-block
@@ -103,8 +106,8 @@ block body
                                                     .help-block
                                                 .form-group(style="display:inline-block;width:auto")
                                                     label(for='manual-time-set' style="margin-right: 10px;") Вырианты без повторений вопросов
-                                                    input#unique_questions.switchery.pull-right.no-uniform.form-control(name="unique_questions" type="checkbox" data-size="xs"  style="margin-right: 10px;")                    
-                                             
+                                                    input#unique_questions.switchery.pull-right.no-uniform.form-control(name="unique_questions" type="checkbox" data-size="xs"  style="margin-right: 10px;")
+
 
                     .row
                         .col-md-12
@@ -127,10 +130,10 @@ block body
                                                             option(value="")
                                                                 each database in databases
                                                                     if (database.type == 'test' || database.type == 'common')
-                                                                         option(value="#{database.id}")= database.title 
+                                                                         option(value="#{database.id}")= database.title
                                                            .help-block
-                                                                                    
- 
+
+
                      .row
                         .col-md-12.col-lg-8
                             .card#select_questions_card(style="display:none")
@@ -179,17 +182,6 @@ block append footer
     else
         script.
             var question = false;
-
-    //script(src="/robust-assets/js/components/modal/components-modal.js" type="text/javascript")
-
-    //script(src="/robust-assets/js/plugins/forms/spinner/jquery.bootstrap-touchspin.js" type="text/javascript")
-    ////script(src="/robust-assets/js/plugins/forms/toggle/bootstrap-switch.min.js" type="text/javascript")
-    //script(src="/robust-assets/js/plugins/forms/toggle/switchery.min.js" type="text/javascript")
-
-    //script( src="/robust-assets/js/core/libraries/jquery_ui/jquery-ui.min.js" type="text/javascript")
-    //script( src="/robust-assets/js/plugins/tables/jsgrid/jsgrid.min.js" type="text/javascript")
-    //script( src="/robust-assets/js/plugins/tables/jsgrid/griddata.js" type="text/javascript")
-    //script( src="/robust-assets/js/plugins/tables/jsgrid/jquery.validate.min.js" type="text/javascript")
 
 
     script(src="/js/pages/check_points/add.js" type="text/javascript")

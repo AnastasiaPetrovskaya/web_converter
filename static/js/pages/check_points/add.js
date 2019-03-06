@@ -1,6 +1,24 @@
 $(document).ready(function() {
     var start,
         end;
+    //new block for choosing type of generating algorithm
+    const buttonTestConfig = document.querySelector('#dropTestConfig'),
+        configButtons = document.querySelectorAll('.dropdown-item'),
+        testCaseAmount = document.querySelector('#test_cases_amount_row');
+
+    configButtons.forEach((btn,i) => {
+       btn.addEventListener('click', () => {
+           buttonTestConfig.textContent = btn.textContent;
+           if(btn.textContent == "Динамическая") {
+               testCaseAmount.style.display = 'none';
+           } else if (btn.textContent == "Случайная") {
+               testCaseAmount.style.display = 'block';
+           } else if (btn.textContent == "Ручная") {
+               testCaseAmount.style.display = 'block';
+           }
+
+       })
+    });
 
     $dates = $('#start, #end');
     $dates.datetimepicker({
@@ -31,13 +49,8 @@ $(document).ready(function() {
         },
     });
 
-
     $('#start').data('DateTimePicker').date(moment().startOf('day').add(7, 'd'));
     $('#end').data('DateTimePicker').date(moment().startOf('day').add(8, 'd'));
-
-
-        //start_picker = new Date(this._editPicker.data('DateTimePicker').date());
-        //return moment(start_picker).format("YYYY-MM-DDTHH:mm:ss")
 
     start = moment($('#start').data('DateTimePicker').date()).format("YYYY-MM-DD HH:mm:ss");
     end = moment($('#end').data('DateTimePicker').date()).format("YYYY-MM-DD HH:mm:ss");
@@ -83,60 +96,7 @@ $(document).ready(function() {
             $('#selected_questions_card').show();
             $('#gen_test_cases_and_save').show();
             $('#save').hide();
-        } 
-        // else if ($(this).val() == 'RA'){
-        //       var options = {};
-        //     options.db_type = { 
-        //         $or: [
-        //             {$eq: 'common'}, 
-        //             {$eq: 'test'}
-        //         ]
-        //     };
-        //     options.control_col = false;
-        //     options.query_type = {$eq: 'RA'};
-        //     var  op = {};
-        //     op.db_type = { 
-        //         $or: [
-        //             {$eq: 'common'}, 
-        //             {$eq: 'test'}
-        //         ]
-        //     };
-        //     op.title = ;
-
-        //     // getTable('/databases/table', options, '#databases_table');
-        //     getTable('/questions/table', options, '#questions_table');
-
-        //     $('#settings_card').show();
-        //     $('#select_db_card').show();
-        //     $('#select_questions_card').show();
-        //     $('#selected_questions_card').show();
-        //     $('#gen_test_cases_and_save').show();
-        //     $('#save').hide();
-
-        // } else if ($(this).val() == 'TC'){
-        //       var options = {};
-        //     options.db_type = { 
-        //         $or: [
-        //             {$eq: 'common'}, 
-        //             {$eq: 'test'}
-        //         ]
-        //     };
-        //     options.control_col = false;
-        //     options.query_type = {$eq: 'TC'};
-
-        //     getTable('/questions/table', options, '#questions_table');
-
-
-        //     $('#settings_card').show();
-        //     $('#select_db_card').show();
-        //     $('#select_questions_card').show();
-        //     $('#selected_questions_card').show();
-        //     $('#gen_test_cases_and_save').show();
-        //     $('#save').hide();
-
-        // }
-       
-        else {
+        } else {
             $('#settings_card').hide();
             $('#select_db_card').hide();
             $('#select_questions_card').hide();
@@ -153,14 +113,6 @@ $(document).ready(function() {
         options.db_id =$(this).val();
         options.query_type =$(type).val();
         getTable('/questions/table', options, '#questions_table');
-
-            // $('#settings_card').show();
-            // $('#select_db_card').show();
-            // $('#select_questions_card').show();
-            // $('#selected_questions_card').show();
-            // $('#gen_test_cases_and_save').show();
-            // $('#save').hide();
-
     });
 
     $('#time_limit').change(function() {
@@ -257,7 +209,6 @@ $(document).ready(function() {
             // добавить про базу данных!!!!!!!!!!!!!!!!
 
             var questions_set = [];
-// #selected_questions_list li
             $('#questions_table table tbody tr').each(function(index) {
                 var question = {};
                 question.id = $(this).data('id');
@@ -299,15 +250,12 @@ $(document).ready(function() {
                         callback: function() {
                             bootbox.hideAll();
                             return false;
-                            //window.location.reload(); 
                         }
                     }
                 }
 
             });
         } else {
-            console.log(res);
-            //$successButton.html(lang.add).prop('disabled', false);
             bootboxError(res.error);
             return false;
         }
@@ -343,9 +291,7 @@ $(document).ready(function() {
             //manual trigger validation of two fields
 
             var $form = $("#new_question");
-            // Get all inputs
-            //var $allInputs = $form.find("input,textarea,select").not("[type=submit],[type=image]");//.filter(settings.options.filter);
-            //var $allControlGroups = $form.find(".form-group");
+
             var $allInputs = $form.find("#sql_answer ,#db_id");
             var $allControlGroups = $form.find(".form-group > #sql_answer ,.form-group > #db_id ");
 
@@ -399,15 +345,9 @@ $(document).ready(function() {
                     else
                         fields.push({ name: key, type: "text"});
                 }
-                //fields.push({type: 'control'});
 
                 $('#sql_answer_div').jsGrid({
                     width: "100%",
-                    //height: "600px",
- 
-                    //editing: true,
-                    //inserting: true,
-                    //filtering: true,
                     sorting: true,
                     paging: true,
                     pageSize: 15,
@@ -418,8 +358,6 @@ $(document).ready(function() {
                     fields: fields,
                     controller: {
                         loadData : function(filter) {
-                            //console.log('filter', filter);
-                            //console.log('this.data', this.data);
 
                             return $.grep(table.data, function(td) {
 
@@ -464,7 +402,6 @@ $(document).ready(function() {
                 $('#sql_answer_div').html('<div class="text-xs-center"> Ваш запрос не дал результатов</div>');
             }
         } else {
-            console.log(res);
             var err_html = '<p>'+ res.error + '</p><p>' + 
                         res.sql.substring(0, res.sql_err_position - 1) + 
                         '<kbd>' + res.sql.substr(+res.sql_err_position - 1, 1) +

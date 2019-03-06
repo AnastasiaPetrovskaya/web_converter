@@ -98,13 +98,13 @@ module.exports = function (models) {
                     + db.title + '" -u="' + username + '" -password="' + password + 
                     '" -i=maximum -c=schema -fmt=png -outputfile=../../static/db_schema/' 
                     + ctx.filename + ' -weakassociations=true', 
-                    {cwd: "./schemacrawler-14.15.03-main/_schemacrawler"});
+                    {cwd: "./schemacrawler-15.04.01-distribution/_schemacrawler"});
             }).then(function(result) {
                 var stdout = result.stdout;
                 var stderr = result.stderr;
 
-                //console.log('stdout', stdout);
-                //console.log('stderr', stderr);
+                // console.log('stdout', stdout);
+                // console.log('stderr', stderr);
                 //если скрипт отработал корректно, то нужно вернуть название файла
                 return ctx.filename;
             }).catch(function(err) {

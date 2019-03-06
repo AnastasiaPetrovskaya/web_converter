@@ -1,4 +1,3 @@
-//var convert_algebra = require('../lib/re_al_to_sql').convert_algebra_to_sql;
 var AlgebraAnswer = require('../lib/RelationalAlgebraAnswer');
 var TupleAnswer = require('../lib/TupleCalculusAnswer');
 var TestCases = require('../lib/TestCases');
@@ -12,7 +11,6 @@ var get = {
 
     '/add':  function (req, res) { 
     var ctx = {};
-    
     app.Group.findAll()
         .then (function(groups){
             ctx.group = groups;
@@ -105,13 +103,12 @@ var get = {
     },
 
     '/next_question/:id': function (req, res) {
-        console.log('here');
         var id = Number(req.params.id);
 
         //найти следующий вопрос или закончить тестирование
         app.TestAnswer.next_question(id, req.user.id)
             .then(function(questions) {
-                console.log('next questions', questions);
+                //console.log('next questions', questions);
 
                 //TODO если следующий вопрос не нашелся, то нужно завершить тестирование
                 if (questions.length > 0) {
@@ -193,12 +190,6 @@ var get = {
             }).then(function (check_point) {
                 console.log('check_point', check_point);
 
-                //console.log('check_point', check_point.dataValues);
-                //console.log('check_point.groups[0]', check_point.dataValues.groups[0]);
-                //console.log('check_point.test_cases', check_point.dataValues.test_cases);
-                //console.log('check_point.test_cases[0]', check_point.dataValues.test_cases[0]);
-                //console.log('check_point.test_cases[0].questions', check_point.dataValues.test_cases[0].questions);
-
                 if (!check_point) {
                     throw {message: 'NotFound'};
                 }
@@ -218,7 +209,6 @@ var get = {
 var post = {
 
         '/add': function (req, res) {
-
         console.log('req.body', req.body);
         var check_point_data = req.body.check_point_data,
             test_cases_arr = [],
@@ -228,23 +218,17 @@ var post = {
 
         check_point_data.owner_id = req.user.id;
 
-        //check_point_data.data_from = moment(check_point_data.data_from).format("DD.MM.YYYY HH:mm");
-        //check_point_data.data_to = moment(check_point_data.data_to).format("DD.MM.YYYY HH:mm");
         //TODO попробовать сегенерировать варианты
         //после генерации заполнить массив test_cases
         if (check_point_data.type == 'test'|| check_point_data.type == 'RA'|| check_point_data.type == 'TC') {
-            var kostil = [{
+            var kostil = [{     //называть переменные костылями, ммм...
                 title: 'Вариант1', 
                 questions: req.body.questions_set
             }];
             test_cases_arr = kostil;
 
             //TODO попробовать сегенерировать варианты
-            //var test_cases = new TestCases(req.body.questions_set, check_point_data.test_config);
-            //var test_cases_arr_tes = test_cases.generate();
-            //console.log('test_cases_arr_tes', 
         }
-        // console.log('check_point_data', check_point_data);
 
         console.log(' req.body.questions_set!!!!!!!!!!!',  req.body.questions_set);
 
@@ -261,13 +245,9 @@ var post = {
 
 
     '/trial': function(req, res) {
-        //console.log('question controller post trial', req.body);
-        //console.log('queeries', JSON.parse(req.body.queries));
         var queries = JSON.parse(req.body.queries);
         var question_id = req.body.question_id;
         var db_id = req.body.db_id;
-        //console.log('el', queries[0].alias);
-        //res.success({});
          var ctx = {};
          ctx.question = question;
 
@@ -282,11 +262,9 @@ var post = {
          ctx.query_answer.create_sql_script()
             .then(function(result) {
                 ctx.answer_sql = result;
-                //console.log('result', result);
 
                 return app.DataBase.execute_sql(db_id, result);
             }).then(function(sql_res) {
-                //console.log('query_res', sql_res.result.rows);
                  ctx.query_answer.answer_data = sql_res.result.rows;
                 ctx.answer_data = sql_res.result.rows;
 
@@ -301,8 +279,6 @@ var post = {
                 ctx.right_answer_data = sql_res.result.rows;
                 //сверка результатов выполнения двух запросов
                 var mark =  ctx.query_answer.check();
-                console.log('!!!!!!!!!!!!!!!!!!mark', mark);
-                console.log('!!!!!!!!!!!!!!!!!!answer',  ctx.query_answer);
                 ctx = Object.assign({}, mark, ctx)
 
                 if (req.user.role.role == 'student') {
@@ -320,11 +296,9 @@ var post = {
                         resolve();
                     });
                 }
-                //console.log('!!!!!!!!!!!!!!!!!!ctx', ctx);
             }).then(function(result) {
                 res.success(ctx);
             }).catch(function(err) {
-                console.log('post /trial err', err);
 
                 return app.QuestionAnswer.create({
                     answer: queries,
