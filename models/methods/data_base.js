@@ -103,8 +103,8 @@ module.exports = function (models) {
                 var stdout = result.stdout;
                 var stderr = result.stderr;
 
-                // console.log('stdout', stdout);
-                // console.log('stderr', stderr);
+                //console.log('stdout', stdout);
+                //console.log('stderr', stderr);
                 //если скрипт отработал корректно, то нужно вернуть название файла
                 return ctx.filename;
             }).catch(function(err) {

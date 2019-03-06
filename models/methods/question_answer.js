@@ -8,14 +8,13 @@ module.exports = function (models) {
     var QuestionAnswer = models.QuestionAnswer;
 
     QuestionAnswer.make = function (user_id, question_id, db_id, queries, check_point_id) {
-        let question;
-        app.Question.findOne({
+        app.Question.findOne({//find question by id
             where : {
                 id : question_id
             }
-        }).then((result) => {
+        }).then((result) => {//take only question data
             return result.dataValues;
-        }).then(question => {
+        }).then(question => {//make answer by queries
             var ctx = {};
             if (question.query_type == "RA") {
                 ctx.query_answer = new AlgebraAnswer(queries);
@@ -23,17 +22,13 @@ module.exports = function (models) {
             else {
                 ctx.query_answer = new TupleAnswer(queries);
             }
-            console.log('\n\n\nin question answer make check point in', check_point_id);
             return ctx;
-        }).then(ctx => {
+        }).then(ctx => {//generate SQL request to DB
             return ctx.query_answer.create_sql_script()
                 .then(function(result) {
                     ctx.answer_sql = result;
-                    console.log('result', result);
-
                     return app.DataBase.execute_sql(db_id, result);
                 }).then(function(sql_res) {
-                    console.log('\n\n\nquery_res', sql_res.result.rows);
                     ctx.query_answer.answer_data = sql_res.result.rows;
                     ctx.answer_data = sql_res.result.rows;
 
@@ -41,17 +36,13 @@ module.exports = function (models) {
                 }).then(function(question) {
                     //TODO проверка прав возвращать ли правильный ответ
                     ctx.right_answer_sql = question.sql_answer;
-
                     return app.DataBase.execute_sql(db_id, question.sql_answer);
                 }).then(function(sql_res) {
                     ctx.query_answer.right_answer_data = sql_res.result.rows;
                     ctx.right_answer_data = sql_res.result.rows;
                     //сверка результатов выполнения двух запросов
                     var mark = ctx.query_answer.check();
-                    ctx = Object.assign({}, mark, ctx)
-
-
-                    console.log('\n\n\ncreating question answer!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                    ctx = Object.assign({}, mark, ctx);
 
                     return app.QuestionAnswer.create({
                         answer: queries,
