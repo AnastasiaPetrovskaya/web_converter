@@ -78,7 +78,7 @@ clientSchema.statics.getBankData = function getBankData(bank_id) {
                     fullfill(bank);
                 }
             }).catch(function(err) {
-                console.log('err', err);
+                console.log('err in : ', err);
                 reject(err);
             });
     });

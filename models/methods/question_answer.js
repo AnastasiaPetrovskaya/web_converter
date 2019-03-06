@@ -16,10 +16,7 @@ module.exports = function (models) {
         }).then((result) => {
             return result.dataValues;
         }).then(question => {
-            console.log('\n\n\n-+-+-+-+-+-+-+-+-+-+-+-++--+-+-+-+-+-=--------\n', question);
             var ctx = {};
-            console.log('\n\n\n-+-+-+-+-+-+-+-+-+-+-+-++--+-+-+-+-+-=--------\n', question);
-
             if (question.query_type == "RA") {
                 ctx.query_answer = new AlgebraAnswer(queries);
             }
@@ -90,7 +87,7 @@ module.exports = function (models) {
                     });
                 }).catch(function(err) {
 
-                    console.log('\n\n\nerrr while savong incorrect answer');
+                    console.log('\n\n\nerrr while saving incorrect answer');
 
                     throw err;
                 });

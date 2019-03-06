@@ -18,3 +18,5 @@ static/db_schema/*.png
 !static/db_schema/.keep
 mdb2postgres/*
 mdb2postgres/.keep
+*.xml
+codestyles/
