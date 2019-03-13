@@ -94,7 +94,7 @@ var get = {
 
 var post = {
     '/make': function (req, res) {
-        console.log('post make question answer!!\n', req.body);
+        console.log('\n\nПринят ответ от студента\n', req.body, '\n----------------------------------------------\n');
         var check_point_id = req.body.check_point_id;
         var queries = JSON.parse(req.body.queries);
         var question_id = req.body.question_id;
@@ -103,7 +103,7 @@ var post = {
         //сохранить ответ на вопрос
         app.QuestionAnswer.make(req.user.id, question_id, db_id, queries, check_point_id)
             .then(function(result) {
-                console.log('result of QA make', result);
+                console.log('\n\nresult of QA make\n', result);
 
                 //нужно обновить общую оценку
                 return app.TestAnswer.update(
@@ -113,13 +113,16 @@ var post = {
                         user_id: req.user.id
                     }}
                 );
-            }).then(function(result) {
-
+                })
+            .then(function(result) {
+                console.log('\n\n\nresult of Test Answer upd.\n', result,'\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
                 res.success({});
-            }).catch(function(err) {
+                })
+            .catch(function(err) {
                 //найти следующий вопрос или закончить тестирование
+                console.log('\n\n\nError in make: \n', err);
                 res.error('Error', err);
-            });
+                });
     },
 
     '/add': function (req, res) {

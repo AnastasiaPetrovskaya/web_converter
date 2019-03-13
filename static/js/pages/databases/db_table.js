@@ -76,7 +76,7 @@ $(document).ready(function() {
                         }).responseText;
                         res = JSON.parse(res);
 
-                        console.log(res);
+                        //console.log(res);
 
                         if (res.success) {
                             $('#sql_query_text').val(res.data.sql);

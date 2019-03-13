@@ -28,7 +28,7 @@ var test_cases_arr = [];
                 }).then(function(check_point) {
                     ctx.check_point = check_point.dataValues;
 
-                    console.log('groups_arr', groups_arr);
+                    //console.log('groups_arr', groups_arr);
                     return Promise.all(groups_arr.map(function(group) {
                         return app.CheckPointGroup.create({
                                 group_id: group,

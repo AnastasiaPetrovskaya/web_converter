@@ -88,13 +88,12 @@ var get = {
             });
     },
     
-
+//Это вывод первого вопроса
     '/start_test/:id': function (req, res) {
         var id = Number(req.params.id);
 
         app.TestAnswer.make(id, req.user.id)
             .then(function(questions) {
-                console.log('question', questions[0]);
                 res.render('questions/answer', { question: questions[0], check_point_id : id });
             }).catch(function(err) {
                 console.log('err', err);
@@ -108,8 +107,7 @@ var get = {
         //найти следующий вопрос или закончить тестирование
         app.TestAnswer.next_question(id, req.user.id)
             .then(function(questions) {
-                //console.log('next questions', questions);
-
+                console.log('\n\n\nReturned next question\n', questions,'\n++++++++++++++++++++++++++++++++++++++');
                 //TODO если следующий вопрос не нашелся, то нужно завершить тестирование
                 if (questions.length > 0) {
                     res.render('questions/answer', { question: questions[0], check_point_id : id });
@@ -150,8 +148,8 @@ var get = {
                                     }]
                             });
                         }).then(function (check_point) {
-                            console.log('check_point.test_cases', check_point.test_cases);
-                            console.log('check_point.tests_answers', check_point.tests_answers);
+                            //console.log('\n\n\ncheck_point.test_cases.dataValues', check_point.test_cases.dataValues);
+                            //console.log('\n\n\ncheck_point.tests_answers', check_point.tests_answers);
                             res.render('check_points/tests_results/show', { check_point: check_point});
                         }).catch(function(err) {
                             //найти следующий вопрос или закончить тестирование
@@ -196,7 +194,7 @@ var get = {
 
                 ctx.check_point = check_point.dataValues;
 
-                console.log('ctx.check_point', ctx.check_point);
+                //console.log('ctx.check_point', ctx.check_point);
                 res.render('check_points/show', { check_point: ctx.check_point });
             }).catch(function (err) {
                 console.log('err', err);
