@@ -11,9 +11,9 @@ module.exports = function (models) {
         var ctx = {};
         console.log('Вызвана QuestionAnswer.make\n\n-------------------------------------\n\n');
 
-        app.Question.findById(question_id)
+        return app.Question.findById(question_id)
             .then((result) => {//take only question data
-                console.log('\n\nИщем вопрос по его id\n\n------------------------------------\n\n');
+                //console.log('\n\nИщем вопрос по его id\n\n------------------------------------\n\n');
                 return result.dataValues;
                 })
             .then(question => {//make answer by queries
@@ -24,28 +24,27 @@ module.exports = function (models) {
                 else {
                     ctx.query_answer = new TupleAnswer(queries);
                 }
-                console.log('\n\nЗаписали в ctx преобразованный ответ\n', ctx.query_answer,'\n\n------------------------------\n\n')
+                //console.log('\n\nЗаписали в ctx преобразованный ответ\n', ctx.query_answer,'\n\n------------------------------\n\n')
                 return ctx;
                 })
             .then(ctx => {//generate SQL request to DB
 
                 return ctx.query_answer.create_sql_script()
                     .then(function(result) {
-                        console.log('\n\n\nSQL created\n', result, '\n----------------------------------------------\n');
+                        //console.log('\n\n\nSQL created\n', result, '\n----------------------------------------------\n');
                         ctx.answer_sql = result;
                         return app.DataBase.execute_sql(db_id, result);
                         })
                     .then(function(sql_res) {
-                        console.log('\n\nРезультат выполнения SQL есть\n------------------------------------\n');
+                        //console.log('\n\nРезультат выполнения SQL есть\n------------------------------------\n');
                         ctx.query_answer.answer_data = sql_res.result.rows;
                         ctx.answer_data = sql_res.result.rows;
 
                         return app.Question.findById(question_id);
                         })
                     .then(function(question) {
-                    //TODO проверка прав возвращать ли правильный ответ
                         ctx.right_answer_sql = question.sql_answer;
-                        console.log();
+                        //console.log();
                         return app.DataBase.execute_sql(db_id, question.sql_answer);
                         })
                     .then(function(sql_res) {
@@ -54,7 +53,7 @@ module.exports = function (models) {
                         ctx.right_answer_data = sql_res.result.rows;
                         //сверка результатов выполнения двух запросов
                         var mark = ctx.query_answer.check();
-                        console.log('\n\n\nОценка за вопрос : ', mark,'\n------------------------------------------\n');
+                        //console.log('\n\n\nОценка за вопрос : ', mark,'\n------------------------------------------\n');
                         ctx = Object.assign({}, mark, ctx);
 
                         return app.QuestionAnswer.create({
@@ -69,12 +68,11 @@ module.exports = function (models) {
                         });
                         })
                     .then(function(result) {
-                        //TODO. Здесь не возвращает результат в контроллер
                         console.log('\n\n\nAnswer created with data:\n', result.dataValues, '\n------------------------------\n');
                         return result;
                         })
                     .catch(function(err) {
-                        console.log('\n\n\nQA catch error\n\n', err);
+                        //console.log('\n\n\nQA catch error\n\n', err);
 
                         app.QuestionAnswer.create({
                             answer: queries,
@@ -87,17 +85,17 @@ module.exports = function (models) {
                             sql: (ctx.answer_sql ? ctx.answer_sql : "Не удалось выполнить генерацию SQL.")
                             })
                             .then(function(result) {
-                                console.log('\n\n\nQA create result :\n', result.dataValues,'\n+=+=+=+=+=+=+=++=+=+=+=+=+=+=++=+=+=+=+=+=+=++=+=+=+=+=+=+=+')
+                                //console.log('\n\n\nQA create result :\n', result.dataValues,'\n+=+=+=+=+=+=+=++=+=+=+=+=+=+=++=+=+=+=+=+=+=++=+=+=+=+=+=+=+')
                                 throw err;
                                 })
                             .catch(function(err_saving_log) {
-                                console.log('\n\n\nerror creating question answer if err!!!!!!!!!!!!!!!!!!!!!!!!!!!', err_saving_log);
+                                //console.log('\n\n\nerror creating question answer if err!!!!!!!!!!!!!!!!!!!!!!!!!!!', err_saving_log);
                                 throw err;
                                 });
                         })
                     .catch(function(err) {
 
-                        console.log('\n\n\nerrr while saving incorrect answer');
+                        //console.log('\n\n\nerrr while saving incorrect answer');
 
                         throw err;
                         });
