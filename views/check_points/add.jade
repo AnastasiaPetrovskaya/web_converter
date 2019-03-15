@@ -84,7 +84,7 @@ block body
                                                     input#minutes_amount.form-control(name="minutes_amount" disabled value="60" style="width:auto;display:inline-block;margin-right:10px;margin-left: 10px;")
                                                     label(for='minutes_amount' style="margin-right: 10px;") минут
                                                 hr.mt-0
-                                                .form-group.row
+                                                .form-group.row#test_case_generation_type(style="min-height: 11rem;")
                                                     .btn-group(role="group")
                                                         .dropdown.mx-1
                                                             button#dropTestConfig.btn.btn-secondary.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") Способы генерации вариантов
@@ -92,21 +92,33 @@ block body
                                                                 a.dropdown-item(value="DYN") Динамическая
                                                                 a.dropdown-item(value="RND") Случайная
                                                                 a.dropdown-item(value="HND") Ручная
-                                                .form-group.row#test_cases_amount_row
+                                                .form-group.row#test_cases_amount_row(style="display:none")
                                                     label.col-md-4(for="db_id") Количество вариантов
-                                                    input.col-md-8.form-control#test_cases_amount(name="test_cases_amount" value="10" style="width:auto;display:inline-block;")
+                                                    input.col-md-8.form-control#test_cases_amount(name="test_cases_amount" style="width:auto;display:inline-block;")
                                                     .help-block
-                                                .form-group.row
+                                                .form-group.row#questions_amount_row(style="display:none")
                                                     label.col-md-4(for="db_id") Количество вопросов в одном варианте
-                                                    input.col-md-8.form-control#questions_amount(name="questions_amount" value="5" style="width:auto;display:inline-block;")
+                                                    input.col-md-8.form-control#questions_amount(name="questions_amount" style="width:auto;display:inline-block;")
                                                     .help-block
-                                                .form-group.row
+                                                .form-group.row#mean_complexity_row(style="display:none")
                                                     label.col-md-4(for="db_id") Средняя сложность
-                                                    input.col-md-8.form-control#mean_complexity(name="mean_complexity" value="3" style="width:auto;display:inline-block;")
+                                                    input.col-md-8.form-control#mean_complexity(name="mean_complexity" style="width:auto;display:inline-block;")
                                                     .help-block
-                                                .form-group(style="display:inline-block;width:auto")
+                                                .form-group.row#test_case_start_complexity(style='display: none;')
+                                                    label.col-md-4(for="db_id") Начальная сложность
+                                                    input.col-md-8.form-control#start_complexity(name="start_complexity" style="width:auto;display:inline-block;")
+                                                    .help-block
+                                                .form-group.row#test_case_great_complexity(style='display: none;')
+                                                    label.col-md-4(for="db_id") Максимальная сложность
+                                                    input.col-md-8.form-control#great_complexity(name="great_complexity" style="width:auto;display:inline-block;")
+                                                    .help-block
+                                                .form-group.row#test_case_less_complexity(style='display: none;')
+                                                    label.col-md-4(for="db_id") Минимальная сложность
+                                                    input.col-md-8.form-control#less_complexity(name="less_complexity" style="width:auto;display:inline-block;")
+                                                    .help-block
+                                                .form-group#test_case_repeat(style="display:none;width:auto")
                                                     label(for='manual-time-set' style="margin-right: 10px;") Вырианты без повторений вопросов
-                                                    input#unique_questions.switchery.pull-right.no-uniform.form-control(name="unique_questions" type="checkbox" data-size="xs"  style="margin-right: 10px;")
+                                                    input#unique_questions.switchery.pull-right.no-uniform.form-control(name="unique_questions" type="checkbox" data-size="xs"  style="margin-right: 10px;")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 
 
                     .row

@@ -88,19 +88,6 @@ var get = {
             });
     },
     
-//Это вывод первого вопроса
-    '/start_test/:id': function (req, res) {
-        var id = Number(req.params.id);
-
-        app.TestAnswer.make(id, req.user.id)
-            .then(function(questions) {
-                res.render('questions/answer', { question: questions[0], check_point_id : id });
-            }).catch(function(err) {
-                console.log('err', err);
-                res.error('Error', err);
-            });
-    },
-
     '/next_question/:id': function (req, res) {
         var id = Number(req.params.id);
 
@@ -135,7 +122,7 @@ var get = {
                                         model: app.TestCase,
                                         as: 'test_cases',
                                         include: [{
-                                            model: app.TestCaseQuestion, 
+                                            model: app.TestCaseQuestion,
                                             as: 'questions',
                                             include: [{
                                                 model: app.Question,
@@ -162,6 +149,28 @@ var get = {
                 console.log('err', err);
                 res.error('Error', err);
             });
+    },
+
+//Это вывод первого вопроса
+    '/start_test/:id': function (req, res) {
+        var id = Number(req.params.id);
+        app.CheckPoint.findById(id).then(check_point => {
+            console.log('\nCP values\n\n', check_point.dataValues);
+            console.log('\nComplexity values\n\n', check_point.dataValues.test_config);
+            if (check_point.dataValues.test_config.less_complexity > 0) {
+                //nextQuestionDynamic
+            } else {
+                app.TestAnswer.make(id, req.user.id)
+                    .then(function(questions) {
+                        res.render('questions/answer', { question: questions[0], check_point_id : id });
+                    }).catch(function(err) {
+                    console.log('err', err);
+                    res.error('Error', err);
+                });
+            }
+        });
+
+
     },
 
     '/:id': function (req, res) {
@@ -207,7 +216,7 @@ var get = {
 var post = {
 
         '/add': function (req, res) {
-        console.log('req.body', req.body);
+        console.log('\n\nreq.body.check_point_data\n', req.body.check_point_data);
         var check_point_data = req.body.check_point_data,
             test_cases_arr = [],
             groups = [];
@@ -215,30 +224,56 @@ var post = {
         groups = req.body.groups_set;
 
         check_point_data.owner_id = req.user.id;
+        let generationType = check_point_data.generation_type,
+            testConfig = check_point_data.test_config;
+        if (generationType == 'DYN') {
+            //dynamic generation here
+            let testComplexities = {
+                start : testConfig.start_complexity,
+                great : testConfig.great_complexity,
+                less : testConfig.less_complexity
+            };
 
-        //TODO попробовать сегенерировать варианты
-        //после генерации заполнить массив test_cases
-        if (check_point_data.type == 'test'|| check_point_data.type == 'RA'|| check_point_data.type == 'TC') {
-            var kostil = [{     //называть переменные костылями, ммм...
-                title: 'Вариант1', 
-                questions: req.body.questions_set
-            }];
-            test_cases_arr = kostil;
+            app.CheckPoint.makeDynamic(check_point_data, groups, req.body.questions_set)
+                .then(function(result) {
 
-            //TODO попробовать сегенерировать варианты
-        }
+                    console.log('result add check point', result);
+                    res.success(result);
+                })
+                .catch(function(err) {
+                    console.log('err add check point', err);
+                    res.error(err);
+                });
 
-        console.log(' req.body.questions_set!!!!!!!!!!!',  req.body.questions_set);
+        } else if (generationType == 'RND') {
+            if (check_point_data.type == 'test'|| check_point_data.type == 'RA'|| check_point_data.type == 'TC') {
+                var kostil = [{     //называть переменные костылями, ммм...
+                    title: 'Вариант1',
+                    questions: req.body.questions_set
+                }];
+                test_cases_arr = kostil;
 
-        app.CheckPoint.make(check_point_data, groups, req.body.questions_set)
-            .then(function(result) {
+                //TODO попробовать сегенерировать варианты
+            }
 
-                console.log('result add check point', result);
-                res.success(result);
-            }).catch(function(err) {
+            console.log('\n req.body.questions_set\n',  req.body.questions_set);
+
+            app.CheckPoint.make(check_point_data, groups, req.body.questions_set)
+                .then(function(result) {
+
+                    console.log('result add check point', result);
+                    res.success(result);
+                }).catch(function(err) {
                 console.log('err add check point', err);
                 res.error(err);
             });
+        } else {
+
+        }
+
+        //TODO попробовать сегенерировать варианты
+        //после генерации заполнить массив test_cases
+
     },
 
 

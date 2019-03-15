@@ -4,22 +4,49 @@ $(document).ready(function() {
     //new block for choosing type of generating algorithm
     const buttonTestConfig = document.querySelector('#dropTestConfig'),
         configButtons = document.querySelectorAll('.dropdown-item'),
-        testCaseAmount = document.querySelector('#test_cases_amount_row');
+        testCaseAmount = document.querySelector('#test_cases_amount_row'),
+        questionAmount = document.querySelector('#questions_amount_row'),
+        meanComplexity = document.querySelector('#mean_complexity_row'),
+        testCaseStart = document.querySelector('#test_case_start_complexity'),
+        testCaseGreat = document.querySelector('#test_case_great_complexity'),
+        testCaseLess = document.querySelector('#test_case_less_complexity'),
+        testCaseGenType = document.querySelector('#test_case_generation_type'),
+        testCaseRepeat = document.querySelector('#test_case_repeat'),
+        testConfig = document.querySelector('#test_config');
 
     configButtons.forEach((btn,i) => {
        btn.addEventListener('click', () => {
            buttonTestConfig.textContent = btn.textContent;
+           testCaseGenType.style.minHeight = '';
            if(btn.textContent == "Динамическая") {
                testCaseAmount.style.display = 'none';
+               questionAmount.style.display = 'none';
+               meanComplexity.style.display = 'none';
+               testCaseStart.style.display = 'block';
+               testCaseGreat.style.display = 'block';
+               testCaseLess.style.display = 'block';
+               testCaseRepeat.style.display = 'inline-block';
            } else if (btn.textContent == "Случайная") {
                testCaseAmount.style.display = 'block';
+               questionAmount.style.display = 'block';
+               meanComplexity.style.display = 'block';
+               testCaseStart.style.display = 'none';
+               testCaseGreat.style.display = 'none';
+               testCaseLess.style.display = 'none';
+               testCaseRepeat.style.display = 'inline-block';
            } else if (btn.textContent == "Ручная") {
                testCaseAmount.style.display = 'block';
+               questionAmount.style.display = 'block';
+               meanComplexity.style.display = 'block';
+               testCaseStart.style.display = 'none';
+               testCaseGreat.style.display = 'none';
+               testCaseLess.style.display = 'none';
+               testCaseRepeat.style.display = 'inline-block';
            }
 
        })
     });
-
+//end of new block
     $dates = $('#start, #end');
     $dates.datetimepicker({
         format: 'DD.MM.YYYY HH:mm',
@@ -108,8 +135,6 @@ $(document).ready(function() {
 
     $('#selectdb').change(function(){
         var options = {};
-        var ctx = {};
-        // ctx.db_title = $(this).val();
         options.db_id =$(this).val();
         options.query_type =$(type).val();
         getTable('/questions/table', options, '#questions_table');
@@ -122,7 +147,7 @@ $(document).ready(function() {
         if (checked) {
             $('#minutes_amount').removeAttr('disabled');
         } else {
-            $('#minutes_amount').prop('disabled', true);;
+            $('#minutes_amount').prop('disabled', true);
         }
     });
 
@@ -192,9 +217,9 @@ $(document).ready(function() {
 
     $form.submit(function(event){
         var data = {};
-        var question_set = {};
 
         event.preventDefault();
+
         var type = $(this).find('#type').val();
 
         data.groups_set = $('.select2').val();
@@ -202,7 +227,15 @@ $(document).ready(function() {
         data.check_point_data.start = start;
         data.check_point_data.end = end;
         // data.check_point_data.
-
+        //new block
+        if(buttonTestConfig.textContent == 'Динамическая'){
+            data.check_point_data.generation_type = 'DYN'
+        } else if (buttonTestConfig.textContent == 'Случайная'){
+            data.check_point_data.generation_type = 'RND'
+        } else {
+            data.check_point_data.generation_type = 'HND'
+        }
+        //end
         if (type == 'test' || type == 'RA' || type == 'TC') {
             data.check_point_data.test_config = get_form_data($('#test_config'));
 
