@@ -20,27 +20,37 @@ $(document).ready(function() {
            testCaseGenType.style.minHeight = '';
            if(btn.textContent == "Динамическая") {
                testCaseAmount.style.display = 'none';
+               document.querySelector('#test_cases_amount').value = '';
                questionAmount.style.display = 'none';
+               document.querySelector('#questions_amount').value = '';
                meanComplexity.style.display = 'none';
+               document.querySelector('#mean_complexity').value = '';
                testCaseStart.style.display = 'block';
                testCaseGreat.style.display = 'block';
                testCaseLess.style.display = 'block';
+               questionAmount.style.display = 'block';
                testCaseRepeat.style.display = 'inline-block';
            } else if (btn.textContent == "Случайная") {
                testCaseAmount.style.display = 'block';
                questionAmount.style.display = 'block';
                meanComplexity.style.display = 'block';
                testCaseStart.style.display = 'none';
+               document.querySelector('#start_complexity').value = '';
                testCaseGreat.style.display = 'none';
+               document.querySelector('#great_complexity').value = '';
                testCaseLess.style.display = 'none';
+               document.querySelector('#less_complexity').value = '';
                testCaseRepeat.style.display = 'inline-block';
            } else if (btn.textContent == "Ручная") {
                testCaseAmount.style.display = 'block';
                questionAmount.style.display = 'block';
                meanComplexity.style.display = 'block';
                testCaseStart.style.display = 'none';
+               document.querySelector('#start_complexity').value = '';
                testCaseGreat.style.display = 'none';
+               document.querySelector('#great_complexity').value = '';
                testCaseLess.style.display = 'none';
+               document.querySelector('#less_complexity').value = '';
                testCaseRepeat.style.display = 'inline-block';
            }
 

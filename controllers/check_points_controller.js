@@ -135,8 +135,6 @@ var get = {
                                     }]
                             });
                         }).then(function (check_point) {
-                            //console.log('\n\n\ncheck_point.test_cases.dataValues', check_point.test_cases.dataValues);
-                            //console.log('\n\n\ncheck_point.tests_answers', check_point.tests_answers);
                             res.render('check_points/tests_results/show', { check_point: check_point});
                         }).catch(function(err) {
                             //найти следующий вопрос или закончить тестирование
@@ -159,14 +157,23 @@ var get = {
             console.log('\nComplexity values\n\n', check_point.dataValues.test_config);
             if (check_point.dataValues.test_config.less_complexity > 0) {
                 //nextQuestionDynamic
+                app.TestAnswer.makeDynamic(id, req.user.id)
+                    .then(function (question) {
+                        res.render('questions/answer', { question : question, check_point_id : id});
+                    })
+                    .catch(function (err) {
+                        console.log('\nmakeDynamic error:\n', err);
+                        res.error('Error', err);
+                    })
             } else {
                 app.TestAnswer.make(id, req.user.id)
                     .then(function(questions) {
                         res.render('questions/answer', { question: questions[0], check_point_id : id });
-                    }).catch(function(err) {
-                    console.log('err', err);
-                    res.error('Error', err);
-                });
+                    })
+                    .catch(function(err) {
+                        console.log('err', err);
+                        res.error('Error', err);
+                    });
             }
         });
 
@@ -237,7 +244,7 @@ var post = {
             app.CheckPoint.makeDynamic(check_point_data, groups, req.body.questions_set)
                 .then(function(result) {
 
-                    console.log('result add check point', result);
+                    //console.log('result add check point', result);
                     res.success(result);
                 })
                 .catch(function(err) {
@@ -261,7 +268,7 @@ var post = {
             app.CheckPoint.make(check_point_data, groups, req.body.questions_set)
                 .then(function(result) {
 
-                    console.log('result add check point', result);
+                    //console.log('result add check point', result);
                     res.success(result);
                 }).catch(function(err) {
                 console.log('err add check point', err);

@@ -6,6 +6,7 @@ module.exports = function (models) {
     var TestAnswer = models.TestAnswer;
     var TestCase = models.TestCase;
     var TestCaseQuestion = models.TestCaseQuestion;
+    const Op = Sequelize.Op;
 
     TestAnswer.make = function (check_point_id, user_id) {
 
@@ -31,8 +32,9 @@ module.exports = function (models) {
                         group: ['test_case.id'],
                         transaction: t,
                         order: [sequelize.fn('min', 'usage_amount')]
-                    }).then(function(result) {
-                        //console.log('result', result);
+                    })
+                    .then(function(result) {
+                        console.log('result', result);
                         ctx.test_case_id = result[0].id;
 
                         //TODO создать TestAnswer и вернуть вопрос для выполнения
@@ -45,7 +47,8 @@ module.exports = function (models) {
                             }, {
                                 transaction: t
                             });
-                    }).catch(function(err) {
+                    })
+                    .catch(function(err) {
                         console.log('make test answer method err', err);
                         throw err;
                     });
@@ -61,6 +64,175 @@ module.exports = function (models) {
             });
         });
 
+    },
+
+    TestAnswer.makeDynamic = function(check_point_id, user_id){
+        //Получить параметры контрольного мероприятия и найти подходящий вопрос для отображения
+        //получить количество ответов для этой кр и юзера
+        /*
+        получить конфиг теста +
+        получить вопросы +
+        получить список отвеченных вопросов для check_point_id, из них выборку по user_id, зафиксировать кол-во
+            ответов.
+        получить список не использовавшихся или меньшее кол-во раз. Если их несколько, то выбор рандомом
+        отправить вопрос
+
+         */
+        let testCaseId, questionPrim;
+        return new Promise(function (resolve, reject) {
+            return sequelize.transaction(function (t) {
+                return app.CheckPoint.findById(check_point_id)
+                    .then(check_point => {
+                        console.log('\n\nCheckpoint requested data \n-----------------\n', check_point.dataValues.test_config.start_complexity);
+                        //Получить конфиг теста
+                        return {
+                            start_comp: check_point.dataValues.test_config.start_complexity,
+                            great_comp: check_point.dataValues.test_config.great_complexity,
+                            less_comp: check_point.dataValues.test_config.less_complexity,
+                            type: check_point.dataValues.type,
+                        }
+                    })
+                    .then(function (config) {
+                        //Найти вопрос
+                        return app.Question.findAll(
+                            {
+                                where : {
+                                    query_type : config.type,
+                                    complexity : config.start_comp
+                                }
+                            }
+                        )
+                            .then(questions => {
+                                //вопросы из диапазона
+                                //console.log('\nQuestions first\n', questions[0].dataValues);
+                                //создать вариант
+                                return app.TestCase.create(
+                                    {
+                                        title : 'Dynamic case',
+                                        check_point_id : check_point_id
+                                    },
+                                    {
+                                        transaction : t
+                                    }
+                                )
+                                    .then(test_case => {
+                                        console.log('\nCase created with id : ', test_case.dataValues.id, '\n');
+
+                                        testCaseId = test_case.dataValues.id;
+                                        questionPrim = questions[0].dataValues;
+                                        return test_case
+                                        // //В вариант добавить вопрос
+                                        // return app.TestCaseQuestion.create(
+                                        //     {
+                                        //         question_id : questions[0].dataValues.id,
+                                        //         test_case_id : test_case.dataValues.id
+                                        //     },
+                                        //     {
+                                        //         transaction : t
+                                        //     }
+                                        // )
+                                        //     .then(test_case_question => {
+                                        //         console.log('\nTestCaseQuestion created with id : ', test_case_question.dataValues.id);
+                                        //     })
+                                        //     .catch(err => {
+                                        //         console.log('\nAddin question to case failed. Error :\n', err);
+                                        //         throw err
+                                        //     })
+                                    })
+                                    .catch(err => {
+                                        console.log('\nCase creating failed. Error :\n', err);
+                                        throw err
+                                    })
+                            })
+                            .then(function (question) {
+                                return app.TestAnswer.create(
+                                    {
+                                        user_id : user_id,
+                                        check_point_id : check_point_id,
+                                        test_case_id : testCaseId,
+                                        start : new Date()
+                                    },
+                                    {
+                                        transaction : t
+                                    }
+                                )
+                            })
+                            .catch(err => {
+                                console.log('\nError\n', err)
+                            })
+                    })
+            })
+                .then(function () {
+                    return app.TestAnswer.next_question_dynamic(check_point_id, user_id)
+                })
+                .then(next_question => {
+                    resolve(next_question)
+                })
+                .catch(error => {
+                    console.log('\n\nError in make_dyn transaction with:\n', error)
+                    throw error
+                })
+        })
+    },
+
+    TestAnswer.next_question_dynamic = function(check_point_id, user_id){
+        /*
+        получить конфиг теста
+        посмотреть сколько вопросов должно быть
+        посмотреть сколько ответов дал user_id в check_point_id
+        если есть отвеченный, то посмотреть его оценку если правильно, то дать вопрос большей сложности
+            если не правильно, то дать меньшей сложности.
+        если нет отвеченных, то выдать вопрос с начальной сложностью
+        если ответов достаточно, то завершить
+         */
+        console.log('\n NQD called\n');
+        return new Promise(function(resolve,reject){
+            //получаем конфиг теста
+            app.CheckPoint.findById(check_point_id)
+                .then(check_point => {
+                    console.log('\nCheck point look\n',check_point);
+                    return check_point.dataValues
+                })
+                .then(check_point_config => {
+                    //Ищем все ответы для этого юзера и теста
+                    return app.QuestionAnswer.findAll(
+                        {
+                            where : {
+                                user_id : user_id,
+                                check_point_id : check_point_id
+                            }
+                        }
+                    )
+                        .then(answers => {
+                            if (answers.length > 0){
+                                //найти последний отвеченный, посмотреть его оценку и сложность и найти подходящий вопрос
+
+                            } else {
+                                //вернуть вопрос стартовой сложности
+                                //TODO убирать уже ранее отвеченные вопросы
+                                console.log('\n\nDataValues\n');
+                                console.log(check_point_config);
+                                return app.Question.findAll(
+                                    {
+                                        where : {
+                                            query_type : check_point_config.type,
+                                            complexity : check_point_config.test_config.start_complexity
+                                        }
+                                    }
+                                )
+                                    .then(questions => {
+                                        //выбрать случайный вопрос
+                                        let index = Math.floor(Math.random() * questions.length);
+                                        resolve(questions[index].dataValues)
+                                    })
+                                    .catch(err => {
+                                        console.log('\nError in search questions : \n', err);
+                                        throw err
+                                    })
+                            }
+                        })
+                })
+        })
     },
 
     TestAnswer.next_question = function(check_point_id, user_id) {

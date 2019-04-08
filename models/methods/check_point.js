@@ -10,6 +10,10 @@ module.exports = function (models) {
     CheckPoint.make = function (check_point_data, groups_arr, questions_arr) {
 
         var ctx = {};
+        console.log('\nMake test common inputs\n\n\n');
+        console.log('Check point data\n', check_point_data, '\n');
+        console.log('Groups_arr\n', groups_arr,'\n');
+        console.log('Question array\n', questions_arr, '\n');
 
         return sequelize.transaction(function (t) {
             return CheckPoint.unscoped().findOne({
@@ -86,6 +90,11 @@ module.exports = function (models) {
 
         var ctx = {};
 
+        console.log('\nMake test dynamic inputs\n\n\n');
+        console.log('Check point data\n', check_point_data, '\n');
+        console.log('Groups_arr\n', groups_arr,'\n');
+        console.log('Question array\n', questions_arr, '\n');
+
         return sequelize.transaction(function (t) {
             return CheckPoint.unscoped().findOne({
                 where: {title: check_point_data.title},
@@ -117,6 +126,7 @@ module.exports = function (models) {
                 // //если добавляется тест то необходимо добавить варианты
                 //     var add_test_case = function(test_case_obj) {
                 //         var tc_ctx = {};
+                //         //создает вариант
                 //
                 //         return app.TestCase.create({
                 //                 title: test_case_obj.title,
@@ -129,6 +139,7 @@ module.exports = function (models) {
                 //             tc_ctx.test_case = test_case.dataValues;
                 //
                 //             return Promise.all(test_case_obj.questions.map(function(el) {
+                //                 //Добавляет к варианту вопрос
                 //                 return app.TestCaseQuestion.create({
                 //                         question_id: el.id,
                 //                         test_case_id: tc_ctx.test_case.id
