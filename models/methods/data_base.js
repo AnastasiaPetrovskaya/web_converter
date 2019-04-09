@@ -116,7 +116,7 @@ module.exports = function (models) {
     DataBase.execute_sql = function (db_id, sql) {
         var ctx = {};
         //console.log('db_id', db_id);
-        console.log('\n\n Выполняемый sql :\n', sql,'\n----------------------------------------\n');
+        //console.log('\n\n Выполняемый sql :\n', sql,'\n----------------------------------------\n');
 
         return DataBase.findById(db_id)
             .then(function (db) {

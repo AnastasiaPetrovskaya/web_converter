@@ -48,7 +48,7 @@ module.exports = function (models) {
                         return app.DataBase.execute_sql(db_id, question.sql_answer);
                         })
                     .then(function(sql_res) {
-                        console.log('\n\n\nSQL exeqted!');
+                        //console.log('\n\n\nSQL exeqted!');
                         ctx.query_answer.right_answer_data = sql_res.result.rows;
                         ctx.right_answer_data = sql_res.result.rows;
                         //сверка результатов выполнения двух запросов
@@ -69,11 +69,36 @@ module.exports = function (models) {
                         })
                     .then(function(result) {
                         console.log('\n\n\nAnswer created with data:\n', result.dataValues, '\n------------------------------\n');
+                        //Обновить общую оценку
+                        app.TestAnswer.findOne(
+                            {
+                                where : {
+                                    check_point_id : check_point_id,
+                                    user_id : user_id
+                                }
+                            }
+                        )
+                            .then(test_answer => {
+                                app.TestAnswer.update(
+                                    {total_mark : test_answer.dataValues.total_mark + result.dataValues.mark},
+                                    {
+                                        where : {
+                                            id : test_answer.dataValues.id
+                                        }
+                                    }
+                                )
+                                    .catch(err => {
+                                        console.log('\nTotal mark not upd. Error:\n', err);
+                                        throw err
+                                    })
+                            })
+                            .catch(error => {
+                                console.log('\nError in total mark finding and upd. Error:\n', error);
+                                throw error
+                            });
                         return result;
                         })
                     .catch(function(err) {
-                        //console.log('\n\n\nQA catch error\n\n', err);
-
                         app.QuestionAnswer.create({
                             answer: queries,
                             processed_answer: ctx.query_answer.queries,

@@ -90,62 +90,126 @@ var get = {
     
     '/next_question/:id': function (req, res) {
         var id = Number(req.params.id);
-
-        //найти следующий вопрос или закончить тестирование
-        app.TestAnswer.next_question(id, req.user.id)
-            .then(function(questions) {
-                console.log('\n\n\nReturned next question\n', questions,'\n++++++++++++++++++++++++++++++++++++++');
-                //TODO если следующий вопрос не нашелся, то нужно завершить тестирование
-                if (questions.length > 0) {
-                    res.render('questions/answer', { question: questions[0], check_point_id : id });
+        //Идентифицировать - обычное или динамическое
+        app.CheckPoint.findById(id)
+            .then(check_point => {
+                console.log('\nTo define type configs:\n', check_point.dataValues.test_config);
+                if (check_point.dataValues.test_config.less_complexity > 0) {
+                    return 'DYN'
                 } else {
-                    //сделать запись об окончании контрольной работы
-                    return app.TestAnswer.findOne({
-                            where: {
-                                check_point_id: id,
-                                user_id: req.user.id
-                            }
-                        }).then(function(test_answer) {
-                            if (!test_answer.end) {
-                                test_answer.end = new Date();
-                            }
+                    return 'RND'
+                }
+            })
+            .then(check_point_type => {
+                if (check_point_type == 'DYN') {
+                    app.TestAnswer.next_question_dynamic(id, req.user.id)
+                        .then(question => {
+                            if (question) {
+                                res.render('questions/answer', {question : question, check_point_id : id});
+                            } else {
+                                //TODO End testing and show result
+                                //сделать запись об окончании контрольной работы
+                                return app.TestAnswer.findOne({
+                                    where: {
+                                        check_point_id: id,
+                                        user_id: req.user.id
+                                    }
+                                }).then(function (test_answer) {
+                                    if (!test_answer.end) {
+                                        test_answer.end = new Date();
+                                    }
 
-                            return test_answer.save();
-                        }).then(function (result) {
-                            return app.CheckPoint.find({
-                                where : {id: id},
-                                include: [{
-                                        model: app.TestAnswer,
-                                        as: 'tests_answers',
-                                        where: {user_id : req.user.id}
-                                    },{
-                                        model: app.TestCase,
-                                        as: 'test_cases',
+                                    return test_answer.save();
+                                }).then(function (result) {
+                                    return app.CheckPoint.find({
+                                        where: {id: id},
                                         include: [{
-                                            model: app.TestCaseQuestion,
-                                            as: 'questions',
+                                            model: app.TestAnswer,
+                                            as: 'tests_answers',
+                                            where: {user_id: req.user.id}
+                                        }, {
+                                            model: app.TestCase,
+                                            as: 'test_cases',
                                             include: [{
-                                                model: app.Question,
+                                                model: app.TestCaseQuestion,
+                                                as: 'questions',
                                                 include: [{
-                                                    model: app.QuestionAnswer,
-                                                    as: 'answers'
+                                                    model: app.Question,
+                                                    include: [{
+                                                        model: app.QuestionAnswer,
+                                                        as: 'answers'
+                                                    }]
                                                 }]
                                             }]
                                         }]
-                                    }]
-                            });
-                        }).then(function (check_point) {
-                            res.render('check_points/tests_results/show', { check_point: check_point});
-                        }).catch(function(err) {
-                            //найти следующий вопрос или закончить тестирование
-                            console.log('err', err);
-                            res.error('Error', err);
-                        });
+                                    });
+                                }).then(function (check_point) {
+                                    res.render('check_points/tests_results/show', {check_point: check_point});
+                                }).catch(function (err) {
+                                    //найти следующий вопрос или закончить тестирование
+                                    console.log('err', err);
+                                    res.error('Error', err);
+                                });
+                            }
+                        })
+                } else {
+
+                    //найти следующий вопрос или закончить тестирование
+                    app.TestAnswer.next_question(id, req.user.id)
+                        .then(function (questions) {
+                            //TODO если следующий вопрос не нашелся, то нужно завершить тестирование
+                            if (questions.length > 0) {
+                                res.render('questions/answer', {question: questions[0], check_point_id: id});
+                            } else {
+                                //сделать запись об окончании контрольной работы
+                                return app.TestAnswer.findOne({
+                                    where: {
+                                        check_point_id: id,
+                                        user_id: req.user.id
+                                    }
+                                }).then(function (test_answer) {
+                                    if (!test_answer.end) {
+                                        test_answer.end = new Date();
+                                    }
+
+                                    return test_answer.save();
+                                }).then(function (result) {
+                                    return app.CheckPoint.find({
+                                        where: {id: id},
+                                        include: [{
+                                            model: app.TestAnswer,
+                                            as: 'tests_answers',
+                                            where: {user_id: req.user.id}
+                                        }, {
+                                            model: app.TestCase,
+                                            as: 'test_cases',
+                                            include: [{
+                                                model: app.TestCaseQuestion,
+                                                as: 'questions',
+                                                include: [{
+                                                    model: app.Question,
+                                                    include: [{
+                                                        model: app.QuestionAnswer,
+                                                        as: 'answers'
+                                                    }]
+                                                }]
+                                            }]
+                                        }]
+                                    });
+                                }).then(function (check_point) {
+                                    res.render('check_points/tests_results/show', {check_point: check_point});
+                                }).catch(function (err) {
+                                    //найти следующий вопрос или закончить тестирование
+                                    console.log('err', err);
+                                    res.error('Error', err);
+                                });
+                            }
+                        }).catch(function (err) {
+                        //найти следующий вопрос или закончить тестирование
+                        console.log('err', err);
+                        res.error('Error', err);
+                    });
                 }
-            }).catch(function(err) {
-                //найти следующий вопрос или закончить тестирование
-                console.log('err', err);
-                res.error('Error', err);
             });
     },
 
@@ -153,8 +217,6 @@ var get = {
     '/start_test/:id': function (req, res) {
         var id = Number(req.params.id);
         app.CheckPoint.findById(id).then(check_point => {
-            console.log('\nCP values\n\n', check_point.dataValues);
-            console.log('\nComplexity values\n\n', check_point.dataValues.test_config);
             if (check_point.dataValues.test_config.less_complexity > 0) {
                 //nextQuestionDynamic
                 app.TestAnswer.makeDynamic(id, req.user.id)
@@ -202,15 +264,12 @@ var get = {
                         }]
                     }]
             }).then(function (check_point) {
-                console.log('check_point', check_point);
-
                 if (!check_point) {
                     throw {message: 'NotFound'};
                 }
 
                 ctx.check_point = check_point.dataValues;
 
-                //console.log('ctx.check_point', ctx.check_point);
                 res.render('check_points/show', { check_point: ctx.check_point });
             }).catch(function (err) {
                 console.log('err', err);
@@ -223,7 +282,6 @@ var get = {
 var post = {
 
         '/add': function (req, res) {
-        console.log('\n\nreq.body.check_point_data\n', req.body.check_point_data);
         var check_point_data = req.body.check_point_data,
             test_cases_arr = [],
             groups = [];
@@ -243,8 +301,6 @@ var post = {
 
             app.CheckPoint.makeDynamic(check_point_data, groups, req.body.questions_set)
                 .then(function(result) {
-
-                    //console.log('result add check point', result);
                     res.success(result);
                 })
                 .catch(function(err) {
@@ -253,34 +309,16 @@ var post = {
                 });
 
         } else if (generationType == 'RND') {
-            if (check_point_data.type == 'test'|| check_point_data.type == 'RA'|| check_point_data.type == 'TC') {
-                var kostil = [{     //называть переменные костылями, ммм...
-                    title: 'Вариант1',
-                    questions: req.body.questions_set
-                }];
-                test_cases_arr = kostil;
-
-                //TODO попробовать сегенерировать варианты
-            }
-
-            console.log('\n req.body.questions_set\n',  req.body.questions_set);
-
             app.CheckPoint.make(check_point_data, groups, req.body.questions_set)
                 .then(function(result) {
-
-                    //console.log('result add check point', result);
                     res.success(result);
                 }).catch(function(err) {
                 console.log('err add check point', err);
                 res.error(err);
             });
         } else {
-
+            //TODO Место для ручного формирования тестов
         }
-
-        //TODO попробовать сегенерировать варианты
-        //после генерации заполнить массив test_cases
-
     },
 
 

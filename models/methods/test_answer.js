@@ -78,88 +78,39 @@ module.exports = function (models) {
         отправить вопрос
 
          */
-        let testCaseId, questionPrim;
+        let testCaseId;
         return new Promise(function (resolve, reject) {
             return sequelize.transaction(function (t) {
-                return app.CheckPoint.findById(check_point_id)
-                    .then(check_point => {
-                        console.log('\n\nCheckpoint requested data \n-----------------\n', check_point.dataValues.test_config.start_complexity);
-                        //Получить конфиг теста
-                        return {
-                            start_comp: check_point.dataValues.test_config.start_complexity,
-                            great_comp: check_point.dataValues.test_config.great_complexity,
-                            less_comp: check_point.dataValues.test_config.less_complexity,
-                            type: check_point.dataValues.type,
-                        }
-                    })
-                    .then(function (config) {
-                        //Найти вопрос
-                        return app.Question.findAll(
+
+                return app.TestCase.create(
+                    {
+                        title : 'Dynamic case',
+                        check_point_id : check_point_id
+                    },
+                    {
+                        transaction : t
+                    }
+                )
+                    .then(test_case => {
+                        return app.TestAnswer.create(
                             {
-                                where : {
-                                    query_type : config.type,
-                                    complexity : config.start_comp
-                                }
+                                user_id : user_id,
+                                check_point_id : check_point_id,
+                                test_case_id : test_case.dataValues.id,
+                                start : new Date()
+                            },
+                            {
+                                transaction : t
                             }
                         )
-                            .then(questions => {
-                                //вопросы из диапазона
-                                //console.log('\nQuestions first\n', questions[0].dataValues);
-                                //создать вариант
-                                return app.TestCase.create(
-                                    {
-                                        title : 'Dynamic case',
-                                        check_point_id : check_point_id
-                                    },
-                                    {
-                                        transaction : t
-                                    }
-                                )
-                                    .then(test_case => {
-                                        console.log('\nCase created with id : ', test_case.dataValues.id, '\n');
-
-                                        testCaseId = test_case.dataValues.id;
-                                        questionPrim = questions[0].dataValues;
-                                        return test_case
-                                        // //В вариант добавить вопрос
-                                        // return app.TestCaseQuestion.create(
-                                        //     {
-                                        //         question_id : questions[0].dataValues.id,
-                                        //         test_case_id : test_case.dataValues.id
-                                        //     },
-                                        //     {
-                                        //         transaction : t
-                                        //     }
-                                        // )
-                                        //     .then(test_case_question => {
-                                        //         console.log('\nTestCaseQuestion created with id : ', test_case_question.dataValues.id);
-                                        //     })
-                                        //     .catch(err => {
-                                        //         console.log('\nAddin question to case failed. Error :\n', err);
-                                        //         throw err
-                                        //     })
-                                    })
-                                    .catch(err => {
-                                        console.log('\nCase creating failed. Error :\n', err);
-                                        throw err
-                                    })
+                            .catch(error => {
+                                console.log('Test answer creating failed. Error:\n', error);
+                                throw error
                             })
-                            .then(function (question) {
-                                return app.TestAnswer.create(
-                                    {
-                                        user_id : user_id,
-                                        check_point_id : check_point_id,
-                                        test_case_id : testCaseId,
-                                        start : new Date()
-                                    },
-                                    {
-                                        transaction : t
-                                    }
-                                )
-                            })
-                            .catch(err => {
-                                console.log('\nError\n', err)
-                            })
+                    })
+                    .catch(error => {
+                        console.log('\nTest case creating failed. Error:\n', error);
+                        throw error
                     })
             })
                 .then(function () {
@@ -190,10 +141,11 @@ module.exports = function (models) {
             //получаем конфиг теста
             app.CheckPoint.findById(check_point_id)
                 .then(check_point => {
-                    console.log('\nCheck point look\n',check_point);
+                    //console.log('\nCheck point look\n',check_point);
                     return check_point.dataValues
                 })
                 .then(check_point_config => {
+                    console.log('\nCkeck point config is\n', check_point_config);
                     //Ищем все ответы для этого юзера и теста
                     return app.QuestionAnswer.findAll(
                         {
@@ -206,7 +158,59 @@ module.exports = function (models) {
                         .then(answers => {
                             if (answers.length > 0){
                                 //найти последний отвеченный, посмотреть его оценку и сложность и найти подходящий вопрос
-
+                                //Но сначала проверить их количество и завершить, если ответов достаточно
+                                if (answers.length == check_point_config.test_config.questions_amount) {
+                                    //Если ответов хватает, то возвращаем ничего
+                                    resolve(null);
+                                } else {
+                                    let last_answer = answers[answers.length-1].dataValues;
+                                    app.Question.findById(last_answer.question_id)
+                                        .then(question => {
+                                            //Возвращаем сложность
+                                            return question.dataValues.complexity;
+                                        })
+                                        .then(complexity => {
+                                            //Если ответ не верный, то находим вопрос меньшей сложности
+                                            if(last_answer.mark == 0){
+                                                let new_complexity = (complexity>check_point_config.test_config.less_complexity)?(complexity-1):check_point_config.test_config.less_complexity;
+                                                return app.Question.findAll(
+                                                    {
+                                                        where : {
+                                                            query_type: check_point_config.type,
+                                                            complexity: new_complexity
+                                                        }
+                                                    }
+                                                )
+                                                    .catch(error => {
+                                                        console.log('\nError in new question finding. Error:\n', error);
+                                                        throw error
+                                                    })
+                                            } else {
+                                                //Если верно, то усложняем
+                                                let new_complexity = (complexity<check_point_config.test_config.great_complexity)?(complexity+1):check_point_config.test_config.great_complexity;
+                                                return app.Question.findAll(
+                                                    {
+                                                        where : {
+                                                            query_type: check_point_config.type,
+                                                            complexity: new_complexity
+                                                        }
+                                                    }
+                                                )
+                                                    .catch(error => {
+                                                        console.log('\nError in new question finding. Error:\n', error);
+                                                        throw error
+                                                    })
+                                            }
+                                        })
+                                        .then(questions => {
+                                            let index = Math.floor(Math.random() * questions.length);
+                                            resolve(questions[index].dataValues)
+                                        })
+                                        .catch(error => {
+                                            console.log('\nQuestion finding failed. Error:\n', error);
+                                            throw error
+                                        });
+                                }
                             } else {
                                 //вернуть вопрос стартовой сложности
                                 //TODO убирать уже ранее отвеченные вопросы
