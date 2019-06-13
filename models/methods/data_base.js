@@ -46,7 +46,6 @@ module.exports = function (models) {
                             if (err) {
                                 reject(err);
                             } else {
-                                //console.log('Executing:', 'DROP DATABASE IF EXISTS ' + db.title);
                                 client.query("SELECT table_name FROM information_schema.tables WHERE table_schema='public';", function(err, result) {
                                     if (err) {
                                         // console.log('0 init_db error\n', err.stack);

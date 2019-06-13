@@ -106,6 +106,7 @@ var post = {
                 //console.log('\n\nresult of QA make\n', result);
 
                 //нужно обновить общую оценку
+                console.log()
                 return app.TestAnswer.update(
                     {total_mark: sequelize.literal('total_mark +' + result.mark)},
                     {where: {

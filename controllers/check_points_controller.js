@@ -24,12 +24,13 @@ var get = {
 
 
     '/copy/:id': function (req, res) {
+        console.log('Check point copy method\n');
         var id = Number(req.params.id);
 
-        var ctx = {};
         app.CheckPoint.findOne({
                 where : {id: id},
             }).then(function (check_point) {
+                console.log("CP data\n", check_point);
                 res.render('check_points/add', {check_point: check_point});
             }).catch(function(err) {
                 console.log('err', err);

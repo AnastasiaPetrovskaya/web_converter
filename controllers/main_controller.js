@@ -76,11 +76,9 @@ var post = {
                 return token.save();
             }
         }).then(function(token) {
-            console.log('set token!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
             req.session.token = token.token;
             res.success({});
         }).catch(function(err) {
-            //req.flash('error', err);
             console.log('err', err);
             req.flash('error', "Неверный логин или пароль");
             res.error('AuthError');
