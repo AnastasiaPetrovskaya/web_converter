@@ -43,7 +43,6 @@ $(document).ready(function() {
     $("#answer").submit(function(event) {
         event.preventDefault();
 
-        console.log("submit event");
         var queries = [],
             query_item = {};
 
@@ -78,61 +77,39 @@ $(document).ready(function() {
         $('#submit').prop('disabled', true);
         $('#submit').html('<i class="icon-spinner12"></i>');
 
-        var res = $.ajax({
-            type: 'POST',
+        $.ajax({
             url: '/questions_answers/make',
-            //contentType: "application/json; charset=utf-8",
-            //dataType: "json",
-            data: data,
-            async: false
-        }).responseText;
-        //res = JSON.parse(res);
+            method: 'POST',
+            data: data
+        }).done(result => {
+            if(result.success){
+                window.location.assign('/check_points/next_question/' + check_point_id);
+            } else {
+                bootboxError(result.err);
+                return false;
+            }
+        }).fail(res => {
+            console.log('Error in AJAX make: ', res);
+            bootboxError(res.statusText);
+        });
 
-        window.location.assign('/check_points/next_question/' + check_point_id);
+        //
+        // var res = $.ajax({
+        //     type: 'POST',
+        //     url: '/questions_answers/make',
+        //     //contentType: "application/json; charset=utf-8",
+        //     //dataType: "json",
+        //     data: data,
+        //     async: false
+        // }).responseText;
+        //
+        // console.log('POST result : ', res);
+        // //res = JSON.parse(res);
+        //
+        //
+        // //window.location.assign('/check_points/next_question/' + check_point_id);
+        //
 
-        //event.preventDefault();
-        //console.log(res);
-
-        ////return false;
-
-        //if (res.success) {
-        //    $('#sql_answer_card').show();
-        //    show_sql_res(res.answer_sql, '#sql_answer_text', res.answer_data, '#sql_answer_data');
-        //    if (res.right_answer_data && res.right_answer_sql) {
-        //        $('#sql_right_answer_card').show();
-        //        show_sql_res(res.right_answer_sql, '#sql_right_answer_text', res.right_answer_data, '#sql_right_answer_data');
-        //    }
-
-        //    $('body').scrollTo('#sql_answer_card');
-
-        //    if (res.mark > 0) {
-        //        bootbox.dialog({
-        //            className: 'slideInDown success mb-2',
-        //            onEscape: true,
-        //            backdrop: true,
-        //            message: 'Правильный ответ!',
-        //            buttons: {}
-        //        });
-        //    } else {
-        //        var msg = 'Неправильный ответ! ';
-        //        if (res.comment) {
-        //            msg += res.comment;
-        //        }
-
-        //        bootbox.dialog({
-        //            className: 'slideInDown fail mb-2',
-        //            onEscape: true,
-        //            backdrop: true,
-        //            message: msg,
-        //            buttons: {}
-        //        });
-        //    }
-        //} else {
-        //    console.log(res);
-        //    //$successButton.html(lang.add).prop('disabled', false);
-        //    bootboxError(res.error);
-        //    return false;
-        //}
     });
 
 

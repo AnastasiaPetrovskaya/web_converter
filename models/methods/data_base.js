@@ -46,7 +46,6 @@ module.exports = function (models) {
                             if (err) {
                                 reject(err);
                             } else {
-                                //console.log('Executing:', 'DROP DATABASE IF EXISTS ' + db.title);
                                 client.query("SELECT table_name FROM information_schema.tables WHERE table_schema='public';", function(err, result) {
                                     if (err) {
                                         // console.log('0 init_db error\n', err.stack);
@@ -98,7 +97,7 @@ module.exports = function (models) {
                     + db.title + '" -u="' + username + '" -password="' + password + 
                     '" -i=maximum -c=schema -fmt=png -outputfile=../../static/db_schema/' 
                     + ctx.filename + ' -weakassociations=true', 
-                    {cwd: "./schemacrawler-14.15.03-main/_schemacrawler"});
+                    {cwd: "./schemacrawler-15.04.01-distribution/_schemacrawler"});
             }).then(function(result) {
                 var stdout = result.stdout;
                 var stderr = result.stderr;
@@ -116,7 +115,7 @@ module.exports = function (models) {
     DataBase.execute_sql = function (db_id, sql) {
         var ctx = {};
         //console.log('db_id', db_id);
-        console.log('sql', sql);
+        //console.log('\n\n Выполняемый sql :\n', sql,'\n----------------------------------------\n');
 
         return DataBase.findById(db_id)
             .then(function (db) {

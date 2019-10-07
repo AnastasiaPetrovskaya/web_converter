@@ -47,7 +47,7 @@ block body
                                                     tr
                                                         td Итоговая оценка:
                                                         td 
-                                                            if (check_point.tests_answers[0].total_mark)
+                                                            if (check_point.tests_answers[0].total_mark != null)
                                                                 | #{check_point.tests_answers[0].total_mark}
                                                             else 
                                                                 | -

@@ -2,7 +2,8 @@
 
 var express = require('express'),
     path = require('path');
-var express_config =require('./config/express.json');
+var express_config;
+express_config = require('./config/express.json');
 
 // var mongo_config =require('./config/mongo.json');
 
