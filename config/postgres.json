@@ -1,9 +1,9 @@
 {
     "dev": {
         "host": "127.0.0.1",
-        "database": "web_converter",
-        "user": "user",
-        "password": "user"
+        "database": "db_converter",
+        "user": "converter",
+        "password": "user123"
     },
     "test": {
         "host": "127.0.0.1",
