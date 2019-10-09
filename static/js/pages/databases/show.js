@@ -22,6 +22,8 @@ $(document).ready(function() {
         });
     });
 
+    getTable('questions/table', { db_id: window.db_id }, '#questions_table', function() {});
+
 
     $('#sql').click(function(event) {
         var db_id = window.db_id;
