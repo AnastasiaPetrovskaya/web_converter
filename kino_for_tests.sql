@@ -30,7 +30,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: Актер; Type: TABLE; Schema: public; Owner: converter; Tablespace: 
+-- Name: Актер; Type: TABLE; Schema: public; Owner: converter; Tablespace:
 --
 
 CREATE TABLE "Актер" (
@@ -43,7 +43,7 @@ CREATE TABLE "Актер" (
 ALTER TABLE "Актер" OWNER TO converter;
 
 --
--- Name: Кинотеатры; Type: TABLE; Schema: public; Owner: converter; Tablespace: 
+-- Name: Кинотеатры; Type: TABLE; Schema: public; Owner: converter; Tablespace:
 --
 
 CREATE TABLE "Кинотеатры" (
@@ -57,7 +57,7 @@ CREATE TABLE "Кинотеатры" (
 ALTER TABLE "Кинотеатры" OWNER TO converter;
 
 --
--- Name: Фильмы; Type: TABLE; Schema: public; Owner: converter; Tablespace: 
+-- Name: Фильмы; Type: TABLE; Schema: public; Owner: converter; Tablespace:
 --
 
 CREATE TABLE "Фильмы" (
@@ -72,7 +72,7 @@ CREATE TABLE "Фильмы" (
 ALTER TABLE "Фильмы" OWNER TO converter;
 
 --
--- Name: ФильмыАктер; Type: TABLE; Schema: public; Owner: converter; Tablespace: 
+-- Name: ФильмыАктер; Type: TABLE; Schema: public; Owner: converter; Tablespace:
 --
 
 CREATE TABLE "ФильмыАктер" (
@@ -85,7 +85,7 @@ CREATE TABLE "ФильмыАктер" (
 ALTER TABLE "ФильмыАктер" OWNER TO converter;
 
 --
--- Name: ФильмыКинотеатры; Type: TABLE; Schema: public; Owner: converter; Tablespace: 
+-- Name: ФильмыКинотеатры; Type: TABLE; Schema: public; Owner: converter; Tablespace:
 --
 
 CREATE TABLE "ФильмыКинотеатры" (
@@ -181,7 +181,7 @@ COPY "ФильмыКинотеатры" ("ИдКинотеатра", "Номер
 
 
 --
--- Name: Актер_pkey; Type: CONSTRAINT; Schema: public; Owner: converter; Tablespace: 
+-- Name: Актер_pkey; Type: CONSTRAINT; Schema: public; Owner: converter; Tablespace:
 --
 
 ALTER TABLE ONLY "Актер"
@@ -189,7 +189,7 @@ ALTER TABLE ONLY "Актер"
 
 
 --
--- Name: Кинотеатры_pkey; Type: CONSTRAINT; Schema: public; Owner: converter; Tablespace: 
+-- Name: Кинотеатры_pkey; Type: CONSTRAINT; Schema: public; Owner: converter; Tablespace:
 --
 
 ALTER TABLE ONLY "Кинотеатры"
@@ -197,7 +197,7 @@ ALTER TABLE ONLY "Кинотеатры"
 
 
 --
--- Name: Фильмы_pkey; Type: CONSTRAINT; Schema: public; Owner: converter; Tablespace: 
+-- Name: Фильмы_pkey; Type: CONSTRAINT; Schema: public; Owner: converter; Tablespace:
 --
 
 ALTER TABLE ONLY "Фильмы"
@@ -205,7 +205,7 @@ ALTER TABLE ONLY "Фильмы"
 
 
 --
--- Name: ФильмыАктер_pkey; Type: CONSTRAINT; Schema: public; Owner: converter; Tablespace: 
+-- Name: ФильмыАктер_pkey; Type: CONSTRAINT; Schema: public; Owner: converter; Tablespace:
 --
 
 ALTER TABLE ONLY "ФильмыАктер"
@@ -213,7 +213,7 @@ ALTER TABLE ONLY "ФильмыАктер"
 
 
 --
--- Name: ФильмыКинотеатры_pkey; Type: CONSTRAINT; Schema: public; Owner: converter; Tablespace: 
+-- Name: ФильмыКинотеатры_pkey; Type: CONSTRAINT; Schema: public; Owner: converter; Tablespace:
 --
 
 ALTER TABLE ONLY "ФильмыКинотеатры"
@@ -221,7 +221,7 @@ ALTER TABLE ONLY "ФильмыКинотеатры"
 
 
 --
--- Name: Кинотеатры_КинотератыИдКинотеатр; Type: INDEX; Schema: public; Owner: converter; Tablespace: 
+-- Name: Кинотеатры_КинотератыИдКинотеатр; Type: INDEX; Schema: public; Owner: converter; Tablespace:
 --
 
 CREATE INDEX "Кинотеатры_КинотератыИдКинотеатр" ON "Кинотеатры" USING btree ("ИдКинотеатра");

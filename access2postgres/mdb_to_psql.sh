@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #first param - filename
 #second param - dbname
 createdb $2

@@ -15,8 +15,8 @@ describe('Algebra full convertion', function() {
 
             query.convert()
                 .then(function(res) {
-                    console.log("res", res);
-                    console.log('query', query);
+                    //console.log("res", res);
+                    //console.log('query', query);
 
                     assert.equal(query.sql.replace(/\s/g,''), ("SELECT DISTINCT X.НазвКинотеатра " +
                         "FROM Кинотеатры AS X, КиноСеансФильм AS Y, Фильмы AS Z " +

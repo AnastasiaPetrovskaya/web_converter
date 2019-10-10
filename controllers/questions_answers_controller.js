@@ -10,11 +10,7 @@ var get = {
         res.render('questions/index');
     },
 
-
-
     '/table': function (req, res) {
-        console.log('req.query', req.query);
-        console.log('%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%%^', req.query);
         var options = req.query || {},
             skip = 0,
             limit = 15,
@@ -22,15 +18,6 @@ var get = {
 
         if (page > 1)
             skip = limit * (page - 1);
-
-        //if (req.user.role.role == 'student') {
-        //    options.db_type = { 
-        //        $or: [
-        //            {$eq: 'common'}, 
-        //            {$eq: 'prepare'}
-        //        ]
-        //    };
-        //}
 
         app.QuestionAnswer.findAndCountAll({
                 where: options,
@@ -44,7 +31,6 @@ var get = {
                 limit: limit,
                 offset: skip
             }).then(function(answers) {
-                // console.log('answers', answers.rows);
                 var pages =  count_pages(answers.count, limit),
                     pages_min = (page - 3 < 1) ? 1 : page - 3,
                     pages_max = (pages_min + 6 > pages) ? pages : pages_min + 6;
@@ -56,7 +42,6 @@ var get = {
                     pages_min: pages_min,
                     pages_max: pages_max
                 });
-                // res.render('answers/table', { answers: answers.rows });
             }).catch(function(err) {
                 console.log('err', err);
                 res.error('Error', err);
@@ -71,15 +56,6 @@ var get = {
     '/:id': function (req, res) {
         var options = {};
         options.id = Number(req.params.id);
-
-        //if (req.user.role.role == 'student') {
-        //    options.db_type = { 
-        //        $or: [
-        //            {$eq: 'common'}, 
-        //            {$eq: 'prepare'}
-        //        ]
-        //    };
-        //}
 
         var ctx = {};
 
@@ -118,7 +94,7 @@ var get = {
 
 var post = {
     '/make': function (req, res) {
-        console.log('post make question answer', req.body);
+        //console.log('\n\nПринят ответ от студента\n', req.body, '\n----------------------------------------------\n');
         var check_point_id = req.body.check_point_id;
         var queries = JSON.parse(req.body.queries);
         var question_id = req.body.question_id;
@@ -127,36 +103,33 @@ var post = {
         //сохранить ответ на вопрос
         app.QuestionAnswer.make(req.user.id, question_id, db_id, queries, check_point_id)
             .then(function(result) {
-                console.log('result', result);
+                //console.log('\n\nresult of QA make\n', result);
 
                 //нужно обновить общую оценку
+                console.log()
                 return app.TestAnswer.update(
-                    {total_mark: sequalize.literal('total_mark +' + result.mark)},
+                    {total_mark: sequelize.literal('total_mark +' + result.mark)},
                     {where: {
                         check_point_id: check_point_id,
                         user_id: req.user.id
                     }}
                 );
-            }).then(function(result) {
-                console.log('result', result);
-
+                })
+            .then(function(result) {
+                console.log('\n\n\nresult of Test Answer upd.\n', result.dataValues,'\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
                 res.success({});
-            }).catch(function(err) {
+                })
+            .catch(function(err) {
                 //найти следующий вопрос или закончить тестирование
-                console.log('err question answer make post', err);
+                //console.log('\n\n\nError in make: \n', err);
                 res.error('Error', err);
-            });
+                });
     },
 
     '/add': function (req, res) {
-        //console.log('question controller post trial', req.body);
-        //console.log('queeries', JSON.parse(req.body.queries));
         var queries = JSON.parse(req.body.queries);
         var question_id = req.body.question_id;
         var db_id = req.body.db_id;
-        //console.log('el', queries[0].alias);
-        //res.success({});
-        // var query_answer = new AlgebraAnswer(JSON.parse(req.body.queries));
         var ctx = {};
 
         app.Question.findById(question_id)
@@ -176,7 +149,6 @@ var post = {
 
                 return app.DataBase.execute_sql(db_id, result);
             }).then(function(sql_res) {
-                console.log('!!!!!!!!!!!!!!!!!!!!!query_res', sql_res.result.rows);
                 ctx.query_answer.answer_data = sql_res.result.rows;
                 ctx.answer_data = sql_res.result.rows;
 
@@ -185,7 +157,6 @@ var post = {
 
                 return app.DataBase.execute_sql(db_id, ctx.question.sql_answer);
             }).then(function(sql_res) {
-                console.log('!!!!!!!!!!!!!!!!!!!!!query_res', sql_res.result.rows);
                 ctx.query_answer.right_answer_data = sql_res.result.rows;
                 ctx.right_answer_data = sql_res.result.rows;
                 //сверка результатов выполнения двух запросов
@@ -209,12 +180,9 @@ var post = {
                         resolve();
                     });
                 }
-                //console.log('!!!!!!!!!!!!!!!!!!ctx', ctx);
             }).then(function(result) {
                 res.success(ctx);
             }).catch(function(err) {
-                console.log('post /add err', err);
-
                 return app.QuestionAnswer.create({
                     answer: queries,
                     processed_answer: ctx.query_answer.queries,
@@ -269,7 +237,6 @@ var put = {
             data.sql_answer = data.sql_answer.replace(/\"/g, "'");
         }
 
-        console.log('data', data);
         app.Question.update(
                 data, 
                 {where: {id: id}}

@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    getTable('/questions/table', { db_id: window.db_id }, '#questions_table', function() {});
 
     $('#schema_card ').innerHeight($('#info_card ').innerHeight());
     /*$('#schema_card a[data-action="expand"]').click(function(e) {
@@ -40,7 +41,7 @@ $(document).ready(function() {
         }).responseText;
         res = JSON.parse(res);
 
-        console.log(res);
+        //console.log(res);
 
         if (res.success) {
             $('#sql_query_text').val(res.data.sql);

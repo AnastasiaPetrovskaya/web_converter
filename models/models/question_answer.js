@@ -9,7 +9,6 @@ var QuestionAnswer = sequelize.define(
     },
     {
         tableName: 'questions_answers',
-        //paranoid: true,
         timestamps: true,
         createdAt: 'created',
         updatedAt: 'updated',
