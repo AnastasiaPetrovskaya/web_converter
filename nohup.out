@@ -1,0 +1,138 @@
+Express server has been started! Port:2004
+app.config { mongo: undefined,
+  express: 
+   { dev: { port: 2004, check_auth: [Object] },
+     test: { port: 2004, check_auth: [Object] } },
+  postgres: undefined }
+pg_config undefined
+/home/web_converter/models/index.js:18
+        pg_config.database,
+                 ^
+
+TypeError: Cannot read property 'database' of undefined
+    at module.exports (/home/web_converter/models/index.js:18:18)
+    at Object.<anonymous> (/home/web_converter/index.js:50:20)
+    at Module._compile (module.js:577:32)
+    at Object.Module._extensions..js (module.js:586:10)
+    at Module.load (module.js:494:32)
+    at tryModuleLoad (module.js:453:12)
+    at Function.Module._load (module.js:445:3)
+    at Module.runMain (module.js:611:10)
+    at run (bootstrap_node.js:394:7)
+    at startup (bootstrap_node.js:160:9)
+    at bootstrap_node.js:507:3
+Express server has been started! Port:2004
+app.config { mongo: undefined,
+  express: 
+   { dev: { port: 2004, check_auth: [Object] },
+     test: { port: 2004, check_auth: [Object] } },
+  postgres: undefined }
+pg_config undefined
+/home/web_converter/models/index.js:18
+        pg_config.database,
+                 ^
+
+TypeError: Cannot read property 'database' of undefined
+    at module.exports (/home/web_converter/models/index.js:18:18)
+    at Object.<anonymous> (/home/web_converter/index.js:50:20)
+    at Module._compile (module.js:577:32)
+    at Object.Module._extensions..js (module.js:586:10)
+    at Module.load (module.js:494:32)
+    at tryModuleLoad (module.js:453:12)
+    at Function.Module._load (module.js:445:3)
+    at Module.runMain (module.js:611:10)
+    at run (bootstrap_node.js:394:7)
+    at startup (bootstrap_node.js:160:9)
+    at bootstrap_node.js:507:3
+Express server has been started! Port:2004
+app.config { mongo: undefined,
+  express: 
+   { dev: { port: 2004, check_auth: [Object] },
+     test: { port: 2004, check_auth: [Object] } },
+  postgres: undefined }
+pg_config undefined
+/home/web_converter/models/index.js:18
+        pg_config.database,
+                 ^
+
+TypeError: Cannot read property 'database' of undefined
+    at module.exports (/home/web_converter/models/index.js:18:18)
+    at Object.<anonymous> (/home/web_converter/index.js:50:20)
+    at Module._compile (module.js:577:32)
+    at Object.Module._extensions..js (module.js:586:10)
+    at Module.load (module.js:494:32)
+    at tryModuleLoad (module.js:453:12)
+    at Function.Module._load (module.js:445:3)
+    at Module.runMain (module.js:611:10)
+    at run (bootstrap_node.js:394:7)
+    at startup (bootstrap_node.js:160:9)
+    at bootstrap_node.js:507:3
+Express server has been started! Port:2004
+app.config { mongo: undefined,
+  express: 
+   { dev: { port: 2004, check_auth: [Object] },
+     test: { port: 2004, check_auth: [Object] } },
+  postgres: undefined }
+pg_config undefined
+/home/web_converter/models/index.js:18
+        pg_config.database,
+                 ^
+
+TypeError: Cannot read property 'database' of undefined
+    at module.exports (/home/web_converter/models/index.js:18:18)
+    at Object.<anonymous> (/home/web_converter/index.js:50:20)
+    at Module._compile (module.js:577:32)
+    at Object.Module._extensions..js (module.js:586:10)
+    at Module.load (module.js:494:32)
+    at tryModuleLoad (module.js:453:12)
+    at Function.Module._load (module.js:445:3)
+    at Module.runMain (module.js:611:10)
+    at run (bootstrap_node.js:394:7)
+    at startup (bootstrap_node.js:160:9)
+    at bootstrap_node.js:507:3
+Express server has been started! Port:2004
+app.config { mongo: undefined,
+  express: 
+   { dev: { port: 2004, check_auth: [Object] },
+     test: { port: 2004, check_auth: [Object] } },
+  postgres: undefined }
+pg_config undefined
+/home/web_converter/models/index.js:18
+        pg_config.database,
+                 ^
+
+TypeError: Cannot read property 'database' of undefined
+    at module.exports (/home/web_converter/models/index.js:18:18)
+    at Object.<anonymous> (/home/web_converter/index.js:50:20)
+    at Module._compile (module.js:577:32)
+    at Object.Module._extensions..js (module.js:586:10)
+    at Module.load (module.js:494:32)
+    at tryModuleLoad (module.js:453:12)
+    at Function.Module._load (module.js:445:3)
+    at Module.runMain (module.js:611:10)
+    at run (bootstrap_node.js:394:7)
+    at startup (bootstrap_node.js:160:9)
+    at bootstrap_node.js:507:3
+Express server has been started! Port:2004
+app.config { mongo: undefined,
+  express: 
+   { dev: { port: 2004, check_auth: [Object] },
+     test: { port: 2004, check_auth: [Object] } },
+  postgres: undefined }
+pg_config undefined
+/home/web_converter/models/index.js:18
+        pg_config.database,
+                 ^
+
+TypeError: Cannot read property 'database' of undefined
+    at module.exports (/home/web_converter/models/index.js:18:18)
+    at Object.<anonymous> (/home/web_converter/index.js:50:20)
+    at Module._compile (module.js:577:32)
+    at Object.Module._extensions..js (module.js:586:10)
+    at Module.load (module.js:494:32)
+    at tryModuleLoad (module.js:453:12)
+    at Function.Module._load (module.js:445:3)
+    at Module.runMain (module.js:611:10)
+    at run (bootstrap_node.js:394:7)
+    at startup (bootstrap_node.js:160:9)
+    at bootstrap_node.js:507:3
