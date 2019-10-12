@@ -1,3 +1,10 @@
+<<<<<<< HEAD
 /node_modules
 /static
 converter.service
+=======
+node_modules
+.idea
+.DS_Store
+config/*
+>>>>>>> b01ac2d1694d3f7356b23900a532752d6857970e
