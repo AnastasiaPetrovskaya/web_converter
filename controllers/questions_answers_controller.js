@@ -24,7 +24,7 @@ var get = {
                 include: [{
                     model: app.Question,
                     include: [{
-                        model: app.DataBase, 
+                        model: app.DataBase,
                         attributes: ['id', 'title']
                     }]
                 }],
@@ -35,7 +35,7 @@ var get = {
                     pages_min = (page - 3 < 1) ? 1 : page - 3,
                     pages_max = (pages_min + 6 > pages) ? pages : pages_min + 6;
 
-                res.render('questions_answers/table', { 
+                res.render('questions_answers/table', {
                     answers: answers.rows,
                     page: page,
                     pages: pages,
@@ -64,7 +64,7 @@ var get = {
                 include: [{
                     model: app.Question,
                     include: [{
-                        model: app.DataBase, 
+                        model: app.DataBase,
                         attributes: ['id', 'title']
                     }]
                 }],
@@ -238,7 +238,7 @@ var put = {
         }
 
         app.Question.update(
-                data, 
+                data,
                 {where: {id: id}}
             ).then(function() {
                 res.success({});
