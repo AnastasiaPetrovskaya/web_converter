@@ -70,7 +70,6 @@ var get = {
                 limit: limit,
                 offset: skip
             }).then(function(check_points) {
-                //console.log('check_points', check_points.rows);
                 var pages =  count_pages(check_points.count, limit),
                     pages_min = (page - 3 < 1) ? 1 : page - 3,
                     pages_max = (pages_min + 6 > pages) ? pages : pages_min + 6;

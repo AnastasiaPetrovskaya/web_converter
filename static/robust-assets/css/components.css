@@ -2807,10 +2807,14 @@ li.mm-nosubresults > a.mm-next + span {
 }
 
 .hamburger--spin .hamburger-inner::before {
-  -webkit-transition: top 0.1s 0.34s ease-in, opacity 0.1s ease-in;
-  -moz-transition: top 0.1s 0.34s ease-in, opacity 0.1s ease-in;
-  -o-transition: top 0.1s 0.34s ease-in, opacity 0.1s ease-in;
-  transition: top 0.1s 0.34s ease-in, opacity 0.1s ease-in;
+  -webkit-transition: top 0.1s 0.34s ease-in,
+ opacity 0.1s ease-in;
+  -moz-transition: top 0.1s 0.34s ease-in,
+ opacity 0.1s ease-in;
+  -o-transition: top 0.1s 0.34s ease-in,
+ opacity 0.1s ease-in;
+  transition: top 0.1s 0.34s ease-in,
+ opacity 0.1s ease-in;
 }
 
 .hamburger--spin .hamburger-inner::after {
@@ -2841,10 +2845,14 @@ li.mm-nosubresults > a.mm-next + span {
 .hamburger--spin.is-active .hamburger-inner::before {
   top: 0;
   opacity: 0;
-  -webkit-transition: top 0.1s ease-out, opacity 0.1s 0.14s ease-out;
-  -moz-transition: top 0.1s ease-out, opacity 0.1s 0.14s ease-out;
-  -o-transition: top 0.1s ease-out, opacity 0.1s 0.14s ease-out;
-  transition: top 0.1s ease-out, opacity 0.1s 0.14s ease-out;
+  -webkit-transition: top 0.1s ease-out,
+ opacity 0.1s 0.14s ease-out;
+  -moz-transition: top 0.1s ease-out,
+ opacity 0.1s 0.14s ease-out;
+  -o-transition: top 0.1s ease-out,
+ opacity 0.1s 0.14s ease-out;
+  transition: top 0.1s ease-out,
+ opacity 0.1s 0.14s ease-out;
 }
 
 .hamburger--spin.is-active .hamburger-inner::after {
@@ -2877,10 +2885,14 @@ li.mm-nosubresults > a.mm-next + span {
 }
 
 .hamburger--spin-r .hamburger-inner::before {
-  -webkit-transition: top 0.1s 0.34s ease-in, opacity 0.1s ease-in;
-  -moz-transition: top 0.1s 0.34s ease-in, opacity 0.1s ease-in;
-  -o-transition: top 0.1s 0.34s ease-in, opacity 0.1s ease-in;
-  transition: top 0.1s 0.34s ease-in, opacity 0.1s ease-in;
+  -webkit-transition: top 0.1s 0.34s ease-in,
+ opacity 0.1s ease-in;
+  -moz-transition: top 0.1s 0.34s ease-in,
+ opacity 0.1s ease-in;
+  -o-transition: top 0.1s 0.34s ease-in,
+ opacity 0.1s ease-in;
+  transition: top 0.1s 0.34s ease-in,
+ opacity 0.1s ease-in;
 }
 
 .hamburger--spin-r .hamburger-inner::after {
@@ -2911,10 +2923,14 @@ li.mm-nosubresults > a.mm-next + span {
 .hamburger--spin-r.is-active .hamburger-inner::before {
   top: 0;
   opacity: 0;
-  -webkit-transition: top 0.1s ease-out, opacity 0.1s 0.14s ease-out;
-  -moz-transition: top 0.1s ease-out, opacity 0.1s 0.14s ease-out;
-  -o-transition: top 0.1s ease-out, opacity 0.1s 0.14s ease-out;
-  transition: top 0.1s ease-out, opacity 0.1s 0.14s ease-out;
+  -webkit-transition: top 0.1s ease-out,
+ opacity 0.1s 0.14s ease-out;
+  -moz-transition: top 0.1s ease-out,
+ opacity 0.1s 0.14s ease-out;
+  -o-transition: top 0.1s ease-out,
+ opacity 0.1s 0.14s ease-out;
+  transition: top 0.1s ease-out,
+ opacity 0.1s 0.14s ease-out;
 }
 
 .hamburger--spin-r.is-active .hamburger-inner::after {
@@ -2947,10 +2963,14 @@ li.mm-nosubresults > a.mm-next + span {
 }
 
 .hamburger--squeeze .hamburger-inner::before {
-  -webkit-transition: top 0.1s 0.14s ease, opacity 0.1s ease;
-  -moz-transition: top 0.1s 0.14s ease, opacity 0.1s ease;
-  -o-transition: top 0.1s 0.14s ease, opacity 0.1s ease;
-  transition: top 0.1s 0.14s ease, opacity 0.1s ease;
+  -webkit-transition: top 0.1s 0.14s ease,
+ opacity 0.1s ease;
+  -moz-transition: top 0.1s 0.14s ease,
+ opacity 0.1s ease;
+  -o-transition: top 0.1s 0.14s ease,
+ opacity 0.1s ease;
+  transition: top 0.1s 0.14s ease,
+ opacity 0.1s ease;
 }
 
 .hamburger--squeeze .hamburger-inner::after {
@@ -2981,10 +3001,14 @@ li.mm-nosubresults > a.mm-next + span {
 .hamburger--squeeze.is-active .hamburger-inner::before {
   top: 0;
   opacity: 0;
-  -webkit-transition: top 0.1s ease, opacity 0.1s 0.14s ease;
-  -moz-transition: top 0.1s ease, opacity 0.1s 0.14s ease;
-  -o-transition: top 0.1s ease, opacity 0.1s 0.14s ease;
-  transition: top 0.1s ease, opacity 0.1s 0.14s ease;
+  -webkit-transition: top 0.1s ease,
+ opacity 0.1s 0.14s ease;
+  -moz-transition: top 0.1s ease,
+ opacity 0.1s 0.14s ease;
+  -o-transition: top 0.1s ease,
+ opacity 0.1s 0.14s ease;
+  transition: top 0.1s ease,
+ opacity 0.1s 0.14s ease;
 }
 
 .hamburger--squeeze.is-active .hamburger-inner::after {
@@ -4042,7 +4066,6 @@ footer.footer-dark {
 
 .navigation li {
   position: relative;
-  white-space: nowrap;
 }
 
 .navigation li a {
