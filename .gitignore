@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 /node_modules
 /static
+/mdb2postgers
 converter.service
 =======
 node_modules
