@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // TODO partner_id объявлен в шаблоне!
-
+    getTable('/students/table', { group_id: window.group_id }, '#students_table', function() {});
     var $editable = $('.editable');
 
     $editable.editable({

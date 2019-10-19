@@ -20,7 +20,6 @@ var get = {
                     where: groups_options
                 }]
             }).then(function(check_points) {
-                console.log('check_points', check_points);
                 res.render('main/index', {
                     check_points: check_points, 
                     current_page: 'main' 

@@ -42,14 +42,14 @@ var get = {
     },
 
     '/table': function (req, res) {
-        console.log('req.query', req.query);
+        //console.log('req.query', req.query);
         var control_col = req.query.control_col || true;
-        console.log('control_col', control_col);
+        //console.log('control_col', control_col);
         delete req.query.control_col;
 
         var options = req.query || {},
             skip = 0,
-            limit = 15,
+            limit = 20,
             page = Number(req.query.page) || 1;
 
         if (page > 1)

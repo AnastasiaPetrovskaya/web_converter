@@ -16,7 +16,7 @@ var get = {
         var options = {},
             students_options = {},
             skip = 0,
-            limit = 15,
+            limit = 20,
             page = Number(req.query.page) || 1;
 
         if (page > 1)
