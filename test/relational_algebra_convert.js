@@ -267,10 +267,12 @@ describe('Algebra full convertion', function() {
                            "B.ВидОтч='Экзамен' AND A.Гр=B.Гр AND A.ИдК=B.ИдК AND A.УчНед<B.УчНед);").replace(/\s/g,''));
                    done();
                }).catch(function(err) {
-                   done(err);
                    //console.log('err', err);
+                   done(err);
                });
         });
+
+
 
 
     });
