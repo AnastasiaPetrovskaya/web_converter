@@ -47,7 +47,7 @@ var get_sql_res = function(db_id, sql, selector, callback) {
             $(selector).jsGrid({
                 width: "100%",
                 //height: "600px",
- 
+
                 //editing: true,
                 //inserting: true,
                 //filtering: true,
@@ -57,7 +57,7 @@ var get_sql_res = function(db_id, sql, selector, callback) {
                 pageButtonCount: 5,
                 pagerFormat: "Страницы: {pages}",
                 deleteConfirm: "Вы уерены, что хотите удалить данную запись из таблицы?",
- 
+
                 data: query_data,
                 fields: fields,
                 controller: {
@@ -83,7 +83,7 @@ var get_sql_res = function(db_id, sql, selector, callback) {
                                     return res;
                                 });
 
-                                if (filter[key] && type == "text" && typeof(td[key]) == "string" && 
+                                if (filter[key] && type == "text" && typeof(td[key]) == "string" &&
                                     td[key].indexOf(filter[key]) == -1) {
                                         flag = false;
                                         break;
@@ -117,18 +117,19 @@ var get_sql_res = function(db_id, sql, selector, callback) {
 };
 
 
-var bootboxError = function(err) {
+var bootboxError = function(err, callback) {
     bootbox.alert({
         className: 'slideInDown',
         title: 'Ошибка',
         message: err.message ? err.message : err,
-        buttons: {ok: {className: 'btn-danger'}}
+        buttons: {ok: {className: 'btn-danger'}},
+        callback : callback
     });
 };
 
 // codes works on all bootstrap modal windows in application
 $('.modal').on('hidden.bs.modal', function(e)
-{ 
+{
     $(this).find("input,textarea,select").val('').end();
     $(this).find(".form-group").removeClass('validate').end();
     $(this).find(".form-group").removeClass('error').end();
@@ -136,7 +137,7 @@ $('.modal').on('hidden.bs.modal', function(e)
     $(this).find('#submit').prop('disabled', false);
 }) ;
 
-$.fn.editableform.buttons = 
+$.fn.editableform.buttons =
   '<button type="submit" class="btn btn-in-table btn-outline-success btn-sm editable-submit">'+
     '<i class="icon-check font-medium-2"></i>'+
   '</button>'+
