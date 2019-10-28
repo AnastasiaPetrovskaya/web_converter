@@ -88,7 +88,7 @@ $(document).ready(function() {
             } else {
                 bootboxError(result.error, function() {
                     window.location.assign('/check_points/next_question/' + check_point_id);
-                };);
+                });
                 return false;
             }
         }).fail(res => {
