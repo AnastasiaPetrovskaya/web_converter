@@ -236,7 +236,7 @@ var get = {
                 app.TestAnswer.make(id, req.user.id)
                     .then(function(questions) {
                         res.redirect('/check_points/next_question/' + id)
-                        //res.render('questions/answer', { question: questions[0], check_point_id : id });
+                        //res.render('questions/answer', { question: questions, check_point_id : id });
                     })
                     .catch(function(err) {
                         console.log('err', err);
