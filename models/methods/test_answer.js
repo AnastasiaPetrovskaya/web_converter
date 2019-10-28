@@ -32,16 +32,19 @@ module.exports = function (models) {
                         group: ['test_case.id'],
                         transaction: t,
                         order: [[sequelize.fn('COUNT', sequelize.col('tests_answers.id')), 'ASC']]
-                    })
-                    .then(function(result) {
+                    }).then(function(result) {
                         console.log('result', result);
                         ctx.test_case_id = result[0].id;
 
                         //TODO создать TestAnswer если еще не создана вернуть вопрос для выполнения
                         return app.TestAnswer.findOne({
-                            user_id: user_id,
-                            check_point_id: check_point_id,
+                            where: {
+                                user_id: user_id,
+                                check_point_id: check_point_id,
+                            }
                         }).then(function(test_answer) {
+                            console.log(test_answer);
+
                             if (test_answer) {
                                 return test_answer;
                             } else {
