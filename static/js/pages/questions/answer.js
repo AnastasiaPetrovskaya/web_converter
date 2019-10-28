@@ -21,7 +21,7 @@ $(document).ready(function() {
         var title = $('#help_table_title').val();
 
         //TODO более серьъезная валидация + отображение сообщения если что-то не так
-        if (title == "") 
+        if (title == "")
             return false;
 
        $('#help_tables').removeClass('hidden-xs-up');
@@ -82,10 +82,13 @@ $(document).ready(function() {
             method: 'POST',
             data: data
         }).done(result => {
+            console.log('result', result)
             if(result.success){
                 window.location.assign('/check_points/next_question/' + check_point_id);
             } else {
-                bootboxError(result.err);
+                bootboxError(result.error, function() {
+                    window.location.assign('/check_points/next_question/' + check_point_id);
+                };);
                 return false;
             }
         }).fail(res => {
