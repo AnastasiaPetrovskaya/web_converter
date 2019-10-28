@@ -103,27 +103,27 @@ var post = {
         //сохранить ответ на вопрос
         app.QuestionAnswer.make(req.user.id, question_id, db_id, queries, check_point_id)
             .then(function(result) {
-                //console.log('\n\nresult of QA make\n', result);
+                console.log('\n\nresult of QA make\n', result);
 
                 //нужно обновить общую оценку
-                console.log()
-                return app.TestAnswer.update(
-                    {total_mark: sequelize.literal('total_mark +' + result.mark)},
-                    {where: {
-                        check_point_id: check_point_id,
-                        user_id: req.user.id
-                    }}
-                );
-                })
-            .then(function(result) {
+                if (result) {
+                    return app.TestAnswer.update(
+                        {total_mark: sequelize.literal('total_mark +' + result.mark)},
+                        {where: {
+                            check_point_id: check_point_id,
+                            user_id: req.user.id
+                        }}
+                    );
+                }
+            }).then(function(result) {
                 console.log('\n\n\nresult of Test Answer upd.\n', result.dataValues,'\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
                 res.success({});
-                })
-            .catch(function(err) {
+            }).catch(function(err) {
+                //console.log('NNNNNN', err)
                 //найти следующий вопрос или закончить тестирование
                 //console.log('\n\n\nError in make: \n', err);
                 res.error('Error', err);
-                });
+            });
     },
 
     '/add': function (req, res) {
@@ -161,8 +161,8 @@ var post = {
                 ctx.right_answer_data = sql_res.result.rows;
                 //сверка результатов выполнения двух запросов
                 var mark = ctx.query_answer.check();
-                console.log('!!!!!!!!!!!!!!!!!!mark', mark);
-                console.log('!!!!!!!!!!!!!!!!!!algebra_answer', ctx.query_answer);
+                //console.log('!!!!!!!!!!!!!!!!!!mark', mark);
+                //console.log('!!!!!!!!!!!!!!!!!!algebra_answer', ctx.query_answer);
                 ctx = Object.assign({}, mark, ctx)
 
                 if (req.user.role.role == 'student') {

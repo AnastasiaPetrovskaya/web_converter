@@ -59,9 +59,9 @@ var get = {
             options.db_id = req.query.db_id;
 
         if (req.user.role.role == 'student') {
-            options.db_type = { 
+            options.db_type = {
                 $or: [
-                    {$eq: 'common'}, 
+                    {$eq: 'common'},
                     {$eq: 'prepare'}
                 ]
             };
@@ -81,7 +81,7 @@ var get = {
                     pages_max = (pages_min + 6 > pages) ? pages : pages_min + 6;
 
                 console.log('control_col', control_col);
-                res.render('questions/table', { 
+                res.render('questions/table', {
                     questions: questions.rows,
                     control_col: control_col,
                     page: page,
@@ -115,9 +115,9 @@ var get = {
         options.id = Number(req.params.id);
 
         if (req.user.role.role == 'student') {
-            options.db_type = { 
+            options.db_type = {
                 $or: [
-                    {$eq: 'common'}, 
+                    {$eq: 'common'},
                     {$eq: 'prepare'}
                 ]
             };
@@ -163,7 +163,7 @@ var post = {
             .then(function(question) {
                 //console.log('question created', question);
                 res.success({
-                    id: question.dataValues.id, 
+                    id: question.dataValues.id,
                     title: question.dataValues.title
                 });
             }).catch(function(err) {
@@ -226,7 +226,7 @@ var post = {
                         resolve();
                     });
                 }
-                //console.log('!!!!!!!!!!!!!!!!!!ctx', ctx);
+                
             }).then(function(result) {
                 res.success(ctx);
             }).catch(function(err) {
@@ -287,7 +287,7 @@ var put = {
 
         console.log('data', data);
         app.Question.update(
-                data, 
+                data,
                 {where: {id: id}}
             ).then(function() {
                 res.success({});
