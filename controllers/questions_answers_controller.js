@@ -79,9 +79,15 @@ var get = {
             }).then(function(sql_res) {
 
                 ctx.answer.right_answer_data = sql_res.result.rows;
-                return app.DataBase.execute_sql(ctx.answer.question.db_id, ctx.answer.sql);
+                if (ctx.answer.sql.indexOf('SELECT') >= 0) {
+                    return app.DataBase.execute_sql(ctx.answer.question.db_id, ctx.answer.sql);
+                }
             }).then(function(student_sql_res) {
-                ctx.answer.data = student_sql_res.result.rows;
+                if (student_sql_res) {
+                    ctx.answer.data = student_sql_res.result.rows;
+                } else {
+                    ctx.answer.data = [];
+                }
 
                 res.render('questions_answers/show', { answer: ctx.answer });
             }).catch(function (err) {

@@ -111,5 +111,24 @@ describe('Algebra full convertion', function() {
                });
         });
 
+        it('test5', function(done) {
+           var query = new RelationalAlgebraQuery({
+               title: "test",
+               alias: "more_then_1 AS O, Фильмы AS Y, Кинотеатры AS X, ФильмыКинотеатры AS Z",
+               target_list: "X.НазвКинотеатра, Y.Название",
+               query_body: "((((X [X.ИдКинотеатра = Z.ИдКинотеатра] Z) [Z.ИдФильма = Y.ИдФильма] Y) [X.НазвКинотеатра, Y.Название])EXCEPT(O[O.НазвКинотеатра, O.Название]))"
+           });
+
+           query.convert()
+               .then(function(res) {
+
+                   assert.equal(query.sql.replace(/\s/g,''), ('SELECT DISTINCT X.Гр ' +
+                    'FROM Группы AS XWHERE NOT EXISTS ( SELECT DISTINCT * ' +
+                    "FROM Студенты AS Y WHEREY.П='Ж'ANDX.Гр=Y.Гр);").replace(/\s/g,''));
+                   done();
+               }).catch(function(err) {
+                   done(err);
+               });
+        });
     });
 });
