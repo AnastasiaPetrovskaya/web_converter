@@ -3,7 +3,7 @@ var RelationalAlgebraQuery = require('../lib/RelationalAlgebraQuery.js');
 
 var assert = require('assert');
 
-describe('Algebra full convertion', function() {
+describe('relational algebra except convert', function() {
     describe('except queries', function() {
         it('test1', function(done) {
             var query = new RelationalAlgebraQuery({
@@ -122,13 +122,18 @@ describe('Algebra full convertion', function() {
            query.convert()
                .then(function(res) {
 
-                   assert.equal(query.sql.replace(/\s/g,''), ('SELECT DISTINCT X.Гр ' +
-                    'FROM Группы AS XWHERE NOT EXISTS ( SELECT DISTINCT * ' +
-                    "FROM Студенты AS Y WHEREY.П='Ж'ANDX.Гр=Y.Гр);").replace(/\s/g,''));
+                   assert.equal(query.sql.replace(/\s/g,''),
+                    ('SELECT DISTINCT X.НазвКинотеатра,Y.Название '  +
+                        'FROM Фильмы AS Y, Кинотеатры AS X WHERE EXISTS ' +
+                        '(SELECT * FROM ФильмыКинотеатры AS Z WHERE ' +
+                        'X.ИдКинотеатра=Z.ИдКинотеатра AND Z.ИдФильма=Y.ИдФильма ' +
+                        'AND NOT EXISTS ( SELECT DISTINCT * FROM more_then_1 AS O ' +
+                        'WHERE X.НазвКинотеатра=O.НазвКинотеатра AND Y.Название=O.Название));').replace(/\s/g,''));
                    done();
                }).catch(function(err) {
                    done(err);
                });
         });
+
     });
 });

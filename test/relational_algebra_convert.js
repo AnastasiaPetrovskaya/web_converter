@@ -248,7 +248,7 @@ describe('Algebra full convertion', function() {
         });
 
 
-        it('test9', function(done) {
+        it('test9 error', function(done) {
            var query = new RelationalAlgebraQuery({
                title: "test",
                alias: "Кинотеатры AS X, Фильмы AS Y, ФильмыКинотеатры AS Z",
@@ -256,15 +256,55 @@ describe('Algebra full convertion', function() {
                query_body: "((X[X.Метро='Университет'])[X.ИдКинотеатра=Z.ИдКинотеатра]Z)[Z.ИдФильма=Y.ИдФильма]Y"
            });
 
+           query.convert().then(function(res) {
+
+               done("Expected error");
+           }).catch(function(err) {
+
+               assert.equal(err.message, "Не удалось определить скобки, в которые заключена операция реляционной алгебры.");
+               done();
+           });
+        });
+
+        it('test10', function(done) {
+           var query = new RelationalAlgebraQuery({
+               title: "test",
+               alias: "Актер AS X, ФильмыАктер AS Z",
+               target_list: "Z.ИдФильма",
+               query_body: '(X[X.Имя="Юрий Яковлев" AND X.ИдАктера = Z.ИдАктера]Z)'
+           });
+
+
            query.convert()
                .then(function(res) {
-                   //console.log("res", res);
-                   //console.log('query', query);
 
-                   assert.equal(query.sql.replace(/\s/g,''), ('SELECT DISTINCT A.Нз, A.ИдК, A.Семестр FROM Успеваемость AS A ' +
-                           "WHERE A.Гр='К05-221' AND A.Оцн<>'неуд' AND A.ВидОтч='Экзамен' AND EXISTS (" +
-                           'SELECT * FROM ОтчетГруппы AS B WHERE ' +
-                           "B.ВидОтч='Экзамен' AND A.Гр=B.Гр AND A.ИдК=B.ИдК AND A.УчНед<B.УчНед);").replace(/\s/g,''));
+                   assert.equal(query.sql.replace(/\s/g,''),
+                        ("SELECT DISTINCT Z.ИдФильма FROM ФильмыАктер AS Z " +
+                            "WHERE EXISTS ( SELECT * FROM Актер AS X WHERE " +
+                            "X.Имя='ЮрийЯковлев' AND X.ИдАктера=Z.ИдАктера);").replace(/\s/g,''));
+                   done();
+               }).catch(function(err) {
+                   //console.log('err', err);
+                   done(err);
+               });
+        });
+
+        it('test11', function(done) {
+           var query = new RelationalAlgebraQuery({
+               "title":"test",
+               "alias":"ФильмыАктер AS Z , Актер AS X",
+               "target_list":"Z.ИдФильма",
+               "query_body":'(X[X.Имя="Юрий Яковлев" AND X.ИдАктера = Z.ИдАктера]Z)',
+           });
+
+
+           query.convert()
+               .then(function(res) {
+
+                   assert.equal(query.sql.replace(/\s/g,''),
+                        ("SELECT DISTINCT Z.ИдФильма FROM ФильмыАктер AS Z " +
+                            "WHERE EXISTS ( SELECT * FROM Актер AS X WHERE " +
+                            "X.Имя='ЮрийЯковлев' AND X.ИдАктера=Z.ИдАктера);").replace(/\s/g,''));
                    done();
                }).catch(function(err) {
                    //console.log('err', err);
