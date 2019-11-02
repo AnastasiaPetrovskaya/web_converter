@@ -73,7 +73,7 @@ var get = {
                     {model: app.DataBase, attributes: ['id', 'title']}
                 ],
                 limit: limit,
-                offset: skip
+                offset: skip,
             }).then(function(questions) {
                 //console.log('questions', questions.rows);
                 var pages =  count_pages(questions.count, limit),
@@ -226,7 +226,7 @@ var post = {
                         resolve();
                     });
                 }
-                
+
             }).then(function(result) {
                 res.success(ctx);
             }).catch(function(err) {
