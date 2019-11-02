@@ -29,7 +29,9 @@ var get = {
                     }]
                 }],
                 limit: limit,
-                offset: skip
+                offset: skip,
+                order: 'id DESC'
+
             }).then(function(answers) {
                 var pages =  count_pages(answers.count, limit),
                     pages_min = (page - 3 < 1) ? 1 : page - 3,
@@ -204,11 +206,12 @@ var post = {
                     user_id: req.user.id,
                     question_id: question_id,
                     mark: 0,
-                    error: err,
+                    error: err.message || err,
                     sql: (ctx.answer_sql ? ctx.answer_sql : "Не удалось выполнить генерацию SQL.")
                 }).then(function(result) {
                     res.error(err);
                 }).catch(function(err_saving_log) {
+                    console.log('err_saving_log', err_saving_log)
                     res.error(err);
                 });
             });
