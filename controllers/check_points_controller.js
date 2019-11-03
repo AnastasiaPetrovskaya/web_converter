@@ -97,12 +97,12 @@ var get = {
             console.log('\nTo define type configs:\n', check_point.dataValues.test_config);
 
             if (check_point.dataValues.test_config.less_complexity > 0) {
-                return 'DYN'
+                return 'DYN';
             } else {
-                return 'RND'
+                return 'RND';
             }
         }).then(check_point_type => {
-            if (check_point_type == 'DYN') {
+            if (check_point_type === 'DYN') {
                 return app.TestAnswer.next_question_dynamic(id, req.user.id).then(question => {
                     if (question) {
                         res.render('questions/answer', {question : question, check_point_id : id});
@@ -150,7 +150,7 @@ var get = {
                             res.error('Error', err);
                         });
                     }
-                })
+                });
             } else {
 
                 //найти следующий вопрос или закончить тестирование
@@ -183,22 +183,6 @@ var get = {
                                         as: 'tests_answers',
                                         where: {user_id: req.user.id}
                                     },
-                                    //хрен пойми зачем это все тут нужно)
-                                    // {
-                                    //     model: app.TestCase,
-                                    //     as: 'test_cases',
-                                    //     include: [{
-                                    //         model: app.TestCaseQuestion,
-                                    //         as: 'questions',
-                                    //         include: [{
-                                    //             model: app.Question,
-                                    //             include: [{
-                                    //                 model: app.QuestionAnswer,
-                                    //                 as: 'answers'
-                                    //             }]
-                                    //         }]
-                                    //     }]
-                                    // }
                                 ]
                             });
                         }).then(function (check_point) {
@@ -234,8 +218,7 @@ var get = {
                     })
             } else {
                 app.TestAnswer.make(id, req.user.id).then(function(result) {
-                    res.redirect('/check_points/next_question/' + id)
-                    //res.render('questions/answer', { question: questions[0], check_point_id : id });
+                    res.redirect('/check_points/next_question/' + id);
                 }).catch(function(err) {
                     console.log('err', err);
                     res.error('Error', err);
@@ -295,6 +278,7 @@ var post = {
         check_point_data.owner_id = req.user.id;
         let generationType = check_point_data.generation_type,
             testConfig = check_point_data.test_config;
+        console.log('generationType : ', generationType);
         if (generationType == 'DYN') {
             //dynamic generation here
             let testComplexities = {
@@ -312,8 +296,8 @@ var post = {
                     res.error(err);
                 });
 
-        } else if (generationType == 'RND') {
-            app.CheckPoint.make(check_point_data, groups, req.body.questions_set)
+        } else if (generationType === 'RND') {
+            app.CheckPoint.make_experimental(check_point_data, groups, req.body.questions_set)
                 .then(function(result) {
                     res.success(result);
                 }).catch(function(err) {
