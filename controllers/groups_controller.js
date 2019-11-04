@@ -32,7 +32,6 @@ var get = {
                 limit: limit,
                 offset: skip
             }).then(function(groups) {
-                console.log('groups', groups);
                 var pages =  count_pages(groups.count.length, limit),
                     pages_min = (page - 3 < 1) ? 1 : page - 3,
                     pages_max = (pages_min + 6 > pages) ? pages : pages_min + 6;

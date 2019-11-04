@@ -322,6 +322,11 @@ var post = {
             });
         } else {
             //TODO Место для ручного формирования тестов
+            app.CheckPoint.make_hand(check_point_data, groups, req.body.questions_set).then((result) => {
+                res.success(result);
+            }).catch((error) => {
+                console.log('err add hand checkpoint', error);
+            });
         }
     },
 
