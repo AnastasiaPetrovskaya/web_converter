@@ -1,6 +1,12 @@
 $(document).ready(function() {
     // TODO partner_id объявлен в шаблоне!
     getTable('/students/table', { group_id: window.group_id }, '#students_table', function() {});
+
+    $(document).on('click', '#students_table ul.pagination a.page-link', function(e) {
+        options.page = e.target.innerHTML;
+        getTable('/students/table', options, '#students_table');
+    });
+
     var $editable = $('.editable');
 
     $editable.editable({
@@ -33,7 +39,6 @@ $(document).ready(function() {
     });
 
     $editable.editable('toggleDisabled');
-    //$balance.editable('toggleDisabled');
 
     $('#edit').click(function() {
         var $this = $(this);
@@ -49,7 +54,6 @@ $(document).ready(function() {
         }
 
         $editable.editable('toggleDisabled');
-        //$balance.editable('toggleDisabled');
 
     });
 
@@ -58,7 +62,5 @@ $(document).ready(function() {
     if (window.group_id) {
         options.group_id = window.group_id;
     }
-
-    //getTable('/students/table', options, '#students_table', function() {});
 
 });
