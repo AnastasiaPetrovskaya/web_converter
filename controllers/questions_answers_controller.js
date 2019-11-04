@@ -24,18 +24,20 @@ var get = {
                 include: [{
                     model: app.Question,
                     include: [{
-                        model: app.DataBase, 
+                        model: app.DataBase,
                         attributes: ['id', 'title']
                     }]
                 }],
                 limit: limit,
-                offset: skip
+                offset: skip,
+                order: 'id DESC'
+
             }).then(function(answers) {
                 var pages =  count_pages(answers.count, limit),
                     pages_min = (page - 3 < 1) ? 1 : page - 3,
                     pages_max = (pages_min + 6 > pages) ? pages : pages_min + 6;
 
-                res.render('questions_answers/table', { 
+                res.render('questions_answers/table', {
                     answers: answers.rows,
                     page: page,
                     pages: pages,
@@ -64,7 +66,7 @@ var get = {
                 include: [{
                     model: app.Question,
                     include: [{
-                        model: app.DataBase, 
+                        model: app.DataBase,
                         attributes: ['id', 'title']
                     }]
                 }],
@@ -79,9 +81,24 @@ var get = {
             }).then(function(sql_res) {
 
                 ctx.answer.right_answer_data = sql_res.result.rows;
-                return app.DataBase.execute_sql(ctx.answer.question.db_id, ctx.answer.sql);
+                ctx.answer.data = [];
+
+                if (ctx.answer.sql.indexOf('SELECT') >= 0) {
+                    return app.DataBase.execute_sql(ctx.answer.question.db_id, ctx.answer.sql)
+                        .then(function(student_sql_res) {
+                            if (student_sql_res) {
+                                ctx.answer.data = student_sql_res.result.rows;
+                            }
+                        }).catch(function(err) {
+                            ctx.answer.sql_err = err;
+                        });
+                }
             }).then(function(student_sql_res) {
-                ctx.answer.data = student_sql_res.result.rows;
+                // if (student_sql_res) {
+                //     ctx.answer.data = student_sql_res.result.rows;
+                // } else {
+                //     ctx.answer.data = [];
+                // }
 
                 res.render('questions_answers/show', { answer: ctx.answer });
             }).catch(function (err) {
@@ -103,27 +120,27 @@ var post = {
         //сохранить ответ на вопрос
         app.QuestionAnswer.make(req.user.id, question_id, db_id, queries, check_point_id)
             .then(function(result) {
-                //console.log('\n\nresult of QA make\n', result);
+                console.log('\n\nresult of QA make\n', result);
 
                 //нужно обновить общую оценку
-                console.log()
-                return app.TestAnswer.update(
-                    {total_mark: sequelize.literal('total_mark +' + result.mark)},
-                    {where: {
-                        check_point_id: check_point_id,
-                        user_id: req.user.id
-                    }}
-                );
-                })
-            .then(function(result) {
+                if (result) {
+                    return app.TestAnswer.update(
+                        {total_mark: sequelize.literal('total_mark +' + result.mark)},
+                        {where: {
+                            check_point_id: check_point_id,
+                            user_id: req.user.id
+                        }}
+                    );
+                }
+            }).then(function(result) {
                 console.log('\n\n\nresult of Test Answer upd.\n', result.dataValues,'\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
                 res.success({});
-                })
-            .catch(function(err) {
+            }).catch(function(err) {
+                //console.log('NNNNNN', err)
                 //найти следующий вопрос или закончить тестирование
                 //console.log('\n\n\nError in make: \n', err);
                 res.error('Error', err);
-                });
+            });
     },
 
     '/add': function (req, res) {
@@ -161,8 +178,8 @@ var post = {
                 ctx.right_answer_data = sql_res.result.rows;
                 //сверка результатов выполнения двух запросов
                 var mark = ctx.query_answer.check();
-                console.log('!!!!!!!!!!!!!!!!!!mark', mark);
-                console.log('!!!!!!!!!!!!!!!!!!algebra_answer', ctx.query_answer);
+                //console.log('!!!!!!!!!!!!!!!!!!mark', mark);
+                //console.log('!!!!!!!!!!!!!!!!!!algebra_answer', ctx.query_answer);
                 ctx = Object.assign({}, mark, ctx)
 
                 if (req.user.role.role == 'student') {
@@ -189,11 +206,12 @@ var post = {
                     user_id: req.user.id,
                     question_id: question_id,
                     mark: 0,
-                    error: err,
+                    error: err.message || err,
                     sql: (ctx.answer_sql ? ctx.answer_sql : "Не удалось выполнить генерацию SQL.")
                 }).then(function(result) {
                     res.error(err);
                 }).catch(function(err_saving_log) {
+                    console.log('err_saving_log', err_saving_log)
                     res.error(err);
                 });
             });
@@ -238,7 +256,7 @@ var put = {
         }
 
         app.Question.update(
-                data, 
+                data,
                 {where: {id: id}}
             ).then(function() {
                 res.success({});

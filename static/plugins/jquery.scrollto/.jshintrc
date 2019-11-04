@@ -1,7 +1,7 @@
 {
   "shadow": "inner",
 
-  "camelcase": true,
+  "camelcase": false,
   "eqeqeq": true,
   "eqnull": true,
   "freeze": true,
@@ -15,6 +15,7 @@
   "scripturl": true,
   "strict": true,
   "quotmark": "single",
+  "esversion": 6,
 
   "globals": {"define": true},
   "browser": true,

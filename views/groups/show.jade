@@ -42,7 +42,8 @@ block body
                                                                 a.editable.edit_textarea(href="#" data-name="specialty")= group.specialty
                                                             else
                                                                 a.editable.edit_textarea.editable-empty(href="#" data-name="specialty")
-
+                .row
+                    #students_table.col-md-12
 block append footer
     script.
         var group_id = '#{group.id}';
