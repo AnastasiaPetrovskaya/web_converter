@@ -49,7 +49,7 @@ var get = {
 
         var options = {},
             skip = 0,
-            limit = 20,
+            limit = 10,
             page = Number(req.query.page) || 1;
 
         if (req.query.id) {
