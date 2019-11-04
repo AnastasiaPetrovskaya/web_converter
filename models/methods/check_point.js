@@ -136,12 +136,15 @@ module.exports = function (models) {
                         },
                         {transaction: t}
                     );
-                }));
-            }).then(function() {
+                })).then(() => {
+                    return check_point;
+                });
+            }).then(function(check_point) {
 
                 var mean_complexity = Number(check_point_data.test_config.mean_complexity);
                 var questions_amount = Number(check_point_data.test_config.questions_amount);
                 var test_cases_amount = Number(check_point_data.test_config.test_cases_amount);
+                console.log(mean_complexity, questions_amount, test_cases_amount);
                 let test_cases = [];
                 for (let i = 0; i < test_cases_amount; i++) {
                     test_cases.push([]);
@@ -160,16 +163,18 @@ module.exports = function (models) {
                     if (Number(elem.complexity) < min_complexity) {
                         min_complexity = Number(elem.complexity);
                     }
-                })
+                });
 
                 //раскидываем вопросы по вариантам
                 //Кладем по одному в вариант, пока не закончатся
                 let ind = 0;
-                question_to_cases.forEach((question, index) => {
-                    test_cases[ind].push(question);
-                    ind++;
-                    if (ind === test_cases_amount) {
-                        ind = 0;
+                question_to_cases.forEach((question) => {
+                    if (test_cases[ind].length < questions_amount) {
+                        test_cases[ind].push(question);
+                        ind++;
+                        if (ind === test_cases_amount) {
+                            ind = 0;
+                        }
                     }
                 });
 
@@ -180,7 +185,7 @@ module.exports = function (models) {
                 //Пока все варианты не заполнены, пытаемся их заполнить
                 while (test_cases.some((v_case) => {return v_case.length < questions_amount})) {
                     //Пытаемся каждый вариант сначала усложнить, потом урпостить
-                    test_cases.forEach((t_case, index) => {
+                    test_cases.forEach((t_case) => {
                         if (t_case.length < questions_amount && (mean_complexity + diff_pos) <= max_complexity) {
                             let to_add = questions_arr.find((quest_in) => {
                                 return !in_array(question_to_cases, quest_in) && Number(quest_in.complexity) === (mean_complexity + diff_pos);
@@ -189,7 +194,7 @@ module.exports = function (models) {
                                 question_to_cases.push(to_add);
                                 t_case.push(to_add);
                             } else {
-                                diff_pos++
+                                diff_pos++;
                             }
                         }
                         if (t_case.length < questions_amount && (mean_complexity - diff_neg) >= min_complexity) {
@@ -200,7 +205,7 @@ module.exports = function (models) {
                                 question_to_cases.push(to_add);
                                 t_case.push(to_add);
                             } else {
-                                diff_neg++
+                                diff_neg++;
                             }
                         }
 
@@ -221,11 +226,13 @@ module.exports = function (models) {
                     });
                 }
 
+                console.log('CASES\n', test_cases);
+
                 test_cases.forEach((case_questions, index) => {
 
                     //Создаем вариант теста
                     app.TestCase.create({
-                        check_point_id: ctx.check_point.id,
+                        check_point_id: check_point.id,
                         title: `Вариант №${index + 1}`,
                     }).then((test_case) => {
                         case_questions.forEach((question) => {
@@ -243,7 +250,86 @@ module.exports = function (models) {
                     });
                 });
                 return test_cases;
-            }).then(function(test_cases) {
+            }).then(function() {
+                return ctx;
+            }).catch(function(err) {
+                console.log('make check point method err', err);
+                throw err;
+            });
+        });
+    };
+
+    CheckPoint.make_hand = function (check_point_data, groups_arr, questions_arr) {
+        var ctx = {};
+
+        return sequelize.transaction(function (t) {
+            return CheckPoint.unscoped().findOne({
+                where: {title: check_point_data.title},
+                transaction: t
+            }).then(function (check_point) {
+                if (check_point)
+                    throw {message: 'Название контрольного мероприятия уже используется.'};
+
+                //создание контрольного мероприятия
+                return CheckPoint.create(check_point_data, {transaction: t});
+            }).then(function(check_point) {
+                ctx.check_point = check_point.dataValues;
+                return Promise.all(groups_arr.map(function(group) {
+                    return app.CheckPointGroup.create({
+                            group_id: group,
+                            check_point_id: ctx.check_point.id
+                        },
+                        {transaction: t}
+                    );
+                })).then(() => {
+                    return check_point;
+                });
+            }).then(function(check_point) {
+                var questions_amount = Number(check_point_data.test_config.questions_amount);
+                var test_cases_amount = Number(check_point_data.test_config.test_cases_amount);
+                let test_cases = [];
+                for (let i = 0; i < test_cases_amount; i++) {
+                    test_cases.push([]);
+                }
+
+
+                //раскидываем вопросы по вариантам
+                let ind = 0;
+
+                questions_arr.forEach((question, index) => {
+                    console.log(test_cases[ind]);
+                    test_cases[ind].push(question);
+                    if ((index + 1) % questions_amount === 0) {
+                        ind++;
+                    }
+                });
+
+                console.log('test_cases\n', test_cases);
+                console.log('CP ID : ', check_point.id);
+
+                test_cases.forEach((case_questions, index) => {
+
+                    //Создаем вариант теста
+                    app.TestCase.create({
+                        check_point_id: check_point.id,
+                        title: `Вариант №${index + 1}`,
+                    }).then((test_case) => {
+                        case_questions.forEach((question) => {
+
+                            //Добавляем вопросы к варианту
+                            app.TestCaseQuestion.create({
+                                test_case_id: test_case.id,
+                                question_id: question.id,
+                            }).catch((error) => {
+                                console.log('add question to case error : ', error);
+                            });
+                        });
+                    }).catch((error) => {
+                        console.log('case creadion error : ', error);
+                    });
+                });
+                return test_cases;
+            }).then(function() {
                 return ctx;
             }).catch(function(err) {
                 console.log('make check point method err', err);

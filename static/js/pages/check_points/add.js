@@ -1,6 +1,7 @@
 $(document).ready(function() {
     var start,
         end;
+    let selected_questions = [];
     //new block for choosing type of generating algorithm
     const buttonTestConfig = document.querySelector('#dropTestConfig'),
         configButtons = document.querySelectorAll('.dropdown-item'),
@@ -14,11 +15,11 @@ $(document).ready(function() {
         testCaseRepeat = document.querySelector('#test_case_repeat'),
         testConfig = document.querySelector('#test_config');
 
-    configButtons.forEach((btn,i) => {
+    configButtons.forEach((btn) => {
        btn.addEventListener('click', () => {
            buttonTestConfig.textContent = btn.textContent;
            testCaseGenType.style.minHeight = '';
-           if(btn.textContent == "Динамическая") {
+           if(btn.textContent === 'Динамическая') {
                testCaseAmount.style.display = 'none';
                document.querySelector('#test_cases_amount').value = '';
                questionAmount.style.display = 'none';
@@ -30,7 +31,7 @@ $(document).ready(function() {
                testCaseLess.style.display = 'block';
                questionAmount.style.display = 'block';
                testCaseRepeat.style.display = 'inline-block';
-           } else if (btn.textContent == "Случайная") {
+           } else if (btn.textContent === 'Случайная') {
                testCaseAmount.style.display = 'block';
                questionAmount.style.display = 'block';
                meanComplexity.style.display = 'block';
@@ -41,7 +42,7 @@ $(document).ready(function() {
                testCaseLess.style.display = 'none';
                document.querySelector('#less_complexity').value = '';
                testCaseRepeat.style.display = 'inline-block';
-           } else if (btn.textContent == "Ручная") {
+           } else if (btn.textContent === 'Ручная') {
                testCaseAmount.style.display = 'block';
                questionAmount.style.display = 'block';
                meanComplexity.style.display = 'block';
@@ -53,8 +54,7 @@ $(document).ready(function() {
                document.querySelector('#less_complexity').value = '';
                testCaseRepeat.style.display = 'inline-block';
            }
-
-       })
+       });
     });
 //end of new block
     $dates = $('#start, #end');
@@ -171,9 +171,9 @@ $(document).ready(function() {
         //$(this).addClass('selected').siblings().removeClass('selected');
         $(this).addClass('selected');
         question_id = $(this).data('id');
-        question_complexity = $(this).data('complexity');
-        question_title = $(this).data('title');
-
+        let question_complexity = $(this).data('complexity');
+        let question_title = $(this).data('title');
+        selected_questions.push({ id: question_id, complexity: question_complexity });
         $('#selected_questions_list').append('<li class="list-group-item py-0 pr-0" data-id="' + question_id + 
             '" data-complexity="' + question_complexity + '" data-title="' + question_title + '">' + 
             question_title + ' (Сложность: '+ question_complexity + ')' + 
@@ -183,6 +183,10 @@ $(document).ready(function() {
 
     $(document).on('click', 'a[data-action="remove-from-selected"]', function(e) {
         //$(this).addClass('selected').siblings().removeClass('selected');
+        var self = $(this);
+        selected_questions = selected_questions.filter(function(question) {
+            return question.id !== Number(self.parent()[0].dataset.id);
+        });
         //TODO зазвыделять строки в таблице, если нужно
         $(this).parent().remove();
     });
@@ -239,18 +243,9 @@ $(document).ready(function() {
         // data.check_point_data.
         //new block
         if(buttonTestConfig.textContent == 'Динамическая'){
-            data.check_point_data.generation_type = 'DYN'
-        } else if (buttonTestConfig.textContent == 'Случайная'){
-            data.check_point_data.generation_type = 'RND'
-        } else {
-            data.check_point_data.generation_type = 'HND'
-        }
-        //end
-        if (type == 'test' || type == 'RA' || type == 'TC') {
-            data.check_point_data.test_config = get_form_data($('#test_config'));
-
-            // добавить про базу данных!!!!!!!!!!!!!!!!
-
+            data.check_point_data.generation_type = 'DYN';
+        } else if (buttonTestConfig.textContent === 'Случайная'){
+            data.check_point_data.generation_type = 'RND';
             var questions_set = [];
             $('#questions_table table tbody tr').each(function(index) {
                 var question = {};
@@ -260,6 +255,18 @@ $(document).ready(function() {
             });
 
             data.questions_set = questions_set;
+
+        } else {
+            data.check_point_data.generation_type = 'HND';
+            data.questions_set = selected_questions;
+        }
+        //end
+        if (type == 'test' || type == 'RA' || type == 'TC') {
+            data.check_point_data.test_config = get_form_data($('#test_config'));
+
+            // добавить про базу данных!!!!!!!!!!!!!!!!
+
+
         }
 
         $('#submit').prop('disabled', true);
