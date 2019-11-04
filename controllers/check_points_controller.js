@@ -313,7 +313,7 @@ var post = {
                 });
 
         } else if (generationType == 'RND') {
-            app.CheckPoint.make(check_point_data, groups, req.body.questions_set)
+            app.CheckPoint.make_experimental(check_point_data, groups, req.body.questions_set)
                 .then(function(result) {
                     res.success(result);
                 }).catch(function(err) {
