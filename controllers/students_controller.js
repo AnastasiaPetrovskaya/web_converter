@@ -5,29 +5,27 @@ var get = {
 
         app.Group.findAll()
             .then(function(groups) {
-                console.log(groups);
                 res.render('students/index', {groups: groups});
             });
     },
 
 
     '/table': function (req, res) {
-        //console.log('req.query', req.query);
         var options = {},
             students_options = {},
             skip = 0,
             limit = 20,
             page = Number(req.query.page) || 1;
 
-        if (page > 1)
+        if (page > 1) {
             skip = limit * (page - 1);
+        }
 
-        if (req.query.group_id)
+        if (req.query.group_id) {
             students_options.group_id = req.query.group_id;
+        }
 
         options.student_id = {$ne: null};
-
-        //console.log('options', options);
 
         app.User.findAndCountAll({
                 where: options,
@@ -42,7 +40,7 @@ var get = {
                 offset: skip
             }).then(function(students) {
                 //console.log('students', students.rows);
-                var pages =  count_pages(students.count.length, limit),
+                var pages =  count_pages(students.count, limit),
                     pages_min = (page - 3 < 1) ? 1 : page - 3,
                     pages_max = (pages_min + 6 > pages) ? pages : pages_min + 6;
 

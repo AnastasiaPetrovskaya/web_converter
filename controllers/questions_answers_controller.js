@@ -11,8 +11,17 @@ var get = {
     },
 
     '/table': function (req, res) {
-        var options = req.query || {},
-            skip = 0,
+        var options = {};
+        if (req.query.user_id) {
+            options.user_id = req.query.user_id
+        }
+        if (req.query.check_point_id) {
+            options.check_point_id = req.query.check_point_id
+        }
+        if (req.query.question_id) {
+            options.question_id = req.query.question_id
+        }
+        var skip = 0,
             limit = 15,
             page = Number(req.query.page) || 1;
 

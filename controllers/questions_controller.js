@@ -47,18 +47,28 @@ var get = {
         //console.log('control_col', control_col);
         delete req.query.control_col;
 
-        var options = req.query || {},
+        var options = {},
             skip = 0,
             limit = 20,
             page = Number(req.query.page) || 1;
 
+        if (req.query.id) {
+            options.id = req.query.id;
+        }
+        if (req.query.db_id) {
+            options.db_id = req.query.db_id;
+        }
+        if (req.query.db_type) {
+            options.db_type = req.query.db_type;
+        }
+        if (req.query.owner_id) {
+            options.owner_id = req.query.owner_id;
+        }
+
         if (page > 1)
             skip = limit * (page - 1);
 
-        if (req.query.db_id)
-            options.db_id = req.query.db_id;
-
-        if (req.user.role.role == 'student') {
+        if (req.user.role.role === 'student') {
             options.db_type = {
                 $or: [
                     {$eq: 'common'},
