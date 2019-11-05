@@ -151,7 +151,7 @@ var post = {
                 //console.log('NNNNNN', err)
                 //найти следующий вопрос или закончить тестирование
                 //console.log('\n\n\nError in make: \n', err);
-                res.error('Error', err);
+                res.error(err);
             });
     },
 
@@ -192,7 +192,7 @@ var post = {
             res.success(result)
         }).catch(function(err) {
             console.log('recheck error', err)
-            res.error('Error', err);
+            res.error(err);
         });
     },
 
