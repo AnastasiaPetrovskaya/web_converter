@@ -116,11 +116,62 @@ describe('relational algebra except convert', function() {
                title: "test",
                alias: "more_then_1 AS O, Фильмы AS Y, Кинотеатры AS X, ФильмыКинотеатры AS Z",
                target_list: "X.НазвКинотеатра, Y.Название",
-               query_body: "((((X [X.ИдКинотеатра = Z.ИдКинотеатра] Z) [Z.ИдФильма = Y.ИдФильма] Y) [X.НазвКинотеатра, Y.Название])EXCEPT(O[O.НазвКинотеатра, O.Название]))"
+               query_body: "((((X [X.ИдКинотеатра = Z.ИдКинотеатра] Z) [Z.ИдФильма = Y.ИдФильма] Y) [X.НазвКинотеатра, Y.Название]) EXCEPT (O[O.НазвКинотеатра, O.Название]))"
            });
 
            query.convert()
                .then(function(res) {
+
+                   assert.equal(query.sql.replace(/\s/g,''),
+                    ('SELECT DISTINCT X.НазвКинотеатра,Y.Название '  +
+                        'FROM Фильмы AS Y, Кинотеатры AS X WHERE EXISTS ' +
+                        '(SELECT * FROM ФильмыКинотеатры AS Z WHERE ' +
+                        'X.ИдКинотеатра=Z.ИдКинотеатра AND Z.ИдФильма=Y.ИдФильма ' +
+                        'AND NOT EXISTS ( SELECT DISTINCT * FROM more_then_1 AS O ' +
+                        'WHERE X.НазвКинотеатра=O.НазвКинотеатра AND Y.Название=O.Название));').replace(/\s/g,''));
+                   done();
+               }).catch(function(err) {
+                   done(err);
+               });
+        });
+
+        it('test6 intersect', function(done) {
+           var query = new RelationalAlgebraQuery({
+               title: "test",
+               alias: "Актер AS D, ФильмыАктер AS F, Актер AS U, ФильмыАктер AS R",
+               target_list: "F.ИдФильма",
+               query_body: "(((D[D.Имя='Вин Дизель' AND D.ИдАктера=F.ИдАктера]F)[F.ИдФильма]) INTERSECT ((U[U.Имя='Джейсон Стейтем' AND U.ИдАктера=R.ИдАктера]R)[R.ИдФильма]))"
+           });
+
+           query.convert()
+               .then(function(res) {
+                   console.log(query.sql);
+
+                   assert.equal(query.sql.replace(/\s/g,''),
+                    ('SELECT DISTINCT X.НазвКинотеатра,Y.Название '  +
+                        'FROM Фильмы AS Y, Кинотеатры AS X WHERE EXISTS ' +
+                        '(SELECT * FROM ФильмыКинотеатры AS Z WHERE ' +
+                        'X.ИдКинотеатра=Z.ИдКинотеатра AND Z.ИдФильма=Y.ИдФильма ' +
+                        'AND NOT EXISTS ( SELECT DISTINCT * FROM more_then_1 AS O ' +
+                        'WHERE X.НазвКинотеатра=O.НазвКинотеатра AND Y.Название=O.Название));').replace(/\s/g,''));
+                   done();
+               }).catch(function(err) {
+                   done(err);
+               });
+        });
+
+
+        it('test7 fail', function(done) {
+           var query = new RelationalAlgebraQuery({
+               title: "test",
+               alias: "ФильмыАктер AS Z, R1 AS R",
+               target_list: "Z.ИдАктера",
+               query_body: "(Z[Z.ИдФильма=R.ИдФильма]R)"
+           });
+
+           query.convert()
+               .then(function(res) {
+                   console.log(query.sql);
 
                    assert.equal(query.sql.replace(/\s/g,''),
                     ('SELECT DISTINCT X.НазвКинотеатра,Y.Название '  +

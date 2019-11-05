@@ -61,9 +61,6 @@ var get = {
 
 
 
-
-
-
     '/:id': function (req, res) {
         var options = {};
         options.id = Number(req.params.id);
@@ -125,14 +122,20 @@ var post = {
         var queries = JSON.parse(req.body.queries);
         var question_id = req.body.question_id;
         var db_id = req.body.db_id;
+        var ctx = {};
 
         //сохранить ответ на вопрос
         app.QuestionAnswer.make(req.user.id, question_id, db_id, queries, check_point_id)
             .then(function(result) {
-                console.log('\n\nresult of QA make\n', result);
+                //console.log('\n\nresult of QA make\n', result);
 
                 //нужно обновить общую оценку
                 if (result) {
+                    ctx = {
+                        mark: result.mark,
+                        comment: result.comment
+                    };
+
                     return app.TestAnswer.update(
                         {total_mark: sequelize.literal('total_mark +' + result.mark)},
                         {where: {
@@ -143,7 +146,7 @@ var post = {
                 }
             }).then(function(result) {
                 console.log('\n\n\nresult of Test Answer upd.\n', result.dataValues,'\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-                res.success({});
+                res.success(ctx);
             }).catch(function(err) {
                 //console.log('NNNNNN', err)
                 //найти следующий вопрос или закончить тестирование
@@ -151,6 +154,48 @@ var post = {
                 res.error('Error', err);
             });
     },
+
+    '/recheck/:id': function (req, res) {
+        var id = Number(req.params.id);
+        var ctx = {};
+
+        app.QuestionAnswer.findOne({
+            where: {id: id},
+            include: [{
+                model: app.Question
+            }],
+        }).then(function (answer) {
+            if (!answer) {
+                throw {message: 'NotFound'};
+            } else {
+                return new Promise(function (resolve, reject) {
+
+                    req.body = {
+                        check_point_id : answer.check_point_id,
+                        queries : JSON.stringify(answer.answer),
+                        question_id : answer.question_id,
+                        db_id : answer.question.db_id,
+                    };
+                    req.user.id = answer.user_id;
+
+                    post['/make'](req, {
+                        success: function (result) {
+                            resolve(result);
+                        },
+                        error: function (error) {
+                            reject(error);
+                        }
+                    });
+                });
+            }
+        }).then(function (result) {
+            res.success(result)
+        }).catch(function(err) {
+            console.log('recheck error', err)
+            res.error('Error', err);
+        });
+    },
+
 
     '/add': function (req, res) {
         var queries = JSON.parse(req.body.queries);
