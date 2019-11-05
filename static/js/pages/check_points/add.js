@@ -2,6 +2,7 @@ $(document).ready(function() {
     var start,
         end;
     let selected_questions = [];
+    let options = {};
     //new block for choosing type of generating algorithm
     const buttonTestConfig = document.querySelector('#dropTestConfig'),
         configButtons = document.querySelectorAll('.dropdown-item'),
@@ -161,9 +162,9 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('click', '#check_points_table ul.pagination a.page-link', function(e) {
+    $(document).on('click', '#questions_table ul.pagination a.page-link', function(e) {
         options.page = e.target.innerHTML;
-        getTable('/check_points/table', options, '#check_points_table');
+        getTable('/questions/table', options, '#questions_table');
     });
 
 

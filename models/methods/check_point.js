@@ -138,6 +138,8 @@ module.exports = function (models) {
                     );
                 })).then(() => {
                     return check_point;
+                }).catch((err) => {
+                    console.log(err);
                 });
             }).then(function(check_point) {
 
@@ -297,15 +299,11 @@ module.exports = function (models) {
                 let ind = 0;
 
                 questions_arr.forEach((question, index) => {
-                    console.log(test_cases[ind]);
                     test_cases[ind].push(question);
                     if ((index + 1) % questions_amount === 0) {
                         ind++;
                     }
                 });
-
-                console.log('test_cases\n', test_cases);
-                console.log('CP ID : ', check_point.id);
 
                 test_cases.forEach((case_questions, index) => {
 
@@ -333,7 +331,7 @@ module.exports = function (models) {
                 return ctx;
             }).catch(function(err) {
                 console.log('make check point method err', err);
-                throw err;
+                throw  err;
             });
         });
     };
@@ -381,6 +379,5 @@ module.exports = function (models) {
                     throw err;
                 });
             });
-        }
-
+        };
     };
