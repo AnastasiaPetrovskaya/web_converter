@@ -15,8 +15,6 @@ describe('Algebra division convert', function() {
 
             query.convert()
                 .then(function(res) {
-                    //console.log("res", res);
-                    //console.log('query', query);
 
                     assert.equal(query.sql.replace(/\s/g,''), ("SELECT DISTINCT X.НазвКинотеатра " +
                         "FROM Кинотеатры AS X, КиноСеансФильм AS Y, Фильмы AS Z " +
@@ -28,6 +26,38 @@ describe('Algebra division convert', function() {
                         "FROM Кинотеатры AS X1, КиноСеансФильм AS Y1, Фильмы AS Z1 " +
                         "WHERE X1.ИдКинотеатра=Y1.ИдКинотеатра AND Y1.ИдФильма=Z1.ИдФильма AND X.НазвКинотеатра = X1.НазвКинотеатра AND " +
                         "Z1.Название = M.Название));").replace(/\s/g,''));
+                    done();
+                }).catch(function(err) {
+                    done(err);
+                    //console.log('err', err);
+                });
+        });
+
+        it('test2', function(done) {
+            var query = new RelationalAlgebraQuery({
+                title: "test",
+                alias: "Кинотеатры AS X, ФильмыКинотеатры AS Y, Фильмы AS Z",
+                target_list: "X.НазвКинотеатра, X.Метро",
+                query_body: '(' +
+                    '((X[X.ИдКинотеатра=Y.ИдКинотеатра]Y))' +
+                    '[Y.ИдФильма:Z.ИдФильма]' +
+                    '(Z)' +
+                    ')'
+            });
+
+            query.convert()
+                .then(function(res) {
+                    assert.equal(query.sql.replace(/\s/g,''), ("SELECT DISTINCT X.НазвКинотеатра, X.Метро" +
+                        'FROM Кинотеатры AS X,ФильмыКинотеатры AS Y' +
+                        'WHERE X.ИдКинотеатра=Y.ИдКинотеатра AND NOT EXISTS ' +
+                            '(SELECT DISTINCT *' +
+                            'FROM Фильмы AS Z' +
+                            'WHERE NOT EXISTS' +
+                                '(SELECT DISTINCT *' +
+                                'FROM Кинотеатры AS X1,ФильмыКинотеатры AS Y1' +
+                                'WHERE X1.ИдКинотеатра=Y1.ИдКинотеатра AND ' +
+                                'X.НазвКинотеатра=X1.НазвКинотеатра AND X.Метро=X1.Метро' +
+                                'AND Y1.ИдФильма=Z.ИдФильма));').replace(/\s/g,''));
                     done();
                 }).catch(function(err) {
                     done(err);
