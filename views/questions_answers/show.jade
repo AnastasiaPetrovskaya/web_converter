@@ -42,12 +42,13 @@ block body
                                                         td= answer.question.text
                                                     tr
                                                         td База данных:
-                                                        td 
+                                                        td
                                                             a(href="/databases/" + answer.question.database.id)= answer.question.database.title
                                         .div.text-xs-center
                                             a.btn.btn-info.mr-1(href="/questions/trial/"+"#{answer.question.id}")
-                                                //i.icon-check2
-                                                | Перейти на страницу выполнения задания
+                                                | Страница выполнения задания
+                                            a#recheck.btn.btn-warning.mr-1
+                                                | Перепроверка
 
                     .col-sm-6
                         .card#schema_card
@@ -66,7 +67,7 @@ block body
                     .col-lg-12
                         .card
                             .card-header.bg-teal.bg-lighten-4
-                                h4.card-title.no-capitalize Запрос на 
+                                h4.card-title.no-capitalize Запрос на
                                     if (answer.question.query_type == 'RA')
                                         | реляционной алгебре
                                     else if (answer.question.query_type == 'TC')
@@ -81,10 +82,10 @@ block body
                                                 tbody
                                                     tr
                                                         if (query.title == 'result')
-                                                            th 
+                                                            th
                                                                 u Итоговый запрос
                                                         else
-                                                            th 
+                                                            th
                                                                 u Промежуточная таблица "#{query.title}"
                                                     if (query.title != 'result')
                                                         tr
@@ -110,7 +111,7 @@ block body
                                                             pre.mb-0
                                                               code.ra(style="white-space:pre-wrap")= query.processed_query_body
 
-                                            
+
                                         //p.courier_new#sql_answer_text(style="white-space:pre-line")= answer.sql
                                         //pre.prettyprint=answer.sql
                                         //pre
@@ -159,6 +160,7 @@ block body
 block append footer
     script.
         var question_id = '#{answer.question.id}';
+        var question_answer_id = '#{answer.id}';
         var db_id = '#{answer.question.database.id}';
         var right_answer_data = !{JSON.stringify(answer.right_answer_data)};
         var answer_data = !{JSON.stringify(answer.data)};

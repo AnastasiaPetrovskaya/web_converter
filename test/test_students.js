@@ -41,6 +41,32 @@ describe('Algebra', function() {
         });
 
 
+        it('test2', function(done) {
+            var query = new RelationalAlgebraQuery({
+                title: "test",
+                alias: "Кинотеатры AS K, Фильмы AS F, ФильмыКинотеатры AS X",
+                target_list: "K.НазвКинотеатра, K.Метро, F.Название, X.ЦенаБилета",
+                query_body: '((' +
+                    '(K[K.Метро="Университет"])[K.ИдКинотеатра])' +
+                        'INTERSECT' +
+                    '(F[F.ИдКинотеатра])' +
+                    ')'
+            });
+
+            query.convert()
+                .then(function(res) {
+                    //console.log("res", res);
+                    //console.log('query', query);
+
+                    assert.equal(query.query_body, "X[X.Nгр = Y.Nгр]Y");
+                    assert.equal(res, "X.Nгр, X.Фио, Y.Спец");
+                    done();
+                }).catch(function(err) {
+                    done(err);
+                    //console.log('err', err);
+                });
+        });
+
 
 
     });

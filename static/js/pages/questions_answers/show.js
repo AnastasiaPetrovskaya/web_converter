@@ -3,34 +3,55 @@ $(document).ready(function() {
 
     $('#schema_card ').innerHeight($('#info_card ').innerHeight());
 
-    //var $editable = $('.editable');
+    $('#recheck').click(function() {
+        $.ajax({
+            type: 'POST',
+            url: '/questions_answers/recheck/' + question_answer_id,
+            async: false
+        }).done(function(res) {
+            if (res.success) {
+                if (res.mark > 0) {
+                    bootbox.dialog({
+                        className: 'slideInDown success mb-2',
+                        onEscape: true,
+                        backdrop: true,
+                        message: 'Правильный ответ!',
+                        buttons: {}
+                    });
+                } else {
+                    var msg = 'Неправильный ответ! ';
+                    if (res.comment) {
+                        msg += res.comment;
+                    }
 
-    //$editable.editable({
-    //    ajaxOptions: { type:'PUT' },
-    //    type: 'textarea',
-    //    mode: 'inline',
-    //    url: '/questions/' + question_id,
-    //    pk: 1, //иначе не уходит ajax
-    //    params: function(params) {
-    //        var obj = {};
+                    bootbox.dialog({
+                        className: 'slideInDown fail mb-2',
+                        onEscape: true,
+                        backdrop: true,
+                        message: msg,
+                        buttons: {}
+                    });
+                }
+            } else {
+                console.log(res);
+                bootboxError(res.error);
+                return false;
+            }
+        }).fail(function(err) {
+            bootbox.alert({
+                message: 'err' + err.message,
+                className: "slideInDown",
+                buttons: {
+                    ok: {
+                        label: "OK",
+                        className: "btn-success"
+                    }
+                }
+            });
+        });
 
-    //        if (params.value === '') {
-    //            obj[params.name] = [''];
-    //        } else {
-    //            obj[params.name] = params.value;
-    //        }
+    });
 
-    //        return obj;
-    //    },
-    //    success: function(res) { window.location.reload(); },
-    //    error: function(res) { console.log(res); },
-    //    validate: function(value) {
-    //        if($.trim(value) == '') return 'Необходимо заполнить данное поле';
-    //    }
-    //});
-
-    //$editable.editable('toggleDisabled');
-    //$balance.editable('toggleDisabled');
 
     $('#edit').click(function() {
         var $this = $(this);
