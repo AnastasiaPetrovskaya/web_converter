@@ -67,6 +67,28 @@ describe('Algebra', function() {
                 });
         });
 
+        it('test3', function(done) {
+            var query = new RelationalAlgebraQuery({
+                title: "test",
+                alias: "Кинотеатры AS X, R AS T, R AS Y",
+                target_list: "X.НазвКинотеатра, X.Метро",
+                query_body: '(' +
+                    '(T[T.ИдКинотеатра=Y.ИдКинотеатра AND T.Название="Форсаж 1" AND Y.Название="Терминатор 1"]Y)' +
+                    '[T.ИдКинотеатра=X.ИдКинотеатра](X)' +
+                    ')'
+            });
+
+            query.convert()
+                .then(function(res) {
+                    
+                    assert.equal(query.query_body, '((T*Y*X)[T.ИдКинотеатра=Y.ИдКинотеатраANDT.Название="Форсажsecret2351"ANDY.Название="Терминаторsecret2351"ANDT.ИдКинотеатра=X.ИдКинотеатра])');
+                    done();
+                }).catch(function(err) {
+                    done(err);
+                    //console.log('err', err);
+                });
+        });
+
 
 
     });
