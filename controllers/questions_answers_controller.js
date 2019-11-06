@@ -73,7 +73,7 @@ var get = {
                     model: app.Question,
                     include: [{
                         model: app.DataBase,
-                        attributes: ['id', 'title']
+                        attributes: ['id', 'title', 'type']
                     }]
                 }],
             }).then(function (answer) {
@@ -105,8 +105,9 @@ var get = {
                 // } else {
                 //     ctx.answer.data = [];
                 // }
+                console.log(ctx.answer.question.database);
 
-                res.render('questions_answers/show', { answer: ctx.answer });
+                res.render('questions_answers/show', { answer: ctx.answer, user: req.user });
             }).catch(function (err) {
                 console.log('err question answer get /:id', err);
                 res.error(err);

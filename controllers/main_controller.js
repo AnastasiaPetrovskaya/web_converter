@@ -29,6 +29,31 @@ var get = {
             });
     },
 
+    '/profile': function(req, res, next) {
+        let id = Number(req.user.id);
+
+        app.User.findOne({
+            where: {id: id},
+            include: [{
+                model: app.Student,
+                include: [{
+                    model: app.Group
+                }]
+            }],
+        }).then(function (student) {
+            //console.log('student', student);
+
+            if (!student) {
+                throw {message: 'NotFound'};
+            } else {
+                res.render('students/show', { student: student.dataValues });
+            }
+        }).catch(function (err) {
+            console.log('err', err);
+            res.error(err);
+        });
+    },
+
     '/login': function(req, res, next) {
         res.render('login');
     },

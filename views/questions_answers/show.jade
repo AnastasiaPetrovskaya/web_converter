@@ -45,10 +45,12 @@ block body
                                                         td
                                                             a(href="/databases/" + answer.question.database.id)= answer.question.database.title
                                         .div.text-xs-center
-                                            a.btn.btn-info.mr-1(href="/questions/trial/"+"#{answer.question.id}")
-                                                | Страница выполнения задания
-                                            a#recheck.btn.btn-warning.mr-1
-                                                | Перепроверка
+                                            if ((Number(user.role_id) === 3 && answer.question.database.type === 'prepare') || Number(user.role_id) === 1)
+                                                a.btn.btn-info.mr-1(href="/questions/trial/"+"#{answer.question.id}")
+                                                    | Страница выполнения задания
+                                            if (Number(user.role_id) === 1)
+                                                a#recheck.btn.btn-warning.mr-1
+                                                    | Перепроверка
 
                     .col-sm-6
                         .card#schema_card
