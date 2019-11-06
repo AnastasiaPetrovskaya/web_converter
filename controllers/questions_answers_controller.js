@@ -62,6 +62,7 @@ var get = {
 
 
     '/:id': function (req, res) {
+	console.log('\n\nquestion answer\nuser\n', req.user, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
         var options = {};
         options.id = Number(req.params.id);
 
@@ -117,6 +118,7 @@ var get = {
 
 var post = {
     '/make': function (req, res) {
+	console.log('\n\nquestion answer make\nuser\n', req.user, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
         //console.log('\n\nПринят ответ от студента\n', req.body, '\n----------------------------------------------\n');
         var check_point_id = req.body.check_point_id;
         var queries = JSON.parse(req.body.queries);
@@ -198,6 +200,7 @@ var post = {
 
 
     '/add': function (req, res) {
+	console.log('\n\nquestion answer add\nuser\n', req.user, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
         var queries = JSON.parse(req.body.queries);
         var question_id = req.body.question_id;
         var db_id = req.body.db_id;

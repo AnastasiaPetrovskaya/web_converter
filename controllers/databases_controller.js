@@ -17,6 +17,7 @@ var count_pages = ApplicationHelper.count_pages;
 var get = {
     '/': function (req, res) {
         //console.log('app', app);
+	console.log('\n\ndatabases get\nuser\n', req.user, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
         res.render('databases/index');
     },
 

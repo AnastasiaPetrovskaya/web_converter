@@ -40,6 +40,7 @@ var get = {
 
 
     '/table': function (req, res) {
+	console.log('checkpoint table request\n', req.quesy, req.user);
         console.log('req.query', req.query);
         var options = {},
             groups_options = {},
@@ -90,6 +91,7 @@ var get = {
 
     '/next_question/:id': function (req, res) {
 
+	console.log('\n' + new Date() + '\nnext question\nuser\n', req.user, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
         var id = Number(req.params.id);
         //Идентифицировать - обычное или динамическое
 
@@ -219,6 +221,7 @@ var get = {
 
 //Это вывод первого вопроса
     '/start_test/:id': function (req, res) {
+	console.log('\n\n' + new Date() + ' start test\n\nbody', req.body, '\n\nquery\n', req.query, '\nparams\n', req.params);
         var id = Number(req.params.id);
 
         app.CheckPoint.findById(id).then(check_point => {
@@ -247,6 +250,7 @@ var get = {
     },
 
     '/:id': function (req, res) {
+	console.log('\n\nget checkpoint\nuser\n', req.user, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
         var options = {};
         options.id = Number(req.params.id);
 
