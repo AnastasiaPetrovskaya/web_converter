@@ -103,6 +103,11 @@ block vertical-menu
             a(href="/")
               i(class="icon-home3")
               span(data-i18n="nav.dash.main" class="menu-title") Домашняя страница
+          if (profile.role_id === 3)
+            li(class=" nav-item")
+              a(href="/profile")
+                i(class="icon-user")
+                span(data-i18n="nav.dash.main" class="menu-title") Профиль
           li(class=" nav-item")
              a(href="/databases")
                i(class="icon-database2")
