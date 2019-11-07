@@ -62,7 +62,7 @@ var get = {
 
 
     '/:id': function (req, res) {
-	console.log('[' + new Date() + '] ', 'question answer\nuser\n', req.user, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
+	console.log('[' + new Date() + '] ', 'question answer\nuser\n', req.user.id + ' : ' + req.user.name, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
         var options = {};
         options.id = Number(req.params.id);
 
