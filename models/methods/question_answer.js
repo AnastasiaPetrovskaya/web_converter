@@ -78,8 +78,8 @@ module.exports = function (models) {
             }).then(() => {
                 return result;
             }).catch(err => {
-                console.log('\nError in total mark finding and upd. Error:\n', error);
-                throw err
+                console.log('\nError in total mark finding and upd. Error:\n', err);
+                throw err;
             });
         }).catch(function(err) {
             return app.QuestionAnswer.create({
