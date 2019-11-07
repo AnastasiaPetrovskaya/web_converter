@@ -58,6 +58,9 @@ module.exports = function (models) {
                 sql: ctx.answer_sql,
                 created: new Date(),
                 updated: new Date(),
+            }).catch((err) => {
+                console.log('QA create error', err);
+                throw err;
             });
 
         }).then(function(result) {
