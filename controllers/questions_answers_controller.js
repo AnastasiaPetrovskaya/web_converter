@@ -145,13 +145,19 @@ var post = {
                             check_point_id: check_point_id,
                             user_id: req.user.id
                         }}
-                    );
+                    ).then((result) => {
+                        console.log('mark updated');
+                        return result;
+                    }).catch((err) => {
+                        console.log('upd mark failed');
+                        throw err;
+                    });
                 }
             }).then(function(result) {
                 console.log('[' + new Date() + '] ', 'result of Test Answer upd.\n', result,'\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
                 res.success(ctx);
             }).catch(function(err) {
-                console.log('[' + new Date() + ']' + 'Question answer make error\n', err)
+                console.log('[' + new Date() + ']' + 'Question answer make error\n', err);
                 res.error(err);
             });
     },
