@@ -42,14 +42,12 @@ var get = {
     },
 
     '/table': function (req, res) {
-        //console.log('req.query', req.query);
         var control_col = req.query.control_col || true;
-        //console.log('control_col', control_col);
         delete req.query.control_col;
 
         var options = {},
             skip = 0,
-            limit = 30,
+            limit = 10,
             page = Number(req.query.page) || 1;
 
         if (req.query.id) {
@@ -77,6 +75,8 @@ var get = {
             };
         }
 
+        console.log(options);
+
         app.Question.findAndCountAll({
                 where: options,
                 include: [
@@ -85,12 +85,10 @@ var get = {
                 limit: limit,
                 offset: skip,
             }).then(function(questions) {
-                //console.log('questions', questions.rows);
                 var pages =  count_pages(questions.count, limit),
                     pages_min = (page - 3 < 1) ? 1 : page - 3,
                     pages_max = (pages_min + 6 > pages) ? pages : pages_min + 6;
 
-                console.log('control_col', control_col);
                 res.render('questions/table', {
                     questions: questions.rows,
                     control_col: control_col,
@@ -99,7 +97,6 @@ var get = {
                     pages_min: pages_min,
                     pages_max: pages_max
                 });
-                //res.render('questions/table', { questions: questions.rows });
             }).catch(function(err) {
                 console.log('err', err);
                 res.error('Error', err);
@@ -171,7 +168,6 @@ var post = {
 
         app.Question.make(question_data)
             .then(function(question) {
-                //console.log('question created', question);
                 res.success({
                     id: question.dataValues.id,
                     title: question.dataValues.title
@@ -183,26 +179,20 @@ var post = {
     },
 
     '/trial': function(req, res) {
-        console.log('question controller post trial', req.body);
-        // console.log('queeries', JSON.parse(req.body.queries));
-        var queries = JSON.parse(req.body.queries);   //?????????????????????????????????
+        console.log('[' + new Date() + '] ', 'question controller post trial', req.body);
+        var queries = JSON.parse(req.body.queries);
         var question_id = req.body.question_id;
         var db_id = req.body.db_id;
-        //console.log('el', queries[0].alias);
-        //res.success({});
-        var algebra_answer = new AlgebraAnswer(JSON.parse(req.body.queries));   //?????????????????????????????????
+        var algebra_answer = new AlgebraAnswer(JSON.parse(req.body.queries));
         console.log('algebra answer', algebra_answer);
 
-        //convert_algebra()
         var ctx = {};
         algebra_answer.create_sql_script()         //Данный метод формирует последовательность SQL запросов — осуществляет необходимы замены на SELECT INTO
             .then(function(result) {
                 ctx.answer_sql = result;
-                //console.log('result', result);
 
                 return app.DataBase.execute_sql(db_id, result);
             }).then(function(sql_res) {
-                //console.log('query_res', sql_res.result.rows);
                 algebra_answer.answer_data = sql_res.result.rows;
                 ctx.answer_data = sql_res.result.rows;
 
@@ -221,7 +211,7 @@ var post = {
                 console.log('!!!!!!!!!!!!!!!!!!algebra_answer', algebra_answer);
                 ctx = Object.assign({}, mark, ctx)
 
-                if (req.user.role.role == 'student') {
+                if (req.user.role.role === 'student') {
                     return app.QuestionAnswer.create({
                         answer: queries,
                         processed_answer: algebra_answer.queries,
@@ -276,7 +266,7 @@ var _delete = {
 
 var put = {
    '/:id':  function (req, res) {
-       console.log('in question put controller', req.body);
+       console.log('[' + new Date() + '] ', 'in question put controller', req.body);
         var id = Number(req.params.id);
         var data = {};
 

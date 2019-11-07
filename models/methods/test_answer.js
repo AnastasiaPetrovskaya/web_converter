@@ -20,55 +20,48 @@ module.exports = function (models) {
 
             return sequelize.transaction(function (t) {
                 return app.TestCase.findAll({
-                        where: options,
-                        attributes: ['id', [sequelize.fn('COUNT', sequelize.col('tests_answers.id')), 'usage_amount']],
-                        include: [{
-                            model: app.TestAnswer,
-                            as: 'tests_answers',
-                            attributes: [],
-                            duplicating: false
-                        }],
-                        raw: true,
-                        group: ['test_case.id'],
-                        transaction: t,
-                        order: [[sequelize.fn('COUNT', sequelize.col('tests_answers.id')), 'ASC']]
-                    }).then(function(result) {
-                        console.log('result', result);
-                        ctx.test_case_id = result[0].id;
+                      where: options,
+                      attributes: ['id', [sequelize.fn('COUNT', sequelize.col('tests_answers.id')), 'usage_amount']],
+                      include: [{
+                          model: app.TestAnswer,
+                          as: 'tests_answers',
+                          attributes: [],
+                          duplicating: false
+                      }],
+                      raw: true,
+                      group: ['test_case.id'],
+                      transaction: t,
+                      order: [[sequelize.fn('COUNT', sequelize.col('tests_answers.id')), 'ASC']]
+                  }).then(function(result) {
+                      console.log('result', result);
+                      ctx.test_case_id = result[0].id;
 
-                        //TODO создать TestAnswer если еще не создана вернуть вопрос для выполнения
-                        return app.TestAnswer.findOne({
-                            where: {
-                                user_id: user_id,
-                                check_point_id: check_point_id,
-                            }
-                        }).then(function(test_answer) {
-                            console.log(test_answer);
+                      //TODO создать TestAnswer если еще не создана вернуть вопрос для выполнения
+                      return app.TestAnswer.findOne({
+                          where: {
+                              user_id: user_id,
+                              check_point_id: check_point_id,
+                          }
+                      }).then(function(test_answer) {
+                          console.log(test_answer);
 
-                            if (test_answer) {
-                                return test_answer;
-                            } else {
-                                return app.TestAnswer.create({
-                                    user_id: user_id,
-                                    check_point_id: check_point_id,
-                                    test_case_id: result[0].id,
-                                    start: new Date()
-                                }, {
-                                    transaction: t
-                                });
-                            }
-                        })
-
-                    }).catch(function(err) {
-                        console.log('make test answer method err', err);
-                        throw err;
-                    });
-            //}).then(function() {
-                //return app.TestAnswer.next_question(check_point_id, user_id);
-            //}).then(function(next_question) {
-
-                //resolve(next_question);
-                //return ctx;
+                          if (test_answer) {
+                              return test_answer;
+                          } else {
+                              return app.TestAnswer.create({
+                                  user_id: user_id,
+                                  check_point_id: check_point_id,
+                                  test_case_id: result[0].id,
+                                  start: new Date()
+                              }, {
+                                  transaction: t
+                              });
+                          }
+                      });
+                  }).catch(function(err) {
+                      console.log('make test answer method err', err);
+                      throw err;
+                  });
             }).catch(function(err) {
                 console.log('make test answer method err', err);
                 throw err;
@@ -147,16 +140,13 @@ module.exports = function (models) {
         если нет отвеченных, то выдать вопрос с начальной сложностью
         если ответов достаточно, то завершить
          */
-        console.log('\n NQD called\n');
         return new Promise(function(resolve,reject){
             //получаем конфиг теста
             app.CheckPoint.findById(check_point_id)
                 .then(check_point => {
-                    //console.log('\nCheck point look\n',check_point);
-                    return check_point.dataValues
+                    return check_point.dataValues;
                 })
                 .then(check_point_config => {
-                    console.log('\nCkeck point config is\n', check_point_config);
                     //Ищем все ответы для этого юзера и теста
                     return app.QuestionAnswer.findAll(
                         {
@@ -165,89 +155,81 @@ module.exports = function (models) {
                                 check_point_id : check_point_id
                             }
                         }
-                    )
-                        .then(answers => {
-                            if (answers.length > 0){
-                                //найти последний отвеченный, посмотреть его оценку и сложность и найти подходящий вопрос
-                                //Но сначала проверить их количество и завершить, если ответов достаточно
-                                if (answers.length == check_point_config.test_config.questions_amount) {
-                                    //Если ответов хватает, то возвращаем ничего
-                                    resolve(null);
-                                } else {
-                                    let last_answer = answers[answers.length-1].dataValues;
-                                    app.Question.findById(last_answer.question_id)
-                                        .then(question => {
-                                            //Возвращаем сложность
-                                            return question.dataValues.complexity;
-                                        })
-                                        .then(complexity => {
-                                            //Если ответ не верный, то находим вопрос меньшей сложности
-                                            if(last_answer.mark == 0){
-                                                let new_complexity = (complexity>check_point_config.test_config.less_complexity)?(complexity-1):check_point_config.test_config.less_complexity;
-                                                return app.Question.findAll(
-                                                    {
-                                                        where : {
-                                                            query_type: check_point_config.type,
-                                                            complexity: new_complexity
-                                                        }
-                                                    }
-                                                )
-                                                    .catch(error => {
-                                                        console.log('\nError in new question finding. Error:\n', error);
-                                                        throw error
-                                                    })
-                                            } else {
-                                                //Если верно, то усложняем
-                                                let new_complexity = (complexity<check_point_config.test_config.great_complexity)?(complexity+1):check_point_config.test_config.great_complexity;
-                                                return app.Question.findAll(
-                                                    {
-                                                        where : {
-                                                            query_type: check_point_config.type,
-                                                            complexity: new_complexity
-                                                        }
-                                                    }
-                                                )
-                                                    .catch(error => {
-                                                        console.log('\nError in new question finding. Error:\n', error);
-                                                        throw error
-                                                    })
-                                            }
-                                        })
-                                        .then(questions => {
-                                            let index = Math.floor(Math.random() * questions.length);
-                                            resolve(questions[index].dataValues)
-                                        })
-                                        .catch(error => {
-                                            console.log('\nQuestion finding failed. Error:\n', error);
-                                            throw error
-                                        });
-                                }
+                    ).then(answers => {
+                        if (answers.length > 0){
+                            //найти последний отвеченный, посмотреть его оценку и сложность и найти подходящий вопрос
+                            //Но сначала проверить их количество и завершить, если ответов достаточно
+                            if (answers.length >= check_point_config.test_config.questions_amount) {
+                                //Если ответов хватает, то возвращаем ничего
+                                resolve(null);
                             } else {
-                                //вернуть вопрос стартовой сложности
-                                //TODO убирать уже ранее отвеченные вопросы
-                                console.log('\n\nDataValues\n');
-                                console.log(check_point_config);
-                                return app.Question.findAll(
-                                    {
-                                        where : {
-                                            query_type : check_point_config.type,
-                                            complexity : check_point_config.test_config.start_complexity
+                                let last_answer = answers[answers.length-1].dataValues;
+                                app.Question.findById(last_answer.question_id).then(question => {
+                                        //Возвращаем сложность
+                                        return question.dataValues.complexity;
+                                    }).then(complexity => {
+                                        //Если ответ не верный, то находим вопрос меньшей сложности
+                                        if(last_answer.mark === 0){
+                                            let new_complexity = (complexity>check_point_config.test_config.less_complexity)?(complexity-1):check_point_config.test_config.less_complexity;
+                                            return app.Question.findAll(
+                                                {
+                                                    where : {
+                                                        query_type: check_point_config.type,
+                                                        complexity: new_complexity
+                                                    }
+                                                }
+                                            )
+                                                .catch(error => {
+                                                    console.log('\nError in new question finding. Error:\n', error);
+                                                    throw error;
+                                                });
+                                        } else {
+                                            //Если верно, то усложняем
+                                            let new_complexity = (complexity < check_point_config.test_config.great_complexity) ? (complexity + 1) : check_point_config.test_config.great_complexity;
+                                            return app.Question.findAll(
+                                                {
+                                                    where : {
+                                                        query_type: check_point_config.type,
+                                                        complexity: new_complexity
+                                                    }
+                                                }
+                                            ).catch(error => {
+                                                console.log('\nError in new question finding. Error:\n', error);
+                                                throw error;
+                                            });
                                         }
-                                    }
-                                )
-                                    .then(questions => {
-                                        //выбрать случайный вопрос
+                                    }).then(questions => {
                                         let index = Math.floor(Math.random() * questions.length);
-                                        resolve(questions[index].dataValues)
-                                    })
-                                    .catch(err => {
-                                        console.log('\nError in search questions : \n', err);
-                                        throw err
-                                    })
+                                        resolve(questions[index].dataValues);
+                                    }).catch(error => {
+                                        console.log('\nQuestion finding failed. Error:\n', error);
+                                        throw error;
+                                    });
                             }
-                        })
-                })
-        })
+                        } else {
+                            //вернуть вопрос стартовой сложности
+                            //TODO убирать уже ранее отвеченные вопросы
+                            console.log('\n\nDataValues\n');
+                            console.log(check_point_config);
+                            return app.Question.findAll(
+                                {
+                                    where : {
+                                        query_type : check_point_config.type,
+                                        complexity : check_point_config.test_config.start_complexity
+                                    }
+                                }
+                            ).then(questions => {
+                                    //выбрать случайный вопрос
+                                    let index = Math.floor(Math.random() * questions.length);
+                                    resolve(questions[index].dataValues);
+                            }).catch(err => {
+                                console.log('\nError in search questions : \n', err);
+                                throw err;
+                            });
+                        }
+                    });
+                });
+        });
     },
 
     TestAnswer.next_question = function(check_point_id, user_id) {
@@ -309,8 +291,6 @@ module.exports = function (models) {
             throw err;
         });
     }
-
-
 };
 
 

@@ -40,7 +40,7 @@ var get = {
 
 
     '/table': function (req, res) {
-	console.log('checkpoint table request\n', req.quesy, req.user);
+	console.log('[' + new Date() + '] ', 'checkpoint table request\n', req.user.id + ' : ' + ']', req.query);
         console.log('req.query', req.query);
         var options = {},
             groups_options = {},
@@ -78,7 +78,7 @@ var get = {
                 res.render('check_points/table', {
                     check_points: check_points.rows,
                     page: page,
-                    pages: pages,
+                    pages: pages ,
                     pages_min: pages_min,
                     pages_max: pages_max
                 });
@@ -91,7 +91,7 @@ var get = {
 
     '/next_question/:id': function (req, res) {
 
-	console.log('\n' + new Date() + '\nnext question\nuser\n', req.user, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
+	console.log('[' + new Date() + '] ', 'next question\nuser\n', req.user.id + ' : ' + req.user.name, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
         var id = Number(req.params.id);
         //Идентифицировать - обычное или динамическое
 
@@ -99,12 +99,12 @@ var get = {
             console.log('\nTo define type configs:\n', check_point.dataValues.test_config);
 
             if (check_point.dataValues.test_config.less_complexity > 0) {
-                return 'DYN'
+                return 'DYN';
             } else {
-                return 'RND'
+                return 'RND';
             }
         }).then(check_point_type => {
-            if (check_point_type == 'DYN') {
+            if (check_point_type === 'DYN') {
                 return app.TestAnswer.next_question_dynamic(id, req.user.id).then(question => {
                     if (question) {
                         res.render('questions/answer', {question : question, check_point_id : id});
@@ -147,12 +147,16 @@ var get = {
                             });
                         }).then(function (check_point) {
                             res.render('check_points/tests_results/show', {check_point: check_point});
+                            return app.TestAnswer.update(
+                                { end: new Date() },
+                                { where: { check_point_id: id, user_id: Number(req.user.id) } }
+                            );
                         }).catch(function (err) {
                             //найти следующий вопрос или закончить тестирование
                             res.error('Error', err);
                         });
                     }
-                })
+                });
             } else {
 
                 //найти следующий вопрос или закончить тестирование
@@ -185,22 +189,6 @@ var get = {
                                         as: 'tests_answers',
                                         where: {user_id: req.user.id}
                                     },
-                                    //хрен пойми зачем это все тут нужно)
-                                    // {
-                                    //     model: app.TestCase,
-                                    //     as: 'test_cases',
-                                    //     include: [{
-                                    //         model: app.TestCaseQuestion,
-                                    //         as: 'questions',
-                                    //         include: [{
-                                    //             model: app.Question,
-                                    //             include: [{
-                                    //                 model: app.QuestionAnswer,
-                                    //                 as: 'answers'
-                                    //             }]
-                                    //         }]
-                                    //     }]
-                                    // }
                                 ]
                             });
                         }).then(function (check_point) {
@@ -221,7 +209,7 @@ var get = {
 
 //Это вывод первого вопроса
     '/start_test/:id': function (req, res) {
-	console.log('\n\n' + new Date() + ' start test\n\nbody', req.body, '\n\nquery\n', req.query, '\nparams\n', req.params);
+	console.log('[' + new Date() + '] ', ' start test\n\nbody', req.body, '\n\nquery\n', req.query, '\nparams\n', req.params);
         var id = Number(req.params.id);
 
         app.CheckPoint.findById(id).then(check_point => {
@@ -250,7 +238,7 @@ var get = {
     },
 
     '/:id': function (req, res) {
-	console.log('\n\nget checkpoint\nuser\n', req.user, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
+	console.log('[' + new Date() + '] ', 'get checkpoint\nuser\n', req.user.id + ' : ' + req.user.name, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
         var options = {};
         options.id = Number(req.params.id);
 
@@ -427,7 +415,7 @@ var _delete = {
 
 var put = {
    '/:id':  function (req, res) {
-       console.log('in question put controller', req.body);
+        console.log('in checkpoint question put controller', req.body);
         var id = Number(req.params.id);
         var data = {};
 
@@ -466,4 +454,4 @@ module.exports = {
         put: put,
         delete: _delete
     }
-}
+};

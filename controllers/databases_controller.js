@@ -81,8 +81,7 @@ var get = {
     '/schema/:id': function (req, res) {
         app.DataBase.get_schema(req.params.id)
             .then(function(filename) {
-                //console.log('filename', filename);
-                res.success({'file': filename })
+                res.success({'file': filename });
             }).catch(function(err) {
                 console.log('err', err);
                 res.error('Error', err);

@@ -5,7 +5,7 @@ var User = app.User,
 
 var get = {
     '/': function(req, res, next) {
-	console.log('request main page\n', req.user);
+	console.log('[' + new Date() + '] ', 'request main page\n', req.user.id + ' : ' + req.user.name);
         var options = {},
             groups_options = {};
 
@@ -76,7 +76,7 @@ var post = {
             password = req.body.password,
             ctx = {};
 
-	console.log('login request\n', req.body);
+	console.log('[' + new Date() + '] ', 'login request\n', req.body);
 
         app.User.findOne({
             where: {login: username},

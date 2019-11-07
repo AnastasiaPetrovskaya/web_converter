@@ -62,7 +62,7 @@ var get = {
 
 
     '/:id': function (req, res) {
-	console.log('\n\nquestion answer\nuser\n', req.user, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
+	console.log('[' + new Date() + '] ', 'question answer\nuser\n', req.user, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
         var options = {};
         options.id = Number(req.params.id);
 
@@ -119,7 +119,7 @@ var get = {
 
 var post = {
     '/make': function (req, res) {
-	console.log('\n\nquestion answer make\nuser\n', req.user, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
+	console.log('[' + new Date() + '] ', 'question answer make\nuser\n', req.user.id + ' : ' + req.user.name, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
         //console.log('\n\nПринят ответ от студента\n', req.body, '\n----------------------------------------------\n');
         var check_point_id = req.body.check_point_id;
         var queries = JSON.parse(req.body.queries);
@@ -130,7 +130,7 @@ var post = {
         //сохранить ответ на вопрос
         app.QuestionAnswer.make(req.user.id, question_id, db_id, queries, check_point_id)
             .then(function(result) {
-                //console.log('\n\nresult of QA make\n', result);
+                console.log('\n\nresult of QA make\n', result.dataValues);
 
                 //нужно обновить общую оценку
                 if (result) {
@@ -148,12 +148,10 @@ var post = {
                     );
                 }
             }).then(function(result) {
-                console.log('\n\n\nresult of Test Answer upd.\n', result.dataValues,'\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+                console.log('[' + new Date() + '] ', 'result of Test Answer upd.\n', result,'\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
                 res.success(ctx);
             }).catch(function(err) {
-                //console.log('NNNNNN', err)
-                //найти следующий вопрос или закончить тестирование
-                //console.log('\n\n\nError in make: \n', err);
+                console.log('[' + new Date() + ']' + 'Question answer make error\n', err)
                 res.error(err);
             });
     },
@@ -201,16 +199,14 @@ var post = {
 
 
     '/add': function (req, res) {
-	console.log('\n\nquestion answer add\nuser\n', req.user, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
+	console.log('\n\nquestion answer add\nuser\n', req.user.id + ' : ' + req.user.name, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
         var queries = JSON.parse(req.body.queries);
         var question_id = req.body.question_id;
         var db_id = req.body.db_id;
         var ctx = {};
 
-        app.Question.findById(question_id)
-        .then(function (question) {
+        app.Question.findById(question_id).then(function (question) {
             ctx.question = question;
-            // console.log('smooooootrim na q', q);
             if(question.query_type == "RA"){
                     ctx.query_answer = new AlgebraAnswer(JSON.parse(req.body.queries));
             }
@@ -236,8 +232,6 @@ var post = {
                 ctx.right_answer_data = sql_res.result.rows;
                 //сверка результатов выполнения двух запросов
                 var mark = ctx.query_answer.check();
-                //console.log('!!!!!!!!!!!!!!!!!!mark', mark);
-                //console.log('!!!!!!!!!!!!!!!!!!algebra_answer', ctx.query_answer);
                 ctx = Object.assign({}, mark, ctx)
 
                 if (req.user.role.role == 'student') {
