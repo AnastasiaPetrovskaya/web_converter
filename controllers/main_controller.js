@@ -5,6 +5,7 @@ var User = app.User,
 
 var get = {
     '/': function(req, res, next) {
+	console.log('request main page\n', req.user);
         var options = {},
             groups_options = {};
 
@@ -59,6 +60,7 @@ var get = {
     },
 
     '/logout': function(req, res, next) {
+	console.log('logout request\n', req.user);
         req.session.destroy();
         res.clearCookie('session');
         console.log('req.session after destroy', req.session);
@@ -74,6 +76,7 @@ var post = {
             password = req.body.password,
             ctx = {};
 
+	console.log('login request\n', req.body);
 
         app.User.findOne({
             where: {login: username},

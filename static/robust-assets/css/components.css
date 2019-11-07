@@ -4066,6 +4066,10 @@ footer.footer-dark {
 
 .navigation li {
   position: relative;
+<<<<<<< HEAD
+  /*white-space: nowrap;*/
+=======
+>>>>>>> bc8941bfb221999c9520d88a833aac838e02ae93
 }
 
 .navigation li a {
