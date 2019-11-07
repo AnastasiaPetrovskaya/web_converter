@@ -9,7 +9,7 @@ module.exports = function (models) {
 
     QuestionAnswer.make = function (user_id, question_id, db_id, queries, check_point_id) {
         var ctx = {};
-        console.log('Вызвана QuestionAnswer.make\n\n-------------------------------------\n\n');
+        console.log('[' + new Date() + '] ', 'Вызвана QuestionAnswer.make');
 
         return app.Question.findById(question_id).then((result) => {
             return result.dataValues;
@@ -28,7 +28,6 @@ module.exports = function (models) {
             return app.DataBase.execute_sql(db_id, result);
 
         }).then(function(sql_res) {
-            //console.log('\n\nРезультат выполнения SQL есть\n------------------------------------\n');
             ctx.query_answer.answer_data = sql_res.result.rows;
             ctx.answer_data = sql_res.result.rows;
 
@@ -43,7 +42,6 @@ module.exports = function (models) {
             ctx.right_answer_data = sql_res.result.rows;
             //сверка результатов выполнения двух запросов
             var mark = ctx.query_answer.check();
-            //console.log('\n\n\nОценка за вопрос : ', mark,'\n------------------------------------------\n');
             ctx = Object.assign({}, mark, ctx);
 
             return app.QuestionAnswer.create({
@@ -59,7 +57,7 @@ module.exports = function (models) {
 
         }).then(function(result) {
 
-            console.log('\n\n\nAnswer created with data:\n', result.dataValues, '\n------------------------------\n');
+            console.log('[' + new Date() + '] ', 'Answer created with data:\n', result.dataValues);
             //Обновить общую оценку
             return app.TestAnswer.findOne({
                 where : {
@@ -92,14 +90,12 @@ module.exports = function (models) {
                 sql: (ctx.answer_sql ? ctx.answer_sql : "Не удалось выполнить генерацию SQL.")
             })
             .then(function(result) {
-                //console.log('\n\n\nQA create result :\n', result.dataValues,'\n+=+=+=+=+=+=+=++=+=+=+=+=+=+=++=+=+=+=+=+=+=++=+=+=+=+=+=+=+')
                 throw err;
             })
             .catch(function(err_saving_log) {
-                //console.log('\n\n\nerror creating question answer if err!!!!!!!!!!!!!!!!!!!!!!!!!!!', err_saving_log);
                 throw err;
             });
-        })
+        });
     };
 
 
