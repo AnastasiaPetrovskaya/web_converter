@@ -2,6 +2,7 @@
 /node_modules
 /static
 /mdb2postgers
+/log
 converter.service
 =======
 node_modules
