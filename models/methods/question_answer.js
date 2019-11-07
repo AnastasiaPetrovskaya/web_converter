@@ -55,7 +55,9 @@ module.exports = function (models) {
                 check_point_id: check_point_id,
                 mark: mark.mark,
                 error: mark.comment,
-                sql: ctx.answer_sql
+                sql: ctx.answer_sql,
+                created: new Date(),
+                updated: new Date(),
             });
 
         }).then(function(result) {
