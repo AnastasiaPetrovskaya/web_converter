@@ -13,7 +13,7 @@
   "unused": true,
   "undef": true,
   "scripturl": true,
-  "strict": true,
+  "strict": false,
   "quotmark": "single",
   "esversion": 6,
 

@@ -29,7 +29,7 @@ module.exports = function (models) {
             return app.DataBase.execute_sql(db_id, result);
 
         }).then(function(sql_res) {
-            console.log('[' + new Date() + '] user ' + user_id, ' question: ', question_id, 'has result\n', JSON.stringify(sql_res.result.rows, null, 4));
+            console.log('[' + new Date() + '] user ' + user_id, ' question: ', question_id, 'has result rows(N)\n', sql_res.result.rows.length);
             ctx.query_answer.answer_data = sql_res.result.rows;
             ctx.answer_data = sql_res.result.rows;
 
@@ -74,12 +74,12 @@ module.exports = function (models) {
                 }
             }).then(test_answer => {
                 if (!test_answer) {
-                    throw new Error();
+                    return  { message: 'Нельзя обновить оценку для тренировочного вопроса'};
+                } else {
+                    test_answer.total_mark = test_answer.dataValues.total_mark + result.dataValues.mark;
+
+                    return test_answer.save();
                 }
-
-                test_answer.total_mark = test_answer.dataValues.total_mark + result.dataValues.mark;
-
-                return test_answer.save();
             }).then(() => {
                 return result;
             }).catch(err => {

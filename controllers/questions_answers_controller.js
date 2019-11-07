@@ -1,4 +1,3 @@
-//var convert_algebra = require('../lib/re_al_to_sql').convert_algebra_to_sql;
 var AlgebraAnswer = require('../lib/RelationalAlgebraAnswer');
 var TupleAnswer = require('../lib/TupleCalculusAnswer');
 var count_pages = ApplicationHelper.count_pages;
@@ -13,13 +12,13 @@ var get = {
     '/table': function (req, res) {
         var options = {};
         if (req.query.user_id) {
-            options.user_id = req.query.user_id
+            options.user_id = req.query.user_id;
         }
         if (req.query.check_point_id) {
-            options.check_point_id = req.query.check_point_id
+            options.check_point_id = req.query.check_point_id;
         }
         if (req.query.question_id) {
-            options.question_id = req.query.question_id
+            options.question_id = req.query.question_id;
         }
         var skip = 0,
             limit = 15,
@@ -101,13 +100,6 @@ var get = {
                         });
                 }
             }).then(function(student_sql_res) {
-                // if (student_sql_res) {
-                //     ctx.answer.data = student_sql_res.result.rows;
-                // } else {
-                //     ctx.answer.data = [];
-                // }
-                console.log(ctx.answer.question.database);
-
                 res.render('questions_answers/show', { answer: ctx.answer, user: req.user });
             }).catch(function (err) {
                 console.log('err question answer get /:id', err);
@@ -119,8 +111,8 @@ var get = {
 
 var post = {
     '/make': function (req, res) {
-	console.log('[' + new Date() + '] ', 'question answer make\nuser\n', req.user.id + ' : ' + req.user.name, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
-        //console.log('\n\nПринят ответ от студента\n', req.body, '\n----------------------------------------------\n');
+	    console.log('[' + new Date() + '] ', 'question answer make\nuser\n', req.user.id + ' : ' + req.user.name,
+            '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
         var check_point_id = req.body.check_point_id;
         var queries = JSON.parse(req.body.queries);
         var question_id = req.body.question_id;
@@ -130,7 +122,7 @@ var post = {
         //сохранить ответ на вопрос
         app.QuestionAnswer.make(req.user.id, question_id, db_id, queries, check_point_id)
             .then(function(result) {
-                console.log('\n\nresult of QA make\n', result.dataValues);
+                console.log('[' + new Date() + '] user ', req.user.id + ' : ' + req.user.name, ' Вызвана QuestionAnswer.make:\n', result.id, result.answer);
 
                 //нужно обновить общую оценку
                 if (result) {
@@ -196,16 +188,16 @@ var post = {
                 });
             }
         }).then(function (result) {
-            res.success(result)
+            res.success(result);
         }).catch(function(err) {
-            console.log('recheck error', err)
+            console.log('recheck error', err);
             res.error(err);
         });
     },
 
 
     '/add': function (req, res) {
-	console.log('\n\nquestion answer add\nuser\n', req.user.id + ' : ' + req.user.name, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
+	    console.log('\n\nquestion answer add\nuser\n', req.user.id + ' : ' + req.user.name, '\nquery\n', req.query, '\nbody\n', req.body, '\nparams\n', req.params);
         var queries = JSON.parse(req.body.queries);
         var question_id = req.body.question_id;
         var db_id = req.body.db_id;
