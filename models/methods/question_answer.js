@@ -9,7 +9,7 @@ module.exports = function (models) {
 
     QuestionAnswer.make = function (user_id, question_id, db_id, queries, check_point_id) {
         var ctx = {};
-        console.log('[' + new Date() + '] ', 'Вызвана QuestionAnswer.make');
+        console.log('[' + new Date() + '] user ' + user_id, ' question: ', question_id, ' Вызвана QuestionAnswer.make');
 
         return app.Question.findById(question_id).then((result) => {
             return result.dataValues;
@@ -25,9 +25,11 @@ module.exports = function (models) {
 
         }).then(function(result) {
             ctx.answer_sql = result;
+            console.log('[' + new Date() + '] user ' + user_id, ' question: ', question_id, 'sql generated:\n', result);
             return app.DataBase.execute_sql(db_id, result);
 
         }).then(function(sql_res) {
+            console.log('[' + new Date() + '] user ' + user_id, ' question: ', question_id, 'has result\n', JSON.stringify(sql_res.result.rows, null, 4));
             ctx.query_answer.answer_data = sql_res.result.rows;
             ctx.answer_data = sql_res.result.rows;
 
@@ -41,6 +43,7 @@ module.exports = function (models) {
             ctx.query_answer.right_answer_data = sql_res.result.rows;
             ctx.right_answer_data = sql_res.result.rows;
             //сверка результатов выполнения двух запросов
+            console.log('[' + new Date() + '] user ' + user_id, ' question: ', question_id, 'compare answers');
             var mark = ctx.query_answer.check();
             ctx = Object.assign({}, mark, ctx);
 
