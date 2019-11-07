@@ -275,6 +275,7 @@ var post = {
 
         groups = req.body.groups_set;
 
+
         check_point_data.owner_id = req.user.id;
         let generationType = check_point_data.generation_type,
             testConfig = check_point_data.test_config;
@@ -310,6 +311,7 @@ var post = {
                 res.success(result);
             }).catch((error) => {
                 console.log('err add hand checkpoint', error);
+                res.error(error);
             });
         }
     },

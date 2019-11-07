@@ -138,8 +138,6 @@ module.exports = function (models) {
                     );
                 })).then(() => {
                     return check_point;
-                }).catch((err) => {
-                    console.log(err);
                 });
             }).then(function(check_point) {
 
