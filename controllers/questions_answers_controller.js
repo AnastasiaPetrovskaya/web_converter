@@ -138,7 +138,6 @@ var post = {
                             user_id: req.user.id
                         }}
                     ).then((result) => {
-                        console.log('mark updated');
                         return result;
                     }).catch((err) => {
                         console.log('upd mark failed');

@@ -65,7 +65,7 @@ module.exports = function (models) {
 
         }).then(function(result) {
 
-            console.log('[' + new Date() + '] ', 'Answer created with data:\n', result.dataValues);
+            console.log('[' + new Date() + '] ', 'Answer created with data:\n', result.dataValues.answer);
             //Обновить общую оценку
             return app.TestAnswer.findOne({
                 where : {
@@ -74,7 +74,7 @@ module.exports = function (models) {
                 }
             }).then(test_answer => {
                 if (!test_answer) {
-                    return  { message: 'Нельзя обновить оценку для тренировочного вопроса'};
+                    throw  { message: 'Нельзя обновить оценку для тренировочного вопроса' };
                 } else {
                     test_answer.total_mark = test_answer.dataValues.total_mark + result.dataValues.mark;
 
@@ -95,7 +95,7 @@ module.exports = function (models) {
                 check_point_id: check_point_id,
                 mark: 0,
                 error: err.message,
-                sql: (ctx.answer_sql ? ctx.answer_sql : "Не удалось выполнить генерацию SQL.")
+                sql: ctx.answer_sql ? ctx.answer_sql : 'Не удалось выполнить генерацию SQL.'
             })
             .then(function(result) {
                 throw err;
