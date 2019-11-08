@@ -135,7 +135,7 @@ describe('relational algebra except convert', function() {
                });
         });
 
-        it('test6 intersect', function(done) {
+        it('test6 intersect #todo', function(done) {
            var query = new RelationalAlgebraQuery({
                title: "test",
                alias: "Актер AS D, ФильмыАктер AS F, Актер AS U, ФильмыАктер AS R",
@@ -161,30 +161,6 @@ describe('relational algebra except convert', function() {
         });
 
 
-        it('test7 fail', function(done) {
-           var query = new RelationalAlgebraQuery({
-               title: "test",
-               alias: "ФильмыАктер AS Z, R1 AS R",
-               target_list: "Z.ИдАктера",
-               query_body: "(Z[Z.ИдФильма=R.ИдФильма]R)"
-           });
-
-           query.convert()
-               .then(function(res) {
-                   console.log(query.sql);
-
-                   assert.equal(query.sql.replace(/\s/g,''),
-                    ('SELECT DISTINCT X.НазвКинотеатра,Y.Название '  +
-                        'FROM Фильмы AS Y, Кинотеатры AS X WHERE EXISTS ' +
-                        '(SELECT * FROM ФильмыКинотеатры AS Z WHERE ' +
-                        'X.ИдКинотеатра=Z.ИдКинотеатра AND Z.ИдФильма=Y.ИдФильма ' +
-                        'AND NOT EXISTS ( SELECT DISTINCT * FROM more_then_1 AS O ' +
-                        'WHERE X.НазвКинотеатра=O.НазвКинотеатра AND Y.Название=O.Название));').replace(/\s/g,''));
-                   done();
-               }).catch(function(err) {
-                   done(err);
-               });
-        });
 
     });
 });

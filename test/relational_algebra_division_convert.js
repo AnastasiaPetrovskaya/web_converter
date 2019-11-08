@@ -80,13 +80,13 @@ describe('Algebra division convert', function() {
             query.convert()
                 .then(function(res) {
                     console.log(query.sql);
-                    
+
                     assert.equal(query.sql.replace(/\s/g,''), ("SELECT DISTINCT X.НазвКинотеатра, X.Метро" +
                         'FROM Кинотеатры AS X,ФильмыКинотеатры AS Y' +
                         'WHERE X.ИдКинотеатра=Y.ИдКинотеатра AND NOT EXISTS ' +
                             '(SELECT DISTINCT *' +
                             'FROM Фильмы AS Z' +
-                            'WHERE NOT EXISTS' +
+                            "WHERE (Z.Страна='США'ORZ.Страна='СССР') AND NOT EXISTS" +
                                 '(SELECT DISTINCT *' +
                                 'FROM Кинотеатры AS X1,ФильмыКинотеатры AS Y1' +
                                 'WHERE X1.ИдКинотеатра=Y1.ИдКинотеатра AND ' +
