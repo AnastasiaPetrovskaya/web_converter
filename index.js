@@ -41,6 +41,7 @@ http.require_controller('check_points');
 http.require_controller('databases');
 http.require_controller('questions');
 http.require_controller('questions_answers');
+http.require_controller('tests_answers');
 http.require_controller('groups');
 http.require_controller('students');
 http.require_controller('materials');

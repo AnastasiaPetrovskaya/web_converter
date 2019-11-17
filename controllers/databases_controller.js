@@ -1,22 +1,9 @@
-/*var Partner = app.Partner,
-    User = app.User,
-    Role = app.Role,
-    Terminal = app.Terminal,
-    TerminalSession = app.TerminalSession,
-    MoneyTransfer = app.MoneyTransfer,
-    Jackpot = app.Jackpot,
-    count_pages = ApplicationHelper.count_pages,
-    check_access = ApplicationHelper.check_access,
-    PartnersHelper = require('../helpers/partners_helper');
-*/
-//var multiparty = require('multiparty');
 var multer  = require('multer')
 var upload = multer({ dest: 'mdb2postgres/' }).array('db', 12);
 var count_pages = ApplicationHelper.count_pages;
 
 var get = {
     '/': function (req, res) {
-        //console.log('app', app);
         res.render('databases/index');
     },
 
@@ -27,8 +14,8 @@ var get = {
 
                 //console.log('result in controller tables_data', result);
                 res.render('databases/tables_data', {
-                    tables: result.tables_data, 
-                    db_id: result.db_id 
+                    tables: result.tables_data,
+                    db_id: result.db_id
                 });
             }).catch(function(err) {
                 console.log('err', err);
@@ -43,9 +30,9 @@ var get = {
             page = Number(req.query.page) || 1;
 
         if (req.user.role.role == 'student') {
-            options.type = { 
+            options.type = {
                 $or: [
-                    {$eq: 'common'}, 
+                    {$eq: 'common'},
                     {$eq: 'prepare'}
                 ]
             };
@@ -64,7 +51,7 @@ var get = {
                     pages_min = (page - 3 < 1) ? 1 : page - 3,
                     pages_max = (pages_min + 6 > pages) ? pages : pages_min + 6;
 
-                res.render('databases/table', { 
+                res.render('databases/table', {
                     dbs: dbs.rows,
                     page: page,
                     pages: pages,
@@ -93,9 +80,9 @@ var get = {
         options.id = Number(req.params.id);
 
         if (req.user.role.role == 'student') {
-            options.type = { 
+            options.type = {
                 $or: [
-                    {$eq: 'common'}, 
+                    {$eq: 'common'},
                     {$eq: 'prepare'}
                 ]
             };

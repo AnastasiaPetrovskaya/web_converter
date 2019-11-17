@@ -10,37 +10,35 @@ var get = {
     },
 
     '/add':  function (req, res) {
-    var ctx = {};
-    app.Group.findAll()
-        .then (function(groups){
-            ctx.group = groups;
+        var ctx = {};
+
+        app.Group.findAll().then (function(groups){
+            ctx.groups_list = groups;
 
             return app.DataBase.findAll()
-        }).then (function (database){
-                res.render('check_points/add', {groups: ctx.group, databases:database});
+        }).then (function (databases){
+            ctx.databases_list = databases;
+
+            res.render('check_points/add', ctx);
         });
     },
 
-
-
     '/copy/:id': function (req, res) {
         console.log('Check point copy method\n');
+
         var id = Number(req.params.id);
 
         app.CheckPoint.findOne({
-                where : {id: id},
-            }).then(function (check_point) {
-                console.log("CP data\n", check_point);
-                res.render('check_points/add', {check_point: check_point});
-            }).catch(function(err) {
-                console.log('err', err);
-                res.error('Error', err);
-            });
+            where : {id: id},
+        }).then(function (check_point) {
+            console.log("CP data\n", check_point);
+            res.render('check_points/add', {check_point: check_point});
+        }).catch(function(err) {
+            res.error('Error', err);
+        });
     },
 
-
     '/table': function (req, res) {
-        console.log('req.query', req.query);
         var options = {},
             groups_options = {},
             skip = 0,
@@ -218,7 +216,7 @@ var get = {
         });
     },
 
-//Это вывод первого вопроса
+    //Это вывод первого вопроса
     '/start_test/:id': function (req, res) {
         var id = Number(req.params.id);
 
@@ -236,50 +234,44 @@ var get = {
             } else {
                 app.TestAnswer.make(id, req.user.id).then(function(result) {
                     res.redirect('/check_points/next_question/' + id)
-                    //res.render('questions/answer', { question: questions[0], check_point_id : id });
                 }).catch(function(err) {
-                    console.log('err', err);
                     res.error('Error', err);
                 });
             }
         });
-
-
     },
 
     '/:id': function (req, res) {
         var options = {};
+        var ctx = {};
         options.id = Number(req.params.id);
 
-        var ctx = {};
-
         app.CheckPoint.find({
-                where : options,
+            where : options,
+            include: [{
+                model: app.CheckPointGroup,
+                as: 'groups',
+                include: [app.Group]
+            },{
+                model: app.TestCase,
+                as: 'test_cases',
                 include: [{
-                        model: app.CheckPointGroup,
-                        as: 'groups',
-                        include: [app.Group]
-                    },{
-                        model: app.TestCase,
-                        as: 'test_cases',
-                        include: [{
-                            model: app.TestCaseQuestion,
-                            as: 'questions',
-                            include: [app.Question]
-                        }]
-                    }]
-            }).then(function (check_point) {
-                if (!check_point) {
-                    throw {message: 'NotFound'};
-                }
+                    model: app.TestCaseQuestion,
+                    as: 'questions',
+                    include: [app.Question]
+                }]
+            }]
+        }).then(function (check_point) {
+            if (!check_point) {
+                throw {message: 'NotFound'};
+            }
 
-                ctx.check_point = check_point.dataValues;
+            ctx.check_point = check_point.dataValues;
 
-                res.render('check_points/show', { check_point: ctx.check_point });
-            }).catch(function (err) {
-                console.log('err', err);
-                res.error(err);
-            });
+            res.render('check_points/show', { check_point: ctx.check_point });
+        }).catch(function (err) {
+            res.error(err);
+        });
     }
 
 };

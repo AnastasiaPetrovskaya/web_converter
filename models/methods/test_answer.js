@@ -302,7 +302,6 @@ module.exports = function (models) {
             {
                 type: sequelize.QueryTypes.SELECT,
                 raw: true,
-                //logging: console.log
             }
         ).catch(function(err) {
             console.log('next question method err', err);

@@ -29,7 +29,7 @@ block body
                                                 tbody
                                                     tr
                                                         td ФИО:
-                                                        td 
+                                                        td
                                                             a.editable.edit_text(href="#" data-name="title")= student.name
                                                     tr
                                                         td Группа:
@@ -42,14 +42,14 @@ block body
                                                     tr
                                                         td Телефон:
                                                         td
-                                                            if (student.phone) 
+                                                            if (student.phone)
                                                                 a.editable.edit_textarea(href="#" data-name="specialty")= student.phone
                                                             else
                                                                 a.editable.edit_textarea.editable-empty(href="#" data-name="specialty")
                                                     tr
                                                         td Почта:
                                                         td
-                                                            if (student.email) 
+                                                            if (student.email)
                                                                 a.editable.edit_textarea(href="#" data-name="specialty")= student.email
                                                             else
                                                                 a.editable.edit_textarea.editable-empty(href="#" data-name="specialty")
@@ -67,10 +67,8 @@ block body
 
                             .card-body.collapse.in
                                 .card-block.card-dashboard
-                                    .row
-                                        .table-responsive
-                                            table.table.table-borderless
-                                                tbody
+                                    .row.mt-2
+                                        #tests_answers_table.col-md-12
 
                 .row
                     .col-lg-12
@@ -100,3 +98,4 @@ block append footer
 
     script(src="/js/pages/students/show.js" type="text/javascript")
     script(src="/js/pages/questions_answers/table.js" type="text/javascript")
+    script(src="/js/pages/tests_answers/table.js" type="text/javascript")

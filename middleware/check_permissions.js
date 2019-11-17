@@ -78,10 +78,6 @@ module.exports = function (req, res, next) {
         req.action = getDefaultAction(req.method.toLowerCase());
     }
 
-    //console.log('req.action', req.action);
-    //console.log('req.endpoint', req.endpoint);
-    //console.log('user.permissions', user.permissions);
-
     if (user.permissions[req.endpoint] && user.permissions[req.endpoint][req.action]) {
         accessDenied = false;
     };
@@ -92,7 +88,7 @@ module.exports = function (req, res, next) {
 
     if (accessDenied) {
         var err = new Error('AccessDenied');
-        err.status = 403;
+        err.status = 404;
         throw err;
         //res.error('AccessDenied', 403);
     } else {

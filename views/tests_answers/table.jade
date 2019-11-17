@@ -1,0 +1,29 @@
+if (tests_answers.length === 0)
+    p.text-muted.mt-2.text-xs-center Нет записей
+else
+    table.table.table-striped.table-bordered.zero-configuration
+        thead
+            tr
+                th Название КР
+                th Вариант
+                th Оценка
+                th Дата
+                th Управление
+        tbody
+            each test_answer in tests_answers
+                tr(data-id=test_answer.id)
+                    td
+                        a(href="/check_points/" + test_answer.check_point.id)= test_answer.check_point.title
+                    td= test_answer.test_case.title + ' (' + test_answer.test_case.dataValues.questions_amount + ')'
+                    td= (test_answer.total_mark || 0) + ' (' + test_answer.check_point.dataValues.right_questions_amount + ' / ' + test_answer.check_point.dataValues.questions_amount +')'
+                    td= moment(test_answer.updatedAt).format('DD.MM.YYYY HH:mm')
+                    //td
+                        .btn-toolbar.float-xs-right(role="toolbar")
+                            a.btn.btn-icon.btn-outline-info.btn-sm(style="min-width:3.5rem" href="/questions_answers/" + answer.id data-toggle="tooltip" title="Подробная информация")
+                                i.icon-info2
+                            if (profile.permissions.QuestionAnswer.delete)
+                                button#delete.btn.btn-icon.btn-outline-danger.btn-sm(style="min-width:3.5rem" data-toggle="tooltip" title="Удаление вопроса")
+                                    i.icon-trash2
+
+
+    include ./../parts/pagination
