@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /node_modules
 /static
 /mdb2postgers
@@ -9,4 +8,3 @@ node_modules
 .idea
 .DS_Store
 config/*
->>>>>>> b01ac2d1694d3f7356b23900a532752d6857970e
