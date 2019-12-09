@@ -3,8 +3,6 @@
 /mdb2postgers
 /log
 converter.service
-=======
-node_modules
 .idea
 .DS_Store
 config/*
